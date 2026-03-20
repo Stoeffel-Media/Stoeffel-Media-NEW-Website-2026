@@ -109,7 +109,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   if (!dotCanvas) return;
 
   const ctx = dotCanvas.getContext('2d');
-  const SPACING = 80, CROSS_SIZE = 6, CROSS_THICKNESS = 2.5;
+  const SPACING = 80, DOT_RADIUS = 2;
   const MAX_OPACITY = 0.12, MIN_OPACITY = 0.02;
   let dots = [], cols, rows;
 
@@ -147,7 +147,9 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
       const wave = (Math.sin(t * dot.speed + dot.phase) + 1) * 0.5;
       dot.opacity = MIN_OPACITY + wave * (MAX_OPACITY - MIN_OPACITY);
       ctx.fillStyle = `rgba(255, 255, 255, ${dot.opacity})`;
-      ctx.fillRect(dot.x - CROSS_SIZE, dot.y - CROSS_THICKNESS / 2, CROSS_SIZE * 2, CROSS_THICKNESS);
+      ctx.beginPath();
+      ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2);
+      ctx.fill();
     }
     requestAnimationFrame(draw);
   }
@@ -512,7 +514,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   if (!items.length) return;
 
   let current = 0;
-  const HOLD_MS = 5000, ENTER_MS = 600, EXIT_MS = 500;
+  const HOLD_MS = 3500, ENTER_MS = 600, EXIT_MS = 500;
 
   function show(index) {
     const el = items[index];

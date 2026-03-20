@@ -101,7 +101,6 @@
       <li><a href="#contact" class="hoverable">Contact</a></li>
       <li><a href="imprint.html" class="hoverable">Legal</a></li>
     </ul>
-    <div class="menu-footer">info@stoeffel-media.com.au</div>
   </div>
 
   <!-- ═══════════════════════════════════════
@@ -429,19 +428,9 @@
 
     <!-- Background video -->
     <div class="contact-video-bg" aria-hidden="true">
-      <!--
-        TO ADD VIDEO: Download a royalty-free abstract dark ambient video
-        from Pexels (pexels.com/videos) or Pixabay and place it at:
-        ../ASSETS/contact-bg.mp4
-
-        Recommended search: "abstract dark smoke" or "particles dark background"
-        Then uncomment and set the src below:
-
-        <video autoplay muted loop playsinline poster="../ASSETS/contact-bg-poster.jpg">
-          <source src="../ASSETS/contact-bg.mp4" type="video/mp4">
-        </video>
-      -->
-      <div class="animated-bg"></div>
+      <video autoplay muted loop playsinline preload="none">
+        <source src="../ASSETS/contact_bg3.mp4" type="video/mp4">
+      </video>
     </div>
 
     <div class="contact-inner">
@@ -562,6 +551,12 @@
   </footer>
 
   <!-- ── Scripts ── -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script>
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  </script>
   <script src="js/main.js" defer></script>
 
   <!-- CSRF token init: on a PHP host, replace the script below with server-rendered value -->

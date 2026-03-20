@@ -1,0 +1,19 @@
+# PHP config — contains credentials, never commit
+php/config.php
+php/rate_limits/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# Composer
+vendor/
+
+# Editor
+.vscode/
+.idea/
+*.swp

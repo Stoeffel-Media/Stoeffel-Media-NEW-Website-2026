@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <title>Stoeffel-Media | Graphic Design, Web & Digital Marketing — Sydney</title>
+  <meta name="description" content="Stoeffel-Media is a Sydney-based design and digital studio. We handle graphic design, web development, and online marketing — all in one. 15+ years of experience. Precise. Reliable." />
+  <link rel="canonical" href="https://stoeffel-media.com.au/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stoeffel-media.com.au/" />
+  <meta property="og:title" content="Stoeffel-Media | Design, Web & Digital Marketing — Sydney" />
+  <meta property="og:description" content="One studio. Design, development, and marketing done properly. Based in Sydney, available Australia-wide." />
+  <meta property="og:image" content="https://stoeffel-media.com.au/img/og-image.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Stoeffel-Media | Design, Web & Digital Marketing" />
+  <meta name="twitter:description" content="One studio. Design, development, and marketing done properly." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../ASSETS/logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Stoeffel-Media",
+    "description": "Graphic design, web development, and digital marketing studio based in Sydney, Australia.",
+    "url": "https://stoeffel-media.com.au",
+    "email": "info@stoeffel-media.com.au",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Sydney",
+      "addressRegion": "NSW",
+      "addressCountry": "AU"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/"
+    ],
+    "serviceArea": {
+      "@type": "GeoCircle",
+      "geoMidpoint": {
+        "@type": "GeoCoordinates",
+        "latitude": -33.8688,
+        "longitude": 151.2093
+      },
+      "geoRadius": "50000"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ── Custom Cursor ── -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <!-- ── Background canvases (hero only) ── -->
+  <canvas id="dot-pattern" aria-hidden="true"></canvas>
+  <canvas id="fluid-canvas" aria-hidden="true"></canvas>
+
+  <!-- ═══════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════ -->
+  <nav class="nav" aria-label="Main navigation">
+    <a href="/" class="nav-logo hoverable" aria-label="Stoeffel-Media home">STOEFFEL<span>.</span>MEDIA</a>
+    <a href="/" class="nav-logo-center hoverable" id="nav-logo-center" aria-label="Stoeffel-Media home">STOEFFEL<span>.</span>MEDIA</a>
+    <div></div>
+    <button class="nav-menu-btn hoverable" aria-label="Open navigation menu" aria-expanded="false">
+      Menu
+      <div class="hamburger" aria-hidden="true"><span></span><span></span></div>
+    </button>
+  </nav>
+
+  <!-- ── Full-screen Menu Overlay ── -->
+  <div class="menu-overlay" id="menu-overlay" role="dialog" aria-modal="true" aria-label="Navigation">
+    <button class="menu-close hoverable" id="menu-close" aria-label="Close menu">&times;</button>
+    <ul class="menu-nav" aria-label="Site sections">
+      <li><a href="#services" class="hoverable">Services</a></li>
+      <li><a href="#portfolio" class="hoverable">Work</a></li>
+      <li><a href="#about" class="hoverable">About</a></li>
+      <li><a href="#contact" class="hoverable">Contact</a></li>
+      <li><a href="imprint.html" class="hoverable">Legal</a></li>
+    </ul>
+    <div class="menu-footer">info@stoeffel-media.com.au</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <h1 class="hero-heading" id="hero-heading">
+      <span class="line">We Craft</span>
+      <span class="line"><span class="outline">Digital</span> Stories<span class="accent-dot">.</span></span>
+    </h1>
+    <p class="hero-sub">Design, Web &amp; Digital Marketing<br>Sydney, Australia</p>
+    <a href="#contact" class="hero-cta hoverable" aria-label="Get in touch with Stoeffel-Media">
+      Get in Touch
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <div class="hero-scroll" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       BUSINESS STATEMENTS
+  ═══════════════════════════════════════ -->
+  <section class="statements" aria-label="Our philosophy">
+    <div class="statements-stage" aria-live="polite" aria-atomic="true">
+      <div class="statement-item" aria-hidden="true">
+        One brief.<br><em>Three disciplines.</em> Zero overhead.
+      </div>
+      <div class="statement-item" aria-hidden="true">
+        <em>Bad design</em> costs more<br>than good design.
+      </div>
+      <div class="statement-item" aria-hidden="true">
+        Your website is your<br><em>best salesperson.</em>
+      </div>
+      <div class="statement-item" aria-hidden="true">
+        SEO isn't magic.<br>It's <em>craft.</em> Done consistently.
+      </div>
+      <div class="statement-item" aria-hidden="true">
+        Precision, reliability —<br>and <em>a little personality.</em>
+      </div>
+    </div>
+    <a href="#contact" class="statements-cta hoverable">Start a Project</a>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SERVICES
+  ═══════════════════════════════════════ -->
+  <section class="services" id="services" aria-labelledby="services-title">
+    <div class="services-header">
+      <div class="section-label reveal">What We Do</div>
+      <h2 class="section-title reveal" id="services-title">Three disciplines.<br>One studio.</h2>
+      <p class="reveal reveal-delay-1">Design, development, and marketing under one roof means no briefing overhead, no broken telephone between vendors — just clean, coordinated work from start to finish.</p>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- Service 01 -->
+      <article class="service-card reveal hoverable" style="transition-delay: 0s">
+        <div class="service-number">01</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6" y="6" width="28" height="28" rx="3"/>
+          <circle cx="20" cy="19" r="6"/>
+          <path d="M20 13V6M20 25v7M13 19H6M25 19h7"/>
+        </svg>
+        <h3>Graphic Design &amp; Branding</h3>
+        <p>Logos, brand identities, visual systems, print design, and digital assets. Work that makes your business instantly recognisable — and worth trusting.</p>
+        <div class="service-tags">
+          <span class="service-tag">Logo Design</span>
+          <span class="service-tag">Brand Identity</span>
+          <span class="service-tag">Print</span>
+          <span class="service-tag">Visual Assets</span>
+        </div>
+      </article>
+
+      <!-- Service 02 -->
+      <article class="service-card reveal hoverable" style="transition-delay: 0.12s">
+        <div class="service-number">02</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="8" width="32" height="22" rx="3"/>
+          <path d="M15 30l-3 4M25 30l3 4M12 34h16"/>
+          <path d="M13 18l4 4-4 4M19 26h8"/>
+        </svg>
+        <h3>Web Design &amp; Development</h3>
+        <p>Fast, clean websites built for real-world use — static or dynamic, HTML/CSS/JS, fully responsive. Built to look great, perform well, and hand over to you ready to go.</p>
+        <div class="service-tags">
+          <span class="service-tag">HTML / CSS / JS</span>
+          <span class="service-tag">Responsive Design</span>
+          <span class="service-tag">Landing Pages</span>
+          <span class="service-tag">Web Apps</span>
+        </div>
+      </article>
+
+      <!-- Service 03 -->
+      <article class="service-card reveal hoverable" style="transition-delay: 0.24s">
+        <div class="service-number">03</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 32l8-12 6 6 6-10 4 6"/>
+          <circle cx="32" cy="12" r="3"/>
+          <path d="M4 36h32"/>
+        </svg>
+        <h3>Online Marketing &amp; SEO</h3>
+        <p>Strategy, content, and search visibility that actually moves numbers. We don't do vague — we focus on what gets your business found by the right people.</p>
+        <div class="service-tags">
+          <span class="service-tag">SEO</span>
+          <span class="service-tag">Content Strategy</span>
+          <span class="service-tag">Campaigns</span>
+          <span class="service-tag">Analytics</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       QUOTE
+  ═══════════════════════════════════════ -->
+  <section class="quote-section" aria-label="Owner quote">
+    <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+    <blockquote>
+      <p class="quote-text">Good design doesn't cost more — it earns more. Everything we build is crafted to make your business look as serious as it is.</p>
+      <footer class="quote-attribution">
+        — <span>Andreas Stöffel</span>, Stoeffel-Media
+      </footer>
+    </blockquote>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PORTFOLIO
+  ═══════════════════════════════════════ -->
+  <section class="portfolio" id="portfolio" aria-labelledby="portfolio-title">
+    <div class="portfolio-header">
+      <div>
+        <div class="section-label reveal">Selected Work</div>
+        <h2 class="section-title reveal" id="portfolio-title">Built with intent.</h2>
+      </div>
+      <p class="reveal">A selection of brand, web, and print work.<br>More available on request.</p>
+    </div>
+
+    <div class="portfolio-grid">
+
+      <!-- Web Design -->
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/web-design/3_website_white-diamonds.jpg"
+           data-alt="White Diamonds — E-Commerce Website"
+           style="transition-delay: 0s">
+        <img src="../ASSETS/Portfolio examples for demo/web-design/3_website_white-diamonds_thumb.jpg"
+             alt="White Diamonds — E-Commerce Website" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Web Design</span>
+            <span class="portfolio-label">White Diamonds — E-Commerce</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/web-design/6_website_dermapila.jpg"
+           data-alt="Dermapila — Brand Website"
+           style="transition-delay: 0.08s">
+        <img src="../ASSETS/Portfolio examples for demo/web-design/6_website_dermapila_thumb.jpg"
+             alt="Dermapila — Brand Website" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Web Design</span>
+            <span class="portfolio-label">Dermapila — Brand Website</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/web-design/8_website_code-door.jpg"
+           data-alt="Code Door — Web Design"
+           style="transition-delay: 0.16s">
+        <img src="../ASSETS/Portfolio examples for demo/web-design/8_website_code-door_thumb.jpg"
+             alt="Code Door — Web Design" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Web Design</span>
+            <span class="portfolio-label">Code Door — Web Design</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graphics / Logos -->
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/graphics/21_log_medical-rock.jpg"
+           data-alt="Medical Rock — Logo Design"
+           style="transition-delay: 0.08s">
+        <img src="../ASSETS/Portfolio examples for demo/graphics/21_log_medical-rock_thumb.jpg"
+             alt="Medical Rock — Logo Design" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Branding</span>
+            <span class="portfolio-label">Medical Rock — Logo Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/graphics/24_logo_campaign-plus.jpg"
+           data-alt="Campaign Plus — Logo Design"
+           style="transition-delay: 0.16s">
+        <img src="../ASSETS/Portfolio examples for demo/graphics/24_logo_campaign-plus_thumb.jpg"
+             alt="Campaign Plus — Logo Design" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Branding</span>
+            <span class="portfolio-label">Campaign Plus — Logo Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/graphics/12_infographic_ait.jpg"
+           data-alt="AIT — Infographic Design"
+           style="transition-delay: 0.24s">
+        <img src="../ASSETS/Portfolio examples for demo/graphics/12_infographic_ait_thumb.jpg"
+             alt="AIT — Infographic Design" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Graphic Design</span>
+            <span class="portfolio-label">AIT — Infographic</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Print -->
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/print/2_praesentation_gtb.jpg"
+           data-alt="GTB — Presentation Design"
+           style="transition-delay: 0.16s">
+        <img src="../ASSETS/Portfolio examples for demo/print/2_praesentation_gtb_thumb.jpg"
+             alt="GTB — Presentation Design" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Print</span>
+            <span class="portfolio-label">GTB — Presentation Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/print/1_product_wd-sparkle.jpg"
+           data-alt="WD Sparkle — Product Packaging"
+           style="transition-delay: 0.24s">
+        <img src="../ASSETS/Portfolio examples for demo/print/1_product_wd-sparkle_thumb.jpg"
+             alt="WD Sparkle — Product Packaging" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Print</span>
+            <span class="portfolio-label">WD Sparkle — Product Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item hoverable reveal"
+           data-full="../ASSETS/Portfolio examples for demo/web-design/10_website_carpe-medic.jpg"
+           data-alt="Carpe Medic — Website Design"
+           style="transition-delay: 0.32s">
+        <img src="../ASSETS/Portfolio examples for demo/web-design/10_website_carpe-medic_thumb.jpg"
+             alt="Carpe Medic — Website Design" loading="lazy" width="600" height="450" />
+        <div class="portfolio-overlay">
+          <div>
+            <span class="portfolio-category">Web Design</span>
+            <span class="portfolio-label">Carpe Medic — Website</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Portfolio image viewer">
+    <button class="lightbox-close hoverable" id="lightbox-close" aria-label="Close image viewer">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       ABOUT
+  ═══════════════════════════════════════ -->
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="about-inner">
+
+      <div class="about-stats reveal">
+        <div class="section-label">The Numbers</div>
+        <div class="stat-item">
+          <div class="stat-number">15<span>+</span></div>
+          <div class="stat-label">Years of Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Disciplines, One Studio</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Countries, One Perspective</div>
+        </div>
+      </div>
+
+      <div class="about-content">
+        <div class="section-label reveal">About</div>
+        <h2 class="section-title reveal" id="about-title">One person.<br>Three skills.<br>No excuses.</h2>
+        <div class="about-bio reveal reveal-delay-1">
+          <p>We're Stoeffel-Media — a design and digital studio based in Sydney. Behind it is Andreas Stöffel, a media designer and developer with 15+ years of professional experience working with clients and agencies across Germany, Canada, New Zealand, and Australia.</p>
+          <p>We handle graphic design, web development, and digital marketing in one place. That means you brief once and get results — no account managers, no handoffs, no briefing overhead. The German background shows in the work: structured delivery, clean execution, and an obsessive eye for detail.</p>
+          <p>Available for local projects in Sydney and remote work across Australia. Fast turnaround, reliable communication, and work that holds up under scrutiny.</p>
+        </div>
+        <div class="about-highlights reveal reveal-delay-2">
+          <span class="highlight-tag">Sydney-Based</span>
+          <span class="highlight-tag">Remote-Friendly</span>
+          <span class="highlight-tag">15+ Years Pro</span>
+          <span class="highlight-tag">DE → CA → NZ → AU</span>
+          <span class="highlight-tag">Design + Dev + Marketing</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CONTACT
+  ═══════════════════════════════════════ -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+
+    <!-- Background video -->
+    <div class="contact-video-bg" aria-hidden="true">
+      <!--
+        TO ADD VIDEO: Download a royalty-free abstract dark ambient video
+        from Pexels (pexels.com/videos) or Pixabay and place it at:
+        ../ASSETS/contact-bg.mp4
+
+        Recommended search: "abstract dark smoke" or "particles dark background"
+        Then uncomment and set the src below:
+
+        <video autoplay muted loop playsinline poster="../ASSETS/contact-bg-poster.jpg">
+          <source src="../ASSETS/contact-bg.mp4" type="video/mp4">
+        </video>
+      -->
+      <div class="animated-bg"></div>
+    </div>
+
+    <div class="contact-inner">
+
+      <div class="contact-left">
+        <div class="section-label reveal">Get in Touch</div>
+        <h2 class="section-title reveal" id="contact-title">Let's build<br>something good.</h2>
+        <p class="reveal reveal-delay-1">Got a project in mind? Tell us what you need. We'll get back to you within one business day.</p>
+        <a href="mailto:info@stoeffel-media.com.au" class="contact-detail hoverable">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          info@stoeffel-media.com.au
+        </a>
+        <span class="contact-detail">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Sydney, NSW — Australia
+        </span>
+      </div>
+
+      <div class="form-card reveal">
+        <h3>Send a Message</h3>
+        <form id="contact-form" method="POST" action="../php/contact.php" novalidate>
+
+          <!-- CSRF token (rendered server-side) -->
+          <input type="hidden" name="csrf_token" id="csrf-token" value="" />
+
+          <!-- Honeypot — must stay empty -->
+          <div class="form-honeypot" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-name">Name *</label>
+              <input type="text" id="f-name" name="name" required autocomplete="name"
+                     placeholder="Jane Smith" maxlength="100" />
+            </div>
+            <div class="form-group">
+              <label for="f-company">Company</label>
+              <input type="text" id="f-company" name="company" autocomplete="organization"
+                     placeholder="Optional" maxlength="120" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-email">Email *</label>
+              <input type="email" id="f-email" name="email" required autocomplete="email"
+                     placeholder="jane@example.com" maxlength="200" />
+            </div>
+            <div class="form-group">
+              <label for="f-phone">Phone</label>
+              <input type="tel" id="f-phone" name="phone" autocomplete="tel"
+                     placeholder="Optional" maxlength="30" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="f-service">I'm interested in…</label>
+            <select id="f-service" name="service">
+              <option value="">— Select a service —</option>
+              <option value="design">Graphic Design &amp; Branding</option>
+              <option value="web">Web Design &amp; Development</option>
+              <option value="marketing">Online Marketing &amp; SEO</option>
+              <option value="multiple">Multiple services</option>
+              <option value="other">Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="f-message">Message *</label>
+            <textarea id="f-message" name="message" required
+                      placeholder="Tell us about your project, your timeline, and any specifics that matter."
+                      maxlength="3000"></textarea>
+          </div>
+
+          <button type="submit" class="form-submit hoverable">Send Message</button>
+          <div class="form-message" role="alert" aria-live="polite"></div>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+
+      <a href="/" class="footer-logo hoverable" aria-label="Stoeffel-Media home">
+        STOEFFEL<span>.</span>MEDIA
+      </a>
+
+      <ul class="footer-nav" aria-label="Footer navigation">
+        <li><a href="#services" class="hoverable">Services</a></li>
+        <li><a href="#portfolio" class="hoverable">Work</a></li>
+        <li><a href="#about" class="hoverable">About</a></li>
+        <li><a href="#contact" class="hoverable">Contact</a></li>
+      </ul>
+
+      <div class="footer-right">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/" target="_blank" rel="noopener noreferrer" class="hoverable" aria-label="LinkedIn profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+        <span class="footer-copy">&copy; 2026 Stoeffel-Media</span>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>Design, Web &amp; Digital Marketing &mdash; Sydney, Australia</p>
+      <a href="imprint.html" class="hoverable">Imprint &amp; Privacy</a>
+    </div>
+  </footer>
+
+  <!-- ── Scripts ── -->
+  <script src="js/main.js" defer></script>
+
+  <!-- CSRF token init: on a PHP host, replace the script below with server-rendered value -->
+  <script>
+    // Generate a basic session token for static preview.
+    // On the PHP server, this is rendered server-side.
+    (function() {
+      const el = document.getElementById('csrf-token');
+      if (el && !el.value) {
+        const arr = new Uint8Array(16);
+        crypto.getRandomValues(arr);
+        el.value = Array.from(arr, b => b.toString(16).padStart(2,'0')).join('');
+        sessionStorage.setItem('csrf', el.value);
+      }
+    })();
+  </script>
+
+</body>
+</html>

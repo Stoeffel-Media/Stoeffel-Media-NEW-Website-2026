@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imprint &amp; Privacy Policy | Stoeffel-Media</title>
+  <meta name="description" content="Legal notice, imprint, and privacy policy for Stoeffel-Media — design, web and digital marketing studio based in Sydney, Australia." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://stoeffel-media.com.au/imprint.html" />
+  <link rel="icon" type="image/png" href="../ASSETS/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Page header ── */
+    .legal-header {
+      position: relative;
+      z-index: 1;
+      padding: 160px 48px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .legal-header .section-label {
+      margin-bottom: 20px;
+    }
+
+    .legal-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 7vw, 96px);
+      letter-spacing: -1px;
+      line-height: 0.95;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .legal-header p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    /* ── Content body ── */
+    .legal-body {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-deep);
+      border-top: 1px solid var(--border);
+    }
+
+    .legal-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 80px 48px 120px;
+    }
+
+    /* Section blocks */
+    .legal-section {
+      padding: 52px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .legal-section .section-label {
+      margin-bottom: 12px;
+    }
+
+    .legal-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(26px, 3.5vw, 40px);
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+
+    .legal-section h3 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 28px 0 10px;
+    }
+
+    .legal-section p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 16px;
+      max-width: 680px;
+    }
+
+    .legal-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .legal-section a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .legal-section a:hover {
+      opacity: 0.75;
+      text-decoration: underline;
+    }
+
+    .legal-section ul {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.85;
+      font-weight: 300;
+      padding-left: 20px;
+      margin-bottom: 16px;
+      max-width: 680px;
+    }
+
+    .legal-section ul li {
+      margin-bottom: 6px;
+      padding-left: 4px;
+    }
+
+    .legal-section ul li::marker {
+      color: var(--accent);
+    }
+
+    /* Info card */
+    .info-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin: 24px 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 32px;
+    }
+
+    .info-card-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .info-card-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .info-card-value {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .info-card-value a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .info-card-value a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer note */
+    .legal-footer-note {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      .legal-header { padding: 130px 24px 60px; }
+      .legal-inner { padding: 60px 24px 100px; }
+      .info-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor (same as main page) -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <!-- Background canvases (dot pattern + fluid sim, fixed behind content) -->
+  <canvas id="dot-pattern" aria-hidden="true"></canvas>
+  <canvas id="fluid-canvas" aria-hidden="true"></canvas>
+
+  <!-- ═══════════════════════════════════════
+       NAVIGATION (identical to main page)
+  ═══════════════════════════════════════ -->
+  <nav class="nav" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo hoverable" aria-label="Back to Stoeffel-Media">STOEFFEL<span>.</span>MEDIA</a>
+    <a href="index.html" class="nav-logo-center hoverable" id="nav-logo-center" aria-label="Back to Stoeffel-Media">STOEFFEL<span>.</span>MEDIA</a>
+    <div></div>
+    <button class="nav-menu-btn hoverable" aria-label="Open navigation menu">
+      Menu
+      <div class="hamburger" aria-hidden="true"><span></span><span></span></div>
+    </button>
+  </nav>
+
+  <!-- Full-screen menu overlay -->
+  <div class="menu-overlay" id="menu-overlay" role="dialog" aria-modal="true" aria-label="Navigation">
+    <button class="menu-close hoverable" id="menu-close" aria-label="Close menu">&times;</button>
+    <ul class="menu-nav">
+      <li><a href="index.html#services" class="hoverable">Services</a></li>
+      <li><a href="index.html#portfolio" class="hoverable">Work</a></li>
+      <li><a href="index.html#about" class="hoverable">About</a></li>
+      <li><a href="index.html#contact" class="hoverable">Contact</a></li>
+      <li><a href="imprint.html" class="hoverable">Legal</a></li>
+    </ul>
+    <div class="menu-footer">info@stoeffel-media.com.au</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       PAGE HEADER
+  ═══════════════════════════════════════ -->
+  <header class="legal-header">
+    <div class="section-label reveal">Legal</div>
+    <h1 class="reveal" style="transition-delay:0.1s">Imprint &amp;<br>Privacy Policy</h1>
+    <p class="reveal" style="transition-delay:0.2s">Last updated: March 2026 &nbsp;&mdash;&nbsp; Stoeffel-Media, Sydney NSW, Australia</p>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       CONTENT
+  ═══════════════════════════════════════ -->
+  <div class="legal-body">
+    <div class="legal-inner">
+
+      <!-- 1. Business Information -->
+      <div class="legal-section reveal">
+        <div class="section-label">01</div>
+        <h2>Business Information</h2>
+        <div class="info-card">
+          <div class="info-card-row">
+            <span class="info-card-label">Business Name</span>
+            <span class="info-card-value">Stoeffel-Media</span>
+          </div>
+          <div class="info-card-row">
+            <span class="info-card-label">Owner / Operator</span>
+            <span class="info-card-value">Andreas Stöffel</span>
+          </div>
+          <div class="info-card-row">
+            <span class="info-card-label">Location</span>
+            <span class="info-card-value">Sydney, NSW, Australia</span>
+          </div>
+          <div class="info-card-row">
+            <span class="info-card-label">ABN</span>
+            <span class="info-card-value">[Fill in before publishing]</span>
+          </div>
+          <div class="info-card-row">
+            <span class="info-card-label">Email</span>
+            <span class="info-card-value"><a href="mailto:info@stoeffel-media.com.au">info@stoeffel-media.com.au</a></span>
+          </div>
+          <div class="info-card-row">
+            <span class="info-card-label">Phone</span>
+            <span class="info-card-value">Available upon request</span>
+          </div>
+        </div>
+        <p>Stoeffel-Media is a sole trader offering graphic design, web development, and digital marketing services. All services are provided under Australian law, with business conducted from New South Wales, Australia.</p>
+      </div>
+
+      <!-- 2. Liability for Content -->
+      <div class="legal-section reveal">
+        <div class="section-label">02</div>
+        <h2>Liability for Content</h2>
+        <p>The content on this website has been prepared with care and to the best of our knowledge. We make no guarantees regarding the accuracy, completeness, or currency of the information provided. As a service provider, Stoeffel-Media is responsible for its own content on these pages under applicable Australian law.</p>
+        <p>We are not obligated to monitor transmitted or stored third-party information. Obligations to remove or block the use of information under applicable law remain unaffected. Any liability in this regard is only possible from the time we become aware of a specific infringement. Upon notification of such violations, we will immediately remove this content.</p>
+      </div>
+
+      <!-- 3. External Links -->
+      <div class="legal-section reveal">
+        <div class="section-label">03</div>
+        <h2>Liability for External Links</h2>
+        <p>This website contains links to external third-party websites, the content of which is beyond our control. Therefore, no guarantee can be given for this external content. The respective provider or operator of the linked pages is always responsible for their content.</p>
+        <p>The linked pages were checked for possible legal violations at the time of linking. No illegal content was apparent at this time. Permanent monitoring of linked pages' content is not reasonable without concrete evidence of an infringement. Upon notification of violations, we will remove such links immediately.</p>
+      </div>
+
+      <!-- 4. Copyright -->
+      <div class="legal-section reveal">
+        <div class="section-label">04</div>
+        <h2>Copyright</h2>
+        <p>All content and works created by Stoeffel-Media on these pages are subject to Australian copyright law. Reproduction, editing, distribution, or any form of use beyond the permitted uses under copyright law requires prior written consent from the author or creator. Downloads and copies of this page are permitted for private, non-commercial use only.</p>
+        <p>Where content on this site was not created by Stoeffel-Media, third-party copyrights are respected and acknowledged. If you believe that any content on this website infringes your copyright, please contact us at <a href="mailto:info@stoeffel-media.com.au">info@stoeffel-media.com.au</a>.</p>
+      </div>
+
+      <!-- 5. Privacy Policy -->
+      <div class="legal-section reveal">
+        <div class="section-label">05</div>
+        <h2>Privacy Policy</h2>
+        <p>Stoeffel-Media is committed to protecting personal information in accordance with the <strong style="color:var(--text)">Privacy Act 1988 (Cth)</strong> and the Australian Privacy Principles (APPs). This policy explains what personal information we collect, how we use it, and how you can contact us.</p>
+
+        <h3>What We Collect</h3>
+        <p>We collect personal information only when you voluntarily provide it — for example, when you submit the contact form. This may include:</p>
+        <ul>
+          <li>Your name and company name</li>
+          <li>Email address and phone number</li>
+          <li>The contents of your message</li>
+          <li>Technical data such as browser type and IP address (collected automatically via server logs)</li>
+        </ul>
+
+        <h3>How We Use It</h3>
+        <p>We use your personal information exclusively to respond to your enquiry, provide the services you requested, and communicate with you about ongoing work. We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+
+        <h3>Data Storage &amp; Security</h3>
+        <p>Contact form submissions are transmitted via HTTPS and sent directly to our inbox. We do not store form submissions in a database. We take reasonable steps to protect the personal information we hold from misuse, interference, loss, and unauthorised access.</p>
+
+        <h3>Third-Party Services</h3>
+        <p>This website loads fonts from Google Fonts, which may transmit your IP address to Google. Google's privacy policy applies: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a></p>
+        <p>If Google Analytics is enabled, it collects anonymised usage data. No personally identifiable data is collected via analytics. You can opt out using the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-Out Add-on</a>.</p>
+
+        <h3>Your Rights</h3>
+        <p>Under the Privacy Act 1988, you have the right to access and correct personal information we hold about you, and to lodge a complaint about our privacy practices. To exercise these rights, contact us at <a href="mailto:info@stoeffel-media.com.au">info@stoeffel-media.com.au</a>. If you are not satisfied with our response, you may contact the <a href="https://www.oaic.gov.au" target="_blank" rel="noopener noreferrer">Office of the Australian Information Commissioner (OAIC)</a>.</p>
+      </div>
+
+      <!-- 6. Cookies -->
+      <div class="legal-section reveal">
+        <div class="section-label">06</div>
+        <h2>Cookies</h2>
+        <p>This website uses session cookies only for essential security purposes (contact form CSRF protection). No tracking cookies are set by default. If analytics is enabled, a cookie may be placed by Google Analytics. You may disable cookies via your browser settings, though this may affect some functionality.</p>
+      </div>
+
+      <!-- 7. Governing Law -->
+      <div class="legal-section reveal">
+        <div class="section-label">07</div>
+        <h2>Governing Law</h2>
+        <p>This website and all related services are governed by the laws of New South Wales, Australia, and the Commonwealth of Australia. Any disputes arising from the use of this website or our services will be subject to the exclusive jurisdiction of the courts of New South Wales, Australia.</p>
+      </div>
+
+      <p class="legal-footer-note">Last updated: March 2026 &nbsp;&mdash;&nbsp; Stoeffel-Media, Sydney NSW 2000</p>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="index.html" class="footer-logo hoverable" aria-label="Stoeffel-Media home">STOEFFEL<span>.</span>MEDIA</a>
+      <ul class="footer-nav">
+        <li><a href="index.html#services" class="hoverable">Services</a></li>
+        <li><a href="index.html#portfolio" class="hoverable">Work</a></li>
+        <li><a href="index.html#about" class="hoverable">About</a></li>
+        <li><a href="index.html#contact" class="hoverable">Contact</a></li>
+      </ul>
+      <div class="footer-right">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/" target="_blank" rel="noopener noreferrer" class="hoverable" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+        <span class="footer-copy">&copy; 2026 Stoeffel-Media</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Design, Web &amp; Digital Marketing &mdash; Sydney, Australia</p>
+      <a href="imprint.html" class="hoverable">Imprint &amp; Privacy</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+
+</body>
+</html>

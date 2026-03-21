@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════
    STOEFFEL-MEDIA — main.js
 ═══════════════════════════════════════════ */
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ═══════════════════════════════════════════
 // CUSTOM CURSOR
@@ -76,13 +77,26 @@ const navLogoCenter = document.getElementById('nav-logo-center');
 if (navLogo && navLogoCenter) {
   const MAIN_FADE_START = 80, MAIN_FADE_END = 250;
   const CTR_FADE_START = 400, CTR_FADE_END = 600;
+  const contactSection = document.getElementById('contact');
 
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
     const mainP = Math.min(Math.max((y - MAIN_FADE_START) / (MAIN_FADE_END - MAIN_FADE_START), 0), 1);
     navLogo.style.opacity = 1 - mainP;
 
-    const ctrP = Math.min(Math.max((y - CTR_FADE_START) / (CTR_FADE_END - CTR_FADE_START), 0), 1);
+    // Fade in
+    const ctrIn = Math.min(Math.max((y - CTR_FADE_START) / (CTR_FADE_END - CTR_FADE_START), 0), 1);
+
+    // Fade out near contact section
+    let ctrOut = 1;
+    if (contactSection) {
+      const contactTop = contactSection.offsetTop;
+      const fadeOutStart = contactTop - window.innerHeight * 0.8;
+      const fadeOutEnd = contactTop - window.innerHeight * 0.3;
+      ctrOut = 1 - Math.min(Math.max((y - fadeOutStart) / (fadeOutEnd - fadeOutStart), 0), 1);
+    }
+
+    const ctrP = ctrIn * ctrOut;
     navLogoCenter.style.opacity = ctrP;
     navLogoCenter.style.pointerEvents = ctrP > 0.5 ? 'auto' : 'none';
   }, { passive: true });
@@ -599,7 +613,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   const lightboxClose = document.getElementById('lightbox-close');
   if (!lightbox) return;
 
-  document.querySelectorAll('.portfolio-item[data-full]').forEach(item => {
+  document.querySelectorAll('.bento-img[data-full]').forEach(item => {
     item.addEventListener('click', () => {
       lightboxImg.src = item.dataset.full;
       lightboxImg.alt = item.dataset.alt || '';
@@ -673,13 +687,15 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   const heroCta = document.querySelector('.hero-cta');
   if (!heroHeading) return;
 
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    const shift = y * 0.28;
-    heroHeading.style.transform = `translateY(${shift}px)`;
-    if (heroSub)  heroSub.style.transform  = `translateY(${shift * 0.7}px)`;
-    if (heroCta)  heroCta.style.transform  = `translateY(${shift * 0.6}px)`;
-  }, { passive: true });
+  if (!reducedMotion) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      const shift = y * 0.28;
+      heroHeading.style.transform = `translateY(${shift}px)`;
+      if (heroSub)  heroSub.style.transform  = `translateY(${shift * 0.7}px)`;
+      if (heroCta)  heroCta.style.transform  = `translateY(${shift * 0.6}px)`;
+    }, { passive: true });
+  }
 })();
 
 // ═══════════════════════════════════════════
@@ -687,9 +703,9 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // ═══════════════════════════════════════════
 (function() {
   const c = document.getElementById('rays-canvas');
-  if (!c) return;
+  if (!c || reducedMotion) { if (c) c.style.display = 'none'; return; }
   const gl = c.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
-  if (!gl) return;
+  if (!gl) { c.style.display = 'none'; return; }
 
   const vs = `#version 300 es
   in vec2 p;
@@ -741,13 +757,24 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     const s = gl.createShader(type);
     gl.shaderSource(s, src);
     gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.warn('Shader compile failed:', gl.getShaderInfoLog(s));
+      c.style.display = 'none'; return null;
+    }
     return s;
   }
 
+  const vsS = mkS(vs, gl.VERTEX_SHADER);
+  const fsS = mkS(fs, gl.FRAGMENT_SHADER);
+  if (!vsS || !fsS) return;
+
   const pg = gl.createProgram();
-  gl.attachShader(pg, mkS(vs, gl.VERTEX_SHADER));
-  gl.attachShader(pg, mkS(fs, gl.FRAGMENT_SHADER));
+  gl.attachShader(pg, vsS);
+  gl.attachShader(pg, fsS);
   gl.linkProgram(pg);
+  if (!gl.getProgramParameter(pg, gl.LINK_STATUS)) {
+    c.style.display = 'none'; return;
+  }
   gl.useProgram(pg);
 
   const buf = gl.createBuffer();
@@ -773,11 +800,33 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
+  let raysVisible = true;
+  const heroEl = document.querySelector('.hero');
+  if (heroEl) {
+    new IntersectionObserver(([e]) => { raysVisible = e.isIntersecting; }, { threshold: 0 }).observe(heroEl);
+  }
+
   function draw(now) {
-    gl.uniform2f(uR, c.width, c.height);
-    gl.uniform1f(uT, now * 1e-3);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    if (raysVisible) {
+      gl.uniform2f(uR, c.width, c.height);
+      gl.uniform1f(uT, now * 1e-3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
 })();
+
+// ═══════════════════════════════════════════
+// VIDEO PAUSE WHEN OFF-SCREEN
+// ═══════════════════════════════════════════
+document.querySelectorAll('.statements-video-bg video, .contact-video-bg video').forEach(video => {
+  const observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, { threshold: 0.1 });
+  observer.observe(video.closest('section') || video.parentElement);
+});

@@ -34,7 +34,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
@@ -82,8 +82,8 @@
        NAVIGATION
   ═══════════════════════════════════════ -->
   <nav class="nav" aria-label="Main navigation">
-    <a href="/" class="nav-logo hoverable" aria-label="Stoeffel-Media home">STOEFFEL<span>.</span>MEDIA</a>
-    <a href="/" class="nav-logo-center hoverable" id="nav-logo-center" aria-label="Stoeffel-Media home">STOEFFEL<span>.</span>MEDIA</a>
+    <a href="/" class="nav-logo hoverable" aria-label="Stoeffel-Media home"><img src="img/logo.svg" alt="Stoeffel-Media" height="28" /></a>
+    <a href="#" class="nav-logo-center hoverable" id="nav-logo-center" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"><img src="img/logo.svg" alt="Stoeffel-Media" height="18" /></a>
     <div></div>
     <button class="nav-menu-btn hoverable" aria-label="Open navigation menu" aria-expanded="false">
       Menu
@@ -107,6 +107,7 @@
        HERO
   ═══════════════════════════════════════ -->
   <section class="hero" aria-labelledby="hero-heading">
+    <canvas id="rays-canvas" aria-hidden="true"></canvas>
     <h1 class="hero-heading" id="hero-heading">
       <span class="line">We Craft</span>
       <span class="line"><span class="outline">Digital</span> Stories<span class="accent-dot">.</span></span>
@@ -125,24 +126,30 @@
        BUSINESS STATEMENTS
   ═══════════════════════════════════════ -->
   <section class="statements" aria-label="Our philosophy">
+    <div class="statements-video-bg" aria-hidden="true">
+      <video autoplay muted loop playsinline preload="none">
+        <source src="../ASSETS/contact_bg2.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="statements-stage" aria-live="polite" aria-atomic="true">
       <div class="statement-item" aria-hidden="true">
-        One brief.<br><em>Three disciplines.</em> Zero overhead.
+        One brief. <span class="stmt-badge">Three disciplines.</span> Zero overhead.
       </div>
       <div class="statement-item" aria-hidden="true">
-        <em>Bad design</em> costs more<br>than good design.
+        <span class="stmt-badge">Bad design</span> costs more than good design.
       </div>
       <div class="statement-item" aria-hidden="true">
-        Your website is your<br><em>best salesperson.</em>
+        Your website is your <span class="stmt-badge">best salesperson.</span>
       </div>
       <div class="statement-item" aria-hidden="true">
-        SEO isn't magic.<br>It's <em>craft.</em> Done consistently.
+        SEO isn't magic. It's <span class="stmt-badge">craft.</span> Done consistently.
       </div>
       <div class="statement-item" aria-hidden="true">
-        Precision, reliability —<br>and <em>a little personality.</em>
+        Precision, reliability — and <span class="stmt-badge">a little personality.</span>
       </div>
     </div>
-    <a href="#contact" class="statements-cta hoverable">Start a Project</a>
+    <a href="#contact" class="statements-cta hoverable">Start a Project <span class="cta-arrow">&rarr;</span></a>
+    <p class="statements-sub reveal">No lock-in contracts. Free initial consultation.</p>
   </section>
 
   <!-- ═══════════════════════════════════════
@@ -403,9 +410,9 @@
 
       <div class="about-content">
         <div class="section-label reveal">About</div>
-        <h2 class="section-title reveal" id="about-title">One person.<br>Three skills.<br>No excuses.</h2>
+        <h2 class="section-title reveal" id="about-title">Small studio.<br>Three skills.<br>No excuses.</h2>
         <div class="about-bio reveal reveal-delay-1">
-          <p>We're Stoeffel-Media — a design and digital studio based in Sydney. Behind it is Andreas Stöffel, a media designer and developer with 15+ years of professional experience working with clients and agencies across Germany, Canada, New Zealand, and Australia.</p>
+          <p>We're Stoeffel-Media — a design and digital studio based in Sydney, led by Andreas Stöffel. With 15+ years of professional experience working with clients and agencies across Germany, Canada, New Zealand, and Australia, we bring a global perspective to every project.</p>
           <p>We handle graphic design, web development, and digital marketing in one place. That means you brief once and get results — no account managers, no handoffs, no briefing overhead. The German background shows in the work: structured delivery, clean execution, and an obsessive eye for detail.</p>
           <p>Available for local projects in Sydney and remote work across Australia. Fast turnaround, reliable communication, and work that holds up under scrutiny.</p>
         </div>
@@ -523,7 +530,7 @@
     <div class="footer-inner">
 
       <a href="/" class="footer-logo hoverable" aria-label="Stoeffel-Media home">
-        STOEFFEL<span>.</span>MEDIA
+        <img src="img/logo.svg" alt="Stoeffel-Media" height="20" />
       </a>
 
       <ul class="footer-nav" aria-label="Footer navigation">

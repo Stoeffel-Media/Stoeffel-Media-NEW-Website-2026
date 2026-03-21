@@ -681,3 +681,103 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     if (heroCta)  heroCta.style.transform  = `translateY(${shift * 0.6}px)`;
   }, { passive: true });
 })();
+
+// ═══════════════════════════════════════════
+// LIGHT RAYS — WebGL Shader
+// ═══════════════════════════════════════════
+(function() {
+  const c = document.getElementById('rays-canvas');
+  if (!c) return;
+  const gl = c.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
+  if (!gl) return;
+
+  const vs = `#version 300 es
+  in vec2 p;
+  void main(){ gl_Position=vec4(p,0,1); }`;
+
+  const fs = `#version 300 es
+  precision highp float;
+  out vec4 O;
+  uniform vec2 R;
+  uniform float T;
+
+  float rnd(vec2 p){
+    p=fract(p*vec2(12.9898,78.233));
+    p+=dot(p,p+34.56);
+    return fract(p.x*p.y);
+  }
+
+  float noise(vec2 p){
+    vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
+    float a=rnd(i),b=rnd(i+vec2(1,0)),c=rnd(i+vec2(0,1)),d=rnd(i+1.);
+    return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+  }
+
+  void main(){
+    vec2 uv=(gl_FragCoord.xy-vec2(.55,.5)*R)/min(R.x,R.y);
+    vec3 col=vec3(0);
+
+    uv*=1.-.15*(sin(T*.15)*.5+.5);
+
+    for(float i=1.;i<10.;i++){
+      uv+=.08*cos(i*vec2(.1+.01*i,.8)+i*i+T*.4+.1*uv.x);
+      vec2 p=uv;
+      float d=length(p);
+
+      col+=.001/d*(cos(sin(i)*vec3(.8,.9,1.))+1.);
+
+      float b=noise(i+p+T*.1);
+      col+=.0015*b/length(max(p,vec2(b*p.x*.02,p.y)));
+
+      col=mix(col,vec3(0),d*.6);
+    }
+
+    float a=max(col.r,max(col.g,col.b));
+    a=smoothstep(0.02,0.5,a);
+    O=vec4(col,a);
+  }`;
+
+  function mkS(src, type) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+
+  const pg = gl.createProgram();
+  gl.attachShader(pg, mkS(vs, gl.VERTEX_SHADER));
+  gl.attachShader(pg, mkS(fs, gl.FRAGMENT_SHADER));
+  gl.linkProgram(pg);
+  gl.useProgram(pg);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pg, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const uR = gl.getUniformLocation(pg, 'R');
+  const uT = gl.getUniformLocation(pg, 'T');
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio, 1.5);
+    c.width = c.clientWidth * dpr;
+    c.height = c.clientHeight * dpr;
+    gl.viewport(0, 0, c.width, c.height);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  function draw(now) {
+    gl.uniform2f(uR, c.width, c.height);
+    gl.uniform1f(uT, now * 1e-3);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();

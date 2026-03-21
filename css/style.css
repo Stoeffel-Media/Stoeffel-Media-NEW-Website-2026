@@ -32,7 +32,7 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   overflow-x: hidden;
   cursor: none;
   -webkit-font-smoothing: antialiased;
@@ -137,12 +137,16 @@ a, button, input, textarea, select, label,
 }
 
 .nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  letter-spacing: 3px;
-  color: var(--text);
   text-decoration: none;
+  display: flex;
+  align-items: center;
   transition: opacity 0.6s ease;
+}
+
+.nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
 }
 
 .nav-logo-center {
@@ -150,20 +154,29 @@ a, button, input, textarea, select, label,
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Bebas Neue', sans-serif;
-  text-shadow: 0 0 40px rgba(0,0,0,1), 0 0 80px rgba(0,0,0,1), 0 0 140px rgba(0,0,0,0.9), 0 0 200px rgba(0,0,0,0.7), 0 0 300px rgba(0,0,0,0.5);
-  font-size: 18px;
-  letter-spacing: 3px;
-  color: var(--text);
   text-decoration: none;
+  display: flex;
+  align-items: center;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.6s ease;
 }
 
-.nav-logo span,
-.nav-logo-center span {
-  color: var(--accent);
+.nav-logo-center::before {
+  content: '';
+  position: absolute;
+  inset: -20px -35px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 40%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.nav-logo-center img {
+  height: 18px;
+  width: auto;
+  display: block;
+  position: relative;
+  z-index: 1;
 }
 
 .nav-menu-btn {
@@ -178,7 +191,7 @@ a, button, input, textarea, select, label,
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   cursor: none;
   transition: background 0.3s ease;
 }
@@ -258,8 +271,8 @@ a, button, input, textarea, select, label,
 }
 
 .menu-nav a {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(42px, 7vw, 76px);
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(30px, 5vw, 54px);
   color: var(--text);
   text-decoration: none;
   letter-spacing: 2px;
@@ -304,6 +317,17 @@ a, button, input, textarea, select, label,
   padding: 0 48px;
 }
 
+#rays-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: screen;
+}
+
 .hero::before {
   content: '';
   position: absolute;
@@ -317,8 +341,8 @@ a, button, input, textarea, select, label,
 }
 
 .hero-heading {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(60px, 10vw, 140px);
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(42px, 7vw, 98px);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: -2px;
@@ -378,7 +402,8 @@ a, button, input, textarea, select, label,
   padding: 14px 32px;
   border-radius: 999px;
   opacity: 0;
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.15s forwards;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.5s forwards,
+             ctaFlash 0.5s ease 4s both;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
@@ -435,8 +460,8 @@ a, button, input, textarea, select, label,
 }
 
 .section-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(36px, 5vw, 68px);
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(26px, 3.5vw, 48px);
   letter-spacing: 1px;
   line-height: 1;
   margin-bottom: 20px;
@@ -449,11 +474,49 @@ a, button, input, textarea, select, label,
   position: relative;
   z-index: 2;
   background: var(--bg-deep);
-  padding: 100px 48px;
+  padding: 110px 48px 100px;
   text-align: center;
   overflow: hidden;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+
+.statements-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.statements-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  filter: grayscale(100%);
+}
+
+.statements-video-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(24,24,24,0.75);
+}
+
+.statements-stage,
+.statements-cta,
+.statements-sub {
+  position: relative;
+  z-index: 1;
+}
+
+.statements-lead {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
 }
 
 .statements-stage {
@@ -465,16 +528,16 @@ a, button, input, textarea, select, label,
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-bottom: 52px;
+  margin-bottom: 48px;
 }
 
 .statement-item {
   position: absolute;
   width: 100%;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(36px, 6.5vw, 110px);
-  letter-spacing: -1px;
-  line-height: 1;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(22px, 3.8vw, 63px);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
   color: var(--text);
   opacity: 0;
   transform: translateY(100%);
@@ -495,15 +558,21 @@ a, button, input, textarea, select, label,
   animation: stmtExit 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
-.statement-item em {
-  color: var(--accent);
-  font-style: normal;
+.stmt-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.1em 0.2em 0.15em;
+  line-height: 1.1;
+  border-radius: 6px;
+  margin: 0 2px;
 }
 
 .statements-cta {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  background: transparent;
   border: 1px solid rgba(255,255,255,0.2);
   color: var(--text);
   text-decoration: none;
@@ -516,11 +585,28 @@ a, button, input, textarea, select, label,
   transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.35s ease;
 }
 
+.statements-cta .cta-arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
 .statements-cta:hover {
   border-color: var(--accent);
   background: rgba(240, 137, 50, 0.08);
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(240, 137, 50, 0.15);
+}
+
+.statements-cta:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+.statements-sub {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 20px;
+  letter-spacing: 0.5px;
 }
 
 /* ═══════════════════════════════════════════
@@ -561,6 +647,9 @@ a, button, input, textarea, select, label,
   transition: border-color 0.35s ease,
               transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
               box-shadow 0.35s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .service-card:hover {
@@ -570,8 +659,8 @@ a, button, input, textarea, select, label,
 }
 
 .service-number {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 52px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 36px;
   color: rgba(240, 137, 50, 0.18);
   letter-spacing: 2px;
   margin-bottom: 24px;
@@ -586,7 +675,7 @@ a, button, input, textarea, select, label,
 }
 
 .service-card h3 {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 28px;
   letter-spacing: 1px;
   margin-bottom: 14px;
@@ -636,7 +725,7 @@ a, button, input, textarea, select, label,
   top: -60px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 400px;
   color: rgba(240, 137, 50, 0.04);
   pointer-events: none;
@@ -645,8 +734,8 @@ a, button, input, textarea, select, label,
 }
 
 .quote-mark {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 80px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 56px;
   color: var(--accent);
   line-height: 0.5;
   margin-bottom: 32px;
@@ -654,8 +743,8 @@ a, button, input, textarea, select, label,
 }
 
 .quote-text {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(28px, 4.5vw, 62px);
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(20px, 3.2vw, 44px);
   line-height: 1.15;
   letter-spacing: 0.5px;
   max-width: 900px;
@@ -853,8 +942,8 @@ a, button, input, textarea, select, label,
 }
 
 .stat-number {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(60px, 8vw, 100px);
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(42px, 5.6vw, 70px);
   color: var(--text);
   line-height: 1;
   letter-spacing: -2px;
@@ -1028,7 +1117,7 @@ a, button, input, textarea, select, label,
 }
 
 .form-card h3 {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 28px;
   letter-spacing: 1px;
   color: #ffffff;
@@ -1064,7 +1153,7 @@ a, button, input, textarea, select, label,
   border: 1.5px solid rgba(255,255,255,0.12);
   border-radius: 10px;
   font-size: 14px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   color: #ffffff;
   outline: none;
   transition: border-color 0.3s ease,
@@ -1122,7 +1211,7 @@ a, button, input, textarea, select, label,
   border: none;
   border-radius: 10px;
   color: #fff;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 2px;
@@ -1186,16 +1275,16 @@ a, button, input, textarea, select, label,
 }
 
 .footer-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  letter-spacing: 3px;
-  color: var(--text);
   text-decoration: none;
+  display: flex;
+  align-items: center;
   transition: opacity 0.3s ease;
 }
 
-.footer-logo span {
-  color: var(--accent);
+.footer-logo img {
+  height: 20px;
+  width: auto;
+  display: block;
 }
 
 .footer-logo:hover {
@@ -1291,6 +1380,9 @@ a, button, input, textarea, select, label,
   transform: translateY(40px);
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .reveal.visible {
@@ -1313,6 +1405,13 @@ a, button, input, textarea, select, label,
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+@keyframes ctaFlash {
+  0%   { background: var(--accent); color: var(--bg); }
+  20%  { background: #ffffff; color: #333333; }
+  80%  { background: #ffffff; color: #333333; }
+  100% { background: var(--accent); color: var(--bg); }
 }
 
 @keyframes slideDown {
@@ -1387,7 +1486,9 @@ a, button, input, textarea, select, label,
   body { cursor: auto; }
 
   .statements { padding: 80px 24px; }
+  .statements-lead { font-size: 12px; margin-bottom: 24px; }
   .statements-stage { height: 30vw; min-height: 100px; max-height: 180px; }
+  .stmt-badge { padding: 0.02em 0.18em; border-radius: 4px; }
 
   .services { padding: 80px 24px; }
   .services-grid { grid-template-columns: 1fr; max-width: 100%; }

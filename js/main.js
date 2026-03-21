@@ -4,6 +4,97 @@
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ═══════════════════════════════════════════
+// TYPEWRITER EFFECT (hero-sub)
+// ═══════════════════════════════════════════
+(function() {
+  const el = document.querySelector('[data-typewriter]');
+  if (!el) return;
+
+  const lines = el.dataset.typewriter.split('|');
+  const fullText = lines.join('\n');
+  const cursor = document.createElement('span');
+  cursor.className = 'typewriter-cursor';
+
+  if (reducedMotion) {
+    el.innerHTML = lines.join('<br>');
+    return;
+  }
+
+  const DELAY_START = 1200;
+  const CHAR_SPEED = 55;
+  const PAUSE = 10000;
+  let timer = null;
+  let blocked = false;
+
+  function stop() { clearTimeout(timer); timer = null; }
+
+  function type() {
+    if (blocked) return;
+    el.textContent = '';
+    el.appendChild(cursor);
+    let i = 0;
+
+    function tick() {
+      if (blocked) return;
+      if (i < fullText.length) {
+        const char = fullText[i];
+        if (char === '\n') {
+          cursor.before(document.createElement('br'));
+        } else {
+          cursor.before(document.createTextNode(char));
+        }
+        i++;
+        timer = setTimeout(tick, CHAR_SPEED);
+      } else {
+        timer = setTimeout(erase, PAUSE);
+      }
+    }
+    tick();
+  }
+
+  function erase() {
+    if (blocked) return;
+    let text = el.textContent;
+    function tick() {
+      if (blocked) return;
+      if (text.length > 0) {
+        text = text.slice(0, -1);
+        el.textContent = '';
+        const parts = text.split('\n');
+        parts.forEach((part, idx) => {
+          el.appendChild(document.createTextNode(part));
+          if (idx < parts.length - 1) el.appendChild(document.createElement('br'));
+        });
+        el.appendChild(cursor);
+        timer = setTimeout(tick, 30);
+      } else {
+        el.textContent = '';
+        el.appendChild(cursor);
+        timer = setTimeout(type, 500);
+      }
+    }
+    tick();
+  }
+
+  el.addEventListener('mousedown', function(e) {
+    if (blocked) return;
+    blocked = true;
+    stop();
+    el.textContent = 'Nice try. This one\'s read-only :-)';
+    el.appendChild(cursor);
+    timer = setTimeout(() => {
+      blocked = false;
+      el.textContent = '';
+      el.appendChild(cursor);
+      type();
+    }, 2500);
+    e.preventDefault();
+  });
+
+  timer = setTimeout(type, DELAY_START);
+})();
+
+// ═══════════════════════════════════════════
 // CUSTOM CURSOR
 // ═══════════════════════════════════════════
 const cursor = document.getElementById('cursor');
@@ -24,6 +115,12 @@ if (cursor) {
   }
   updateCursor();
 }
+
+// Cursor white-dot indicator for hidden actions
+document.querySelectorAll('[data-cursor-action]').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor && cursor.classList.add('has-action'));
+  el.addEventListener('mouseleave', () => cursor && cursor.classList.remove('has-action'));
+});
 
 // ═══════════════════════════════════════════
 // MENU OVERLAY
@@ -815,6 +912,97 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
+})();
+
+// ═══════════════════════════════════════════
+// DRAGGABLE SERVICE CARDS
+// ═══════════════════════════════════════════
+(function() {
+  const grid = document.querySelector('.services-grid');
+  if (!grid) return;
+  const cards = () => Array.from(grid.querySelectorAll('.service-card'));
+
+  let dragged = null;
+  let placeholder = null;
+  let offsetX, offsetY;
+  let startRect;
+
+  function renumber() {
+    cards().forEach((card, i) => {
+      const num = card.querySelector('.service-number');
+      if (num) num.textContent = String(i + 1).padStart(2, '0');
+    });
+  }
+
+  function onPointerDown(e) {
+    const card = e.target.closest('.service-card');
+    if (!card || e.button !== 0) return;
+
+    dragged = card;
+    startRect = card.getBoundingClientRect();
+    offsetX = e.clientX - startRect.left;
+    offsetY = e.clientY - startRect.top;
+
+    // Create placeholder
+    placeholder = document.createElement('div');
+    placeholder.className = 'service-card-placeholder';
+    placeholder.style.width = startRect.width + 'px';
+    placeholder.style.height = startRect.height + 'px';
+    card.parentNode.insertBefore(placeholder, card);
+
+    // Float the card
+    card.classList.add('dragging');
+    card.style.width = startRect.width + 'px';
+    card.style.left = startRect.left + 'px';
+    card.style.top = startRect.top + 'px';
+    document.body.appendChild(card);
+
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    e.preventDefault();
+  }
+
+  function onPointerMove(e) {
+    if (!dragged) return;
+    dragged.style.left = (e.clientX - offsetX) + 'px';
+    dragged.style.top = (e.clientY - offsetY) + 'px';
+
+    // Find which card we're hovering over
+    const allCards = cards().filter(c => c !== dragged);
+    for (const card of allCards) {
+      const rect = card.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      if (e.clientX > rect.left && e.clientX < rect.right &&
+          e.clientY > rect.top && e.clientY < rect.bottom) {
+        if (e.clientX < midX) {
+          grid.insertBefore(placeholder, card);
+        } else {
+          grid.insertBefore(placeholder, card.nextSibling);
+        }
+        break;
+      }
+    }
+  }
+
+  function onPointerUp() {
+    if (!dragged) return;
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+
+    // Put card back into grid at placeholder position
+    dragged.classList.remove('dragging');
+    dragged.style.width = '';
+    dragged.style.left = '';
+    dragged.style.top = '';
+    grid.insertBefore(dragged, placeholder);
+    placeholder.remove();
+
+    renumber();
+    dragged = null;
+    placeholder = null;
+  }
+
+  grid.addEventListener('pointerdown', onPointerDown);
 })();
 
 // ═══════════════════════════════════════════

@@ -92,6 +92,10 @@ body {
   opacity: 0.5;
 }
 
+.cursor.has-action {
+  background: radial-gradient(circle, #ffffff 4px, var(--accent) 4px);
+}
+
 /* Force cursor: none on all interactive elements so native cursor never shows */
 a, button, input, textarea, select, label,
 [role="button"], .hoverable {
@@ -393,8 +397,22 @@ a, button, input, textarea, select, label,
   line-height: 1.8;
   max-width: 500px;
   margin-bottom: 40px;
-  opacity: 0;
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+  min-height: 3.6em;
+}
+
+.hero-sub .typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .hero-heading .line:nth-child(1) {
@@ -671,6 +689,26 @@ a, button, input, textarea, select, label,
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.service-card.dragging {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.9;
+  transform: rotate(2deg) scale(1.03);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 8px 24px rgba(240, 137, 50, 0.2);
+  cursor: grabbing;
+  transition: none;
+}
+
+.service-card-placeholder {
+  border: 2px dashed rgba(240, 137, 50, 0.3);
+  border-radius: var(--radius);
+  background: rgba(240, 137, 50, 0.03);
 }
 
 .service-card:hover {

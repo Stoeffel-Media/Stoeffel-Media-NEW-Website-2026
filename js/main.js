@@ -30,6 +30,8 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 
   function type() {
     if (blocked) return;
+    el.style.transition = 'none';
+    el.style.opacity = '1';
     el.textContent = '';
     el.appendChild(cursor);
     let i = 0;
@@ -46,34 +48,17 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
         i++;
         timer = setTimeout(tick, CHAR_SPEED);
       } else {
-        timer = setTimeout(erase, PAUSE);
+        timer = setTimeout(fadeOut, PAUSE);
       }
     }
     tick();
   }
 
-  function erase() {
+  function fadeOut() {
     if (blocked) return;
-    let text = el.textContent;
-    function tick() {
-      if (blocked) return;
-      if (text.length > 0) {
-        text = text.slice(0, -1);
-        el.textContent = '';
-        const parts = text.split('\n');
-        parts.forEach((part, idx) => {
-          el.appendChild(document.createTextNode(part));
-          if (idx < parts.length - 1) el.appendChild(document.createElement('br'));
-        });
-        el.appendChild(cursor);
-        timer = setTimeout(tick, 30);
-      } else {
-        el.textContent = '';
-        el.appendChild(cursor);
-        timer = setTimeout(type, 500);
-      }
-    }
-    tick();
+    el.style.transition = 'opacity 0.6s ease';
+    el.style.opacity = '0';
+    timer = setTimeout(type, 700);
   }
 
   el.addEventListener('mousedown', function(e) {
@@ -260,17 +245,22 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     }
   }
 
+  let dotsActive = true;
+  new IntersectionObserver(([e]) => { dotsActive = e.isIntersecting; }, { threshold: 0 }).observe(dotCanvas);
+
   function draw(time) {
-    const w = dotCanvas.clientWidth, h = dotCanvas.clientHeight;
-    ctx.clearRect(0, 0, w, h);
-    const t = time * 0.001;
-    for (const dot of dots) {
-      const wave = (Math.sin(t * dot.speed + dot.phase) + 1) * 0.5;
-      dot.opacity = MIN_OPACITY + wave * (MAX_OPACITY - MIN_OPACITY);
-      ctx.fillStyle = `rgba(255, 255, 255, ${dot.opacity})`;
-      ctx.beginPath();
-      ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2);
-      ctx.fill();
+    if (!document.hidden && dotsActive) {
+      const w = dotCanvas.clientWidth, h = dotCanvas.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+      const t = time * 0.001;
+      for (const dot of dots) {
+        const wave = (Math.sin(t * dot.speed + dot.phase) + 1) * 0.5;
+        dot.opacity = MIN_OPACITY + wave * (MAX_OPACITY - MIN_OPACITY);
+        ctx.fillStyle = `rgba(255, 255, 255, ${dot.opacity})`;
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
     requestAnimationFrame(draw);
   }
@@ -290,10 +280,10 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
   const config = {
     SIM_RESOLUTION: 128,
-    DYE_RESOLUTION: 512,
+    DYE_RESOLUTION: 256,
     DENSITY_DISSIPATION: 0.965,
     VELOCITY_DISSIPATION: 0.96,
-    PRESSURE_ITERATIONS: 20,
+    PRESSURE_ITERATIONS: 10,
     SPLAT_RADIUS: 0.15,
     SPLAT_FORCE: 3000,
     COLOR_R: 0.94,
@@ -582,20 +572,30 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     blit(null);
   }
 
+  let fluidActive = true;
+  const heroSection = document.querySelector('.hero');
+  if (heroSection) {
+    new IntersectionObserver(([e]) => { fluidActive = e.isIntersecting; }, { threshold: 0 }).observe(heroSection);
+  }
+
   let lastTime = Date.now();
   function update() {
-    const now = Date.now();
-    let dt = Math.min((now - lastTime) / 1000, 0.016);
-    lastTime = now;
-    if (pointer.moved) {
-      pointer.moved = false;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      splat(pointer.x * dpr, pointer.y * dpr,
-        -pointer.dx * config.SPLAT_FORCE * dt,
-        -pointer.dy * config.SPLAT_FORCE * dt,
-        { r: config.COLOR_R * 0.45, g: config.COLOR_G * 0.45, b: config.COLOR_B * 0.45 });
+    if (!document.hidden && fluidActive) {
+      const now = Date.now();
+      let dt = Math.min((now - lastTime) / 1000, 0.016);
+      lastTime = now;
+      if (pointer.moved) {
+        pointer.moved = false;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        splat(pointer.x * dpr, pointer.y * dpr,
+          -pointer.dx * config.SPLAT_FORCE * dt,
+          -pointer.dy * config.SPLAT_FORCE * dt,
+          { r: config.COLOR_R * 0.45, g: config.COLOR_G * 0.45, b: config.COLOR_B * 0.45 });
+      }
+      step(dt); render();
+    } else {
+      lastTime = Date.now();
     }
-    step(dt); render();
     requestAnimationFrame(update);
   }
 
@@ -876,7 +876,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   }
 
   function draw(now) {
-    if (raysVisible) {
+    if (raysVisible && !document.hidden) {
       gl.uniform2f(uR, c.width, c.height);
       gl.uniform1f(uT, now * 1e-3);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -890,6 +890,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // DRAGGABLE SERVICE CARDS
 // ═══════════════════════════════════════════
 (function() {
+  if (window.innerWidth <= 768) return;
   const grid = document.querySelector('.services-grid');
   if (!grid) return;
   const cards = () => Array.from(grid.querySelectorAll('.service-card'));
@@ -981,9 +982,16 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // VIDEO PAUSE WHEN OFF-SCREEN
 // ═══════════════════════════════════════════
 document.querySelectorAll('.statements-video-bg video, .contact-video-bg video').forEach(video => {
+  function tryPlay() {
+    if (video.readyState >= 2) {
+      video.play().catch(() => {});
+    } else {
+      video.addEventListener('canplay', () => video.play().catch(() => {}), { once: true });
+    }
+  }
   const observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting) {
-      video.play().catch(() => {});
+      tryPlay();
     } else {
       video.pause();
     }
@@ -1026,9 +1034,10 @@ document.querySelectorAll('.statements-video-bg video, .contact-video-bg video')
     clearTimeout(typeTimer);
     el.style.opacity = '0';
     setTimeout(() => {
+      el.textContent = '';
       index = (index + 1) % quotes.length;
       typeText(quotes[index]);
-    }, 700);
+    }, 750);
   }
 
   // Start when quote section scrolls into view

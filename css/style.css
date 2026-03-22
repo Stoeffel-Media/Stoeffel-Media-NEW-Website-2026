@@ -692,7 +692,7 @@ a, button, input, textarea, select, label,
 }
 
 .services-header {
-  max-width: 560px;
+  max-width: 720px;
   margin-bottom: 72px;
 }
 
@@ -701,6 +701,7 @@ a, button, input, textarea, select, label,
   font-size: 16px;
   line-height: 1.7;
   font-weight: 300;
+  max-width: 560px;
 }
 
 .services-grid {
@@ -1668,10 +1669,17 @@ a, button, input, textarea, select, label,
 /* ═══════════════════════════════════════════
    RESPONSIVE — TABLET & MOBILE
 ═══════════════════════════════════════════ */
+@media (max-width: 1280px) {
+  .about-bio { font-size: 15px; line-height: 1.6; }
+}
+
 @media (max-width: 1024px) {
   .services-grid {
     grid-template-columns: 1fr;
-    max-width: 560px;
+    max-width: 100%;
+  }
+  .service-card {
+    padding: 44px 36px;
   }
 
   .about-inner {
@@ -1685,6 +1693,40 @@ a, button, input, textarea, select, label,
     gap: 40px;
     flex-wrap: wrap;
   }
+
+  .about-stats .section-label {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .about-bio { font-size: 16px; line-height: 1.7; max-width: 640px; }
+
+  /* Text sizes — must match 768px values so portrait/landscape are consistent */
+  .hero-sub { font-size: 12px; letter-spacing: 1.4px; }
+  .hero-cta { font-size: 13px; padding: 11px 26px; gap: 8px; letter-spacing: 1.5px; }
+  .hero-cta svg { width: 11px; height: 11px; }
+  .statements-lead { font-size: 15px; margin-bottom: 24px; }
+  .statement-item { font-size: 29px; }
+  .statements-cta { font-size: 13px; padding: 11px 26px; gap: 8px; letter-spacing: 1.5px; }
+  .quote-text { font-size: 29px; min-height: 210px; }
+  .quote-attribution { font-size: 10px; letter-spacing: 1.5px; }
+  .section-title { line-height: 1.2; }
+  .services-header .section-title { line-height: 1.45; }
+  .service-card p { font-size: 16px; }
+  .services-header p { font-size: 16px; }
+  .contact-left p { font-size: 16px; line-height: 1.7; }
+  .portfolio-footer p { font-size: 13px; }
+
+  .bento-phrase { font-size: 15px; }
+  .bento-stat { font-size: 28px; }
+  .bento-stat-label { font-size: 13px; }
+
+  /* Legal page */
+  .legal-section p,
+  .legal-section ul { font-size: 15px; line-height: 1.6; }
+  .legal-section h3 { font-size: 18px; }
+  .legal-inner { padding: 60px 24px 80px; }
+  .info-card-value { font-size: 15px; }
 
   .stat-item {
     margin-bottom: 0;
@@ -1701,32 +1743,55 @@ a, button, input, textarea, select, label,
 }
 
 @media (max-width: 768px) {
-  .nav { padding: 16px 24px; }
-  .hero { padding: 0 24px; }
+  .nav { padding: 22px 24px 16px; }
+  .hero { padding: 0 24px; min-height: 100svh; }
+  .hero-heading { line-height: 1.08; }
   .cursor { display: none; }
   body { cursor: auto; }
 
+  .nav-logo img { height: 29px; }
+  .nav-menu-btn { font-size: 13px; padding: 6px 11px; gap: 6px; margin-top: -4px; }
+  .nav-menu-btn .hamburger { gap: 2px; }
+  .nav-menu-btn .hamburger span { width: 10px; }
+
+  .hero-sub { font-size: 12px; letter-spacing: 1.4px; }
+
+  .hero-cta { font-size: 13px; padding: 11px 26px; gap: 8px; letter-spacing: 1.5px; }
+  .hero-cta svg { width: 11px; height: 11px; }
+
   .statements { padding: 80px 24px; }
   .statements-lead { font-size: 15px; margin-bottom: 24px; }
-  .statements-stage { height: 30vw; min-height: 100px; max-height: 180px; }
+  .statements-stage { height: 30vw; min-height: 140px; max-height: 220px; }
+  .statement-item { font-size: 29px; }
   .stmt-badge { padding: 0.02em 0.18em; border-radius: 4px; }
+  .statements-cta { font-size: 13px; padding: 11px 26px; gap: 8px; letter-spacing: 1.5px; }
 
   .services { padding: 80px 24px; }
   .services-grid { grid-template-columns: 1fr; max-width: 100%; }
-  .service-card { padding: 36px 24px; }
+  .service-card { padding: 36px 24px; touch-action: pan-y; }
 
   .quote-section { padding: 80px 24px; }
+  .quote-text { font-size: 29px; min-height: 210px; }
+  .quote-attribution { font-size: 10px; letter-spacing: 1.5px; }
 
   .portfolio { padding: 80px 24px; }
-  .bento-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; }
+  .bento-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: minmax(160px, auto); }
   .bento-wide { grid-column: span 2; }
   .bento-tall { grid-row: span 1; }
 
+  .section-title { line-height: 1.2; }
+  .services-header .section-title { line-height: 1.45; }
+
   .about { padding: 80px 24px; }
   .about-inner { gap: 40px; }
-  .about-stats { flex-direction: column; gap: 24px; }
+  .about-bio { font-size: 16px; line-height: 1.7; }
+  .service-card p { font-size: 16px; }
+  .services-header p { font-size: 16px; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .about-stats .section-label { grid-column: 1 / -1; margin-bottom: 8px; }
 
   .contact { padding: 80px 24px; }
+  .contact-left p { font-size: 16px; line-height: 1.7; }
   .form-card { padding: 32px 24px; }
   .form-row { grid-template-columns: 1fr; }
 
@@ -1917,6 +1982,15 @@ a, button, input, textarea, select, label,
   letter-spacing: 0.5px;
 }
 
+/* Legal page responsive — must come AFTER base legal styles to win by source order */
+@media (max-width: 1024px) {
+  .legal-inner { padding: 60px 24px 80px; }
+  .legal-section p,
+  .legal-section ul { font-size: 15px; line-height: 1.6; }
+  .legal-section h3 { font-size: 18px; }
+  .info-card-value { font-size: 15px; }
+}
+
 /* ═══════════════════════════════════════════
    REDUCED MOTION — accessibility & low-power
 ═══════════════════════════════════════════ */
@@ -1951,4 +2025,25 @@ a, button, input, textarea, select, label,
 
 @media (max-width: 480px) {
   .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .about-stats .section-label { grid-column: 1 / -1; margin-bottom: 8px; }
+}
+
+/* Hide custom cursor on any touch device, regardless of screen size or orientation */
+@media (pointer: coarse) {
+  .cursor { display: none !important; }
+  body { cursor: auto !important; }
+}
+
+/* Phone landscape — scale down key elements */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-cta { font-size: 11px; padding: 10px 22px; gap: 7px; letter-spacing: 1.5px; }
+  .hero-cta svg { width: 10px; height: 10px; }
+
+  .statements-lead { font-size: 13px; margin-bottom: 22px; }
+  .statements-stage { height: 15vw; min-height: 100px; max-height: 168px; margin-bottom: 32px; }
+  .statement-item { font-size: 22px; }
+  .statements-cta { font-size: 11px; padding: 10px 22px; }
+
+  .quote-attribution { font-size: 8px; letter-spacing: 1.5px; }
+  .portfolio-footer p { font-size: 10px; }
 }

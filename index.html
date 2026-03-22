@@ -1,25 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO -->
-  <title>Stoeffel-Media | Graphic Design, Web & Digital Marketing — Sydney</title>
-  <meta name="description" content="Stoeffel-Media is a Sydney-based design and digital studio. We handle graphic design, web development, and online marketing — all in one. 14+ years of experience. Precise. Reliable." />
+  <title>Graphic Design | Web Design & Digital Marketing Sydney — Stoeffel-Media</title>
+  <meta name="description" content="Stoeffel-Media is a Sydney design studio for web design, graphic design, and digital marketing. Branding, SEO, and online marketing under one roof. Available Australia-wide and beyond." />
   <link rel="canonical" href="https://stoeffel-media.com.au/" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Andreas Stöffel, Stoeffel-Media" />
+  <meta name="geo.region" content="AU-NSW" />
+  <meta name="geo.placename" content="Sydney" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://stoeffel-media.com.au/" />
-  <meta property="og:title" content="Stoeffel-Media | Design, Web & Digital Marketing — Sydney" />
-  <meta property="og:description" content="One studio. Design, development, and marketing done properly. Based in Sydney, available Australia-wide." />
-  <meta property="og:image" content="https://stoeffel-media.com.au/img/og-image.jpg" />
+  <meta property="og:title" content="Graphic Design | Web Design & Digital Marketing Sydney — Stoeffel-Media" />
+  <meta property="og:description" content="A Sydney design studio for web design, graphic design, and digital marketing. Branding, SEO, and online marketing under one roof. No agency overhead." />
+  <meta property="og:image" content="https://stoeffel-media.com.au/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:locale" content="en_AU" />
+  <meta property="og:site_name" content="Stoeffel-Media" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Stoeffel-Media | Design, Web & Digital Marketing" />
-  <meta name="twitter:description" content="One studio. Design, development, and marketing done properly." />
+  <meta name="twitter:title" content="Graphic Design | Web Design & Digital Marketing Sydney — Stoeffel-Media" />
+  <meta name="twitter:description" content="A Sydney design studio for web design, graphic design, and digital marketing. Branding, SEO, and online marketing under one roof." />
 
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -32,7 +41,8 @@
   <meta name="msapplication-TileImage" content="img/icon-192.png" />
 
   <!-- Fonts -->
-  <!-- Fonts loaded locally from /fonts/ via CSS @font-face -->
+  <link rel="preload" href="fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href="fonts/outfit-latin-ext.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
@@ -41,27 +51,57 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "ProfessionalService"],
     "name": "Stoeffel-Media",
-    "description": "Graphic design, web development, and digital marketing studio based in Sydney, Australia.",
+    "description": "Sydney-based web design, graphic design, and digital marketing studio. Freelance quality with full-service delivery. Available across Australia and internationally.",
     "url": "https://stoeffel-media.com.au",
+    "logo": "https://stoeffel-media.com.au/img/logo.svg",
+    "image": "https://stoeffel-media.com.au/img/og-image.jpg",
+    "founder": {
+      "@type": "Person",
+      "name": "Andreas Stöffel"
+    },
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Sydney",
       "addressRegion": "NSW",
       "addressCountry": "AU"
     },
+    "areaServed": [
+      { "@type": "Country", "name": "Australia" }
+    ],
     "sameAs": [
       "https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/"
     ],
-    "serviceArea": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": -33.8688,
-        "longitude": 151.2093
-      },
-      "geoRadius": "50000"
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Graphic Design & Branding",
+            "description": "Logo design, brand identities, visual systems, print design, and digital assets for businesses in Sydney and across Australia."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Web Design & Development",
+            "description": "Custom web design and development in Sydney. Fast, responsive websites and web applications built for real use."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Online Marketing & SEO",
+            "description": "Search engine optimisation (SEO), digital marketing strategy, content, and paid advertising for Australian businesses."
+          }
+        }
+      ]
     }
   }
   </script>
@@ -110,6 +150,7 @@
       <span class="line"><span class="outline">Digital</span> Stories<span class="accent-dot">.</span></span>
     </h1>
     <p class="hero-sub" data-typewriter="Design, Web &amp; Digital Marketing|Sydney, Australia" data-cursor-action></p>
+    <noscript><p>Web Design &amp; Graphic Design Studio · Digital Marketing &amp; SEO · Sydney, Australia</p></noscript>
     <a href="#contact" class="hero-cta hoverable" aria-label="Get in touch with Stoeffel-Media">
       Get in Touch
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -124,7 +165,7 @@
   ═══════════════════════════════════════ -->
   <section class="statements" aria-label="Our philosophy">
     <div class="statements-video-bg" aria-hidden="true">
-      <video autoplay muted loop playsinline preload="none">
+      <video autoplay muted loop playsinline preload="auto">
         <source src="../ASSETS/contact_bg2.mp4" type="video/mp4">
       </video>
     </div>
@@ -155,8 +196,8 @@
   <section class="services" id="services" aria-labelledby="services-title">
     <div class="services-header">
       <div class="section-label reveal">What We Do</div>
-      <h2 class="section-title reveal" id="services-title">Three disciplines.<br>One studio.</h2>
-      <p class="reveal reveal-delay-1">Design, development, and marketing in one studio. You brief once, we handle the rest. No handoffs, no briefing overhead, no lost context.</p>
+      <h2 class="section-title reveal" id="services-title">Design, Web &amp; Marketing.<br>One Studio.</h2>
+      <p class="reveal reveal-delay-1">Web design, web development, and digital marketing in one studio. You brief once, we handle the rest. No handoffs, no briefing overhead, no lost context.</p>
     </div>
 
     <div class="services-grid">
@@ -356,7 +397,7 @@
         <div class="section-label reveal">About</div>
         <h2 class="section-title reveal" id="about-title">One studio.<br>Three skills.<br>No excuses.</h2>
         <div class="about-bio reveal reveal-delay-1">
-          <p>We're Stoeffel-Media. A design and digital studio in Sydney, led by <a href="https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/" target="_blank" rel="noopener noreferrer" class="about-name-link hoverable">Andreas Stöffel</a>. Over 25 years of practice in design and digital, building brands, websites, and marketing campaigns for clients across different industries and budgets.</p>
+          <p>We're Stoeffel-Media. A freelance design studio in Sydney, led by <a href="https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/" target="_blank" rel="noopener noreferrer" class="about-name-link hoverable">Andreas Stöffel</a>, a state-recognised graphic designer from Germany. Over 25 years of practice in design and digital, building brands, websites, and marketing campaigns for clients across different industries and budgets.</p>
           <p>Design, development, and marketing under one roof. You brief once and we handle the rest. No account managers, no handoffs, no overhead between departments. The work is structured, detail-oriented, and delivered on time.</p>
           <p>Available for projects in Sydney and remotely across Australia and beyond. Direct contact from day one to handover. No surprises.</p>
         </div>
@@ -391,7 +432,7 @@
       <div class="contact-left">
         <div class="section-label reveal">Get in Touch</div>
         <h2 class="section-title reveal" id="contact-title">Let's build<br>something good.</h2>
-        <p class="reveal reveal-delay-1">Got a project in mind? Tell us what you need. We read every message personally and reply as soon as we can. No automated responses, no handoffs. Just a direct conversation about what you're trying to build.</p>
+        <p class="reveal reveal-delay-1">Got a project in mind? Whether you need a web designer, a brand identity, or a digital marketing campaign — tell us what you need. We read every message personally and reply as soon as we can. No automated responses, no handoffs. Just a direct conversation with a freelance studio that knows what it's doing.</p>
         <a href="#" class="contact-detail hoverable js-email"
            data-u="info" data-d="stoeffel-media" data-t="com.au" aria-label="Send us an email">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>

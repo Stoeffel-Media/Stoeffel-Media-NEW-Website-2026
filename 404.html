@@ -12,191 +12,10 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
   <meta name="theme-color" content="#202020" />
+  <link rel="manifest" href="site.webmanifest" />
   <link rel="preload" href="fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
   <link rel="preload" href="fonts/outfit-latin-ext.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    .e404-page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .e404-bg-number {
-      position: absolute;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(280px, 40vw, 560px);
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.04);
-      line-height: 1;
-      user-select: none;
-      pointer-events: none;
-      letter-spacing: -0.02em;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-    }
-
-    .e404-content {
-      position: relative;
-      z-index: 2;
-      max-width: 480px;
-    }
-
-    .e404-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 24px;
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 0.7s cubic-bezier(0.25,1,0.5,1) 0.2s forwards;
-    }
-
-    .e404-heading {
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(36px, 5vw, 64px);
-      font-weight: 700;
-      line-height: 1.05;
-      color: var(--text);
-      margin-bottom: 20px;
-      letter-spacing: -0.02em;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s cubic-bezier(0.25,1,0.5,1) 0.35s forwards;
-    }
-
-    .e404-heading span {
-      color: var(--accent);
-    }
-
-    .e404-text {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s cubic-bezier(0.25,1,0.5,1) 0.5s forwards;
-    }
-
-    .e404-actions {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s cubic-bezier(0.25,1,0.5,1) 0.65s forwards;
-    }
-
-    /* Primary button — matches hero-cta exactly */
-    .e404-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--accent);
-      color: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 14px 28px;
-      border-radius: 999px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-    }
-
-    .e404-btn-primary svg {
-      width: 14px;
-      height: 14px;
-      stroke: #fff;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      flex-shrink: 0;
-    }
-
-    .e404-btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(240, 137, 50, 0.4);
-    }
-
-    /* Secondary button — ghost style, matches statements-cta */
-    .e404-btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 14px 28px;
-      border-radius: 999px;
-      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.35s ease;
-    }
-
-    .e404-btn-secondary:hover {
-      border-color: var(--accent);
-      background: rgba(240, 137, 50, 0.08);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(240, 137, 50, 0.15);
-    }
-
-    .e404-divider {
-      width: 40px;
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-      margin: 56px auto 0;
-      opacity: 0;
-      animation: fadeUp 0.7s cubic-bezier(0.25,1,0.5,1) 0.8s forwards;
-    }
-
-    .e404-nav-links {
-      display: flex;
-      gap: 32px;
-      justify-content: center;
-      margin-top: 24px;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s cubic-bezier(0.25,1,0.5,1) 0.9s forwards;
-    }
-
-    .e404-nav-links a {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.3s ease;
-    }
-
-    .e404-nav-links a:hover {
-      color: var(--accent);
-    }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
 </head>
 <body>
 
@@ -211,12 +30,10 @@
     <a href="index.html" class="nav-logo hoverable" aria-label="Back to Stoeffel-Media">
       <img src="img/logo.svg" alt="Stoeffel-Media" height="28" />
     </a>
-    <div></div>
-    <div></div>
-    <button class="nav-menu-btn hoverable" onclick="window.location.href='index.html'" aria-label="Go to homepage">
+    <a href="index.html" class="nav-menu-btn hoverable" aria-label="Go to homepage">
       Home
       <div class="hamburger" aria-hidden="true"><span></span><span></span></div>
-    </button>
+    </a>
   </nav>
 
   <!-- ── 404 Content ── -->

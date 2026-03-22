@@ -82,11 +82,13 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 // ═══════════════════════════════════════════
 // CUSTOM CURSOR
 // ═══════════════════════════════════════════
-const cursor = document.getElementById('cursor');
-let cursorX = 0, cursorY = 0;
-let targetX = 0, targetY = 0;
+(function() {
+  const cursor = document.getElementById('cursor');
+  if (!cursor) return;
 
-if (cursor) {
+  let cursorX = 0, cursorY = 0;
+  let targetX = 0, targetY = 0;
+
   document.addEventListener('mousemove', (e) => {
     targetX = e.clientX;
     targetY = e.clientY;
@@ -99,74 +101,68 @@ if (cursor) {
     requestAnimationFrame(updateCursor);
   }
   updateCursor();
-}
 
-// Cursor white-dot indicator for hidden actions
-document.querySelectorAll('[data-cursor-action]').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor && cursor.classList.add('has-action'));
-  el.addEventListener('mouseleave', () => cursor && cursor.classList.remove('has-action'));
-});
-
-// Cursor heart morph on logo hover
-document.querySelectorAll('.nav-logo, .nav-logo-center, .footer-logo').forEach(logo => {
-  logo.addEventListener('mouseenter', () => {
-    if (!cursor) return;
-    cursor.classList.add('on-logo');
-    cursor.classList.remove('hovering');
+  // White-dot indicator for hidden actions
+  document.querySelectorAll('[data-cursor-action]').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('has-action'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('has-action'));
   });
-  logo.addEventListener('mouseleave', () => cursor && cursor.classList.remove('on-logo'));
-});
+
+  // Heart morph on logo hover
+  document.querySelectorAll('.nav-logo, .nav-logo-center, .footer-logo').forEach(logo => {
+    logo.addEventListener('mouseenter', () => {
+      cursor.classList.add('on-logo');
+      cursor.classList.remove('hovering');
+    });
+    logo.addEventListener('mouseleave', () => cursor.classList.remove('on-logo'));
+  });
+
+  // Enlarge cursor on interactive elements
+  document.querySelectorAll('.hoverable, a, button, input, textarea, select').forEach(el => {
+    if (!el.dataset.cursorBound) {
+      el.dataset.cursorBound = '1';
+
+      // White cursor on accent (orange) buttons — so cursor is visible against orange bg
+      const isAccentEl = el.classList.contains('hero-cta') ||
+                         el.classList.contains('statements-cta') ||
+                         el.classList.contains('form-submit');
+
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hovering');
+        if (isAccentEl) cursor.classList.add('on-accent');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hovering');
+        if (isAccentEl) cursor.classList.remove('on-accent');
+      });
+    }
+  });
+})();
 
 // ═══════════════════════════════════════════
 // MENU OVERLAY
 // ═══════════════════════════════════════════
-const menuOverlay = document.getElementById('menu-overlay');
-const menuOpenBtn = document.querySelector('.nav-menu-btn');
-const menuCloseBtn = document.getElementById('menu-close');
+(function() {
+  const menuOverlay = document.getElementById('menu-overlay');
+  const menuOpenBtn = document.querySelector('.nav-menu-btn');
+  const menuCloseBtn = document.getElementById('menu-close');
+  if (!menuOverlay || !menuOpenBtn) return;
 
-if (menuOverlay && menuOpenBtn) {
   menuOpenBtn.addEventListener('click', () => menuOverlay.classList.add('open'));
   menuCloseBtn?.addEventListener('click', () => menuOverlay.classList.remove('open'));
   menuOverlay.querySelectorAll('.menu-nav a').forEach(a => {
     a.addEventListener('click', () => menuOverlay.classList.remove('open'));
   });
-}
-
-// ═══════════════════════════════════════════
-// CURSOR HOVER STATE
-// ═══════════════════════════════════════════
-if (cursor) {
-  function refreshHoverables() {
-    document.querySelectorAll('.hoverable, a, button, input, textarea, select').forEach(el => {
-      if (!el.dataset.cursorBound) {
-        el.dataset.cursorBound = '1';
-
-        // White cursor on accent (orange) buttons — so cursor is visible against orange bg
-        const isAccentEl = el.classList.contains('hero-cta') ||
-                           el.classList.contains('statements-cta') ||
-                           el.classList.contains('form-submit');
-
-        el.addEventListener('mouseenter', () => {
-          cursor.classList.add('hovering');
-          if (isAccentEl) cursor.classList.add('on-accent');
-        });
-        el.addEventListener('mouseleave', () => {
-          cursor.classList.remove('hovering');
-          if (isAccentEl) cursor.classList.remove('on-accent');
-        });
-      }
-    });
-  }
-  refreshHoverables();
-}
+})();
 
 // ═══════════════════════════════════════════
 // LOGO SCROLL FADE
 // ═══════════════════════════════════════════
-const navLogo = document.querySelector('.nav-logo');
-const navLogoCenter = document.getElementById('nav-logo-center');
+(function() {
+  const navLogo = document.querySelector('.nav-logo');
+  const navLogoCenter = document.getElementById('nav-logo-center');
+  if (!navLogo || !navLogoCenter) return;
 
-if (navLogo && navLogoCenter) {
   const MAIN_FADE_START = 80, MAIN_FADE_END = 250;
   const CTR_FADE_START = 400, CTR_FADE_END = 600;
   const contactSection = document.getElementById('contact');
@@ -192,20 +188,22 @@ if (navLogo && navLogoCenter) {
     navLogoCenter.style.opacity = ctrP;
     navLogoCenter.style.pointerEvents = ctrP > 0.5 ? 'auto' : 'none';
   }, { passive: true });
-}
+})();
 
 // ═══════════════════════════════════════════
 // SCROLL REVEAL
 // ═══════════════════════════════════════════
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.12 });
+(function() {
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
 
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+})();
 
 // ═══════════════════════════════════════════
 // ANIMATED DOT PATTERN (Hero background)
@@ -281,11 +279,11 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   const config = {
     SIM_RESOLUTION: 128,
     DYE_RESOLUTION: 256,
-    DENSITY_DISSIPATION: 0.965,
-    VELOCITY_DISSIPATION: 0.96,
+    DENSITY_DISSIPATION: 0.978,
+    VELOCITY_DISSIPATION: 0.972,
     PRESSURE_ITERATIONS: 10,
-    SPLAT_RADIUS: 0.15,
-    SPLAT_FORCE: 3000,
+    SPLAT_RADIUS: 0.11,
+    SPLAT_FORCE: 1600,
     COLOR_R: 0.94,
     COLOR_G: 0.54,
     COLOR_B: 0.20,
@@ -300,8 +298,8 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   let pointer = { x: 0, y: 0, dx: 0, dy: 0, moved: false };
 
   document.addEventListener('mousemove', (e) => {
-    pointer.dx = (e.clientX - pointer.x) * 5.0;
-    pointer.dy = (e.clientY - pointer.y) * 5.0;
+    pointer.dx = (e.clientX - pointer.x) * 2.8;
+    pointer.dy = (e.clientY - pointer.y) * 2.8;
     pointer.x = e.clientX;
     pointer.y = e.clientY;
     pointer.moved = true;
@@ -771,16 +769,16 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // LIGHT RAYS — WebGL Shader
 // ═══════════════════════════════════════════
 (function() {
-  const c = document.getElementById('rays-canvas');
-  if (!c || reducedMotion) { if (c) c.style.display = 'none'; return; }
-  const gl = c.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
-  if (!gl) { c.style.display = 'none'; return; }
+  const canvas = document.getElementById('rays-canvas');
+  if (!canvas || reducedMotion) { if (canvas) canvas.style.display = 'none'; return; }
+  const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
+  if (!gl) { canvas.style.display = 'none'; return; }
 
-  const vs = `#version 300 es
+  const vertSrc = `#version 300 es
   in vec2 p;
   void main(){ gl_Position=vec4(p,0,1); }`;
 
-  const fs = `#version 300 es
+  const fragSrc = `#version 300 es
   precision highp float;
   out vec4 O;
   uniform vec2 R;
@@ -822,45 +820,45 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     O=vec4(col,a);
   }`;
 
-  function mkS(src, type) {
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src);
-    gl.compileShader(s);
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-      console.warn('Shader compile failed:', gl.getShaderInfoLog(s));
-      c.style.display = 'none'; return null;
+  function compileShader(src, type) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, src);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn('Shader compile failed:', gl.getShaderInfoLog(shader));
+      canvas.style.display = 'none'; return null;
     }
-    return s;
+    return shader;
   }
 
-  const vsS = mkS(vs, gl.VERTEX_SHADER);
-  const fsS = mkS(fs, gl.FRAGMENT_SHADER);
-  if (!vsS || !fsS) return;
+  const vertShader = compileShader(vertSrc, gl.VERTEX_SHADER);
+  const fragShader = compileShader(fragSrc, gl.FRAGMENT_SHADER);
+  if (!vertShader || !fragShader) return;
 
-  const pg = gl.createProgram();
-  gl.attachShader(pg, vsS);
-  gl.attachShader(pg, fsS);
-  gl.linkProgram(pg);
-  if (!gl.getProgramParameter(pg, gl.LINK_STATUS)) {
-    c.style.display = 'none'; return;
+  const program = gl.createProgram();
+  gl.attachShader(program, vertShader);
+  gl.attachShader(program, fragShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    canvas.style.display = 'none'; return;
   }
-  gl.useProgram(pg);
+  gl.useProgram(program);
 
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  const vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
-  const loc = gl.getAttribLocation(pg, 'p');
-  gl.enableVertexAttribArray(loc);
-  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const posAttr = gl.getAttribLocation(program, 'p');
+  gl.enableVertexAttribArray(posAttr);
+  gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
 
-  const uR = gl.getUniformLocation(pg, 'R');
-  const uT = gl.getUniformLocation(pg, 'T');
+  const uRes  = gl.getUniformLocation(program, 'R');
+  const uTime = gl.getUniformLocation(program, 'T');
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio, 1.5);
-    c.width = c.clientWidth * dpr;
-    c.height = c.clientHeight * dpr;
-    gl.viewport(0, 0, c.width, c.height);
+    canvas.width  = canvas.clientWidth  * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    gl.viewport(0, 0, canvas.width, canvas.height);
   }
 
   resize();
@@ -877,8 +875,8 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
   function draw(now) {
     if (raysVisible && !document.hidden) {
-      gl.uniform2f(uR, c.width, c.height);
-      gl.uniform1f(uT, now * 1e-3);
+      gl.uniform2f(uRes,  canvas.width, canvas.height);
+      gl.uniform1f(uTime, now * 1e-3);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
     requestAnimationFrame(draw);
@@ -981,23 +979,25 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // ═══════════════════════════════════════════
 // VIDEO PAUSE WHEN OFF-SCREEN
 // ═══════════════════════════════════════════
-document.querySelectorAll('.statements-video-bg video, .contact-video-bg video').forEach(video => {
-  function tryPlay() {
-    if (video.readyState >= 2) {
-      video.play().catch(() => {});
-    } else {
-      video.addEventListener('canplay', () => video.play().catch(() => {}), { once: true });
+(function() {
+  document.querySelectorAll('.statements-video-bg video, .contact-video-bg video').forEach(video => {
+    function tryPlay() {
+      if (video.readyState >= 2) {
+        video.play().catch(() => {});
+      } else {
+        video.addEventListener('canplay', () => video.play().catch(() => {}), { once: true });
+      }
     }
-  }
-  const observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      tryPlay();
-    } else {
-      video.pause();
-    }
-  }, { threshold: 0.1 });
-  observer.observe(video.closest('section') || video.parentElement);
-});
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        tryPlay();
+      } else {
+        video.pause();
+      }
+    }, { threshold: 0.1 });
+    observer.observe(video.closest('section') || video.parentElement);
+  });
+})();
 
 // ═══════════════════════════════════════════
 // ROTATING QUOTE — TYPEWRITER + FADE
@@ -1046,7 +1046,7 @@ document.querySelectorAll('.statements-video-bg video, .contact-video-bg video')
     if (entry.isIntersecting) {
       observer.disconnect();
       setTimeout(() => typeText(quotes[0]), 200);
-      setInterval(next, 6000);
+      const rotateInterval = setInterval(next, 6000);
     }
   }, { threshold: 0.4 });
   observer.observe(el.closest('section') || el.parentElement);
@@ -1260,17 +1260,13 @@ document.querySelectorAll('.statements-video-bg video, .contact-video-bg video')
 
     if (isTouch) {
       // Mobile: animate while card is in viewport
+      // Also expose canvas since :hover won't fire on touch devices
       const observer = new IntersectionObserver(([entry]) => {
-        entry.isIntersecting ? start() : stop();
+        const visible = entry.isIntersecting;
+        visible ? start() : stop();
+        canvas.style.opacity = visible ? '1' : '0';
       }, { threshold: 0.3 });
       observer.observe(card);
-
-      // Also force canvas opacity via inline style on mobile
-      // since :hover won't fire — CSS transition still handles the fade
-      const observer2 = new IntersectionObserver(([entry]) => {
-        canvas.style.opacity = entry.isIntersecting ? '1' : '0';
-      }, { threshold: 0.3 });
-      observer2.observe(card);
     } else {
       // Desktop: hover only
       card.addEventListener('mouseenter', start);

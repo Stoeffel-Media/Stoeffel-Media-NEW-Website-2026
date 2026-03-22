@@ -6,7 +6,7 @@
 
   <!-- SEO -->
   <title>Stoeffel-Media | Graphic Design, Web & Digital Marketing — Sydney</title>
-  <meta name="description" content="Stoeffel-Media is a Sydney-based design and digital studio. We handle graphic design, web development, and online marketing — all in one. 15+ years of experience. Precise. Reliable." />
+  <meta name="description" content="Stoeffel-Media is a Sydney-based design and digital studio. We handle graphic design, web development, and online marketing — all in one. 14+ years of experience. Precise. Reliable." />
   <link rel="canonical" href="https://stoeffel-media.com.au/" />
 
   <!-- Open Graph -->
@@ -45,7 +45,6 @@
     "name": "Stoeffel-Media",
     "description": "Graphic design, web development, and digital marketing studio based in Sydney, Australia.",
     "url": "https://stoeffel-media.com.au",
-    "email": "info@stoeffel-media.com.au",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Sydney",
@@ -157,31 +156,36 @@
     <div class="services-header">
       <div class="section-label reveal">What We Do</div>
       <h2 class="section-title reveal" id="services-title">Three disciplines.<br>One studio.</h2>
-      <p class="reveal reveal-delay-1">Design, development, and marketing under one roof means no briefing overhead, no broken telephone between vendors — just clean, coordinated work from start to finish.</p>
+      <p class="reveal reveal-delay-1">Design, development, and marketing in one studio. You brief once, we handle the rest. No handoffs, no briefing overhead, no lost context.</p>
     </div>
 
     <div class="services-grid">
 
       <!-- Service 01 -->
       <article class="service-card reveal hoverable" style="transition-delay: 0s">
+        <canvas class="service-bg-canvas" aria-hidden="true"></canvas>
         <div class="service-number">01</div>
         <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="6" y="6" width="28" height="28" rx="3"/>
-          <circle cx="20" cy="19" r="6"/>
-          <path d="M20 13V6M20 25v7M13 19H6M25 19h7"/>
+          <path d="M20 4C11 4 4 10 4 18c0 9 8 17 16 17 3 0 5-2 5-4 0-2 1-3 3-3h3c4 0 7-3 7-7C38 11 30 4 20 4z"/>
+          <circle cx="12" cy="15" r="2.5" fill="currentColor" stroke="none"/>
+          <circle cx="19" cy="10" r="2.5" fill="currentColor" stroke="none"/>
+          <circle cx="27" cy="13" r="2.5" fill="currentColor" stroke="none"/>
+          <circle cx="30" cy="21" r="2.5" fill="currentColor" stroke="none"/>
         </svg>
         <h3>Graphic Design &amp; Branding</h3>
-        <p>Logos, brand identities, visual systems, print design, and digital assets. Work that makes your business instantly recognisable — and worth trusting.</p>
+        <p>Logos, brand identities, visual systems, print design, and digital assets. We build assets that make your business look credible: consistent, professional, and built to last.</p>
         <div class="service-tags">
           <span class="service-tag">Logo Design</span>
-          <span class="service-tag">Brand Identity</span>
+          <span class="service-tag">Branding</span>
           <span class="service-tag">Print</span>
           <span class="service-tag">Visual Assets</span>
+          <span class="service-tag">Typography</span>
         </div>
       </article>
 
       <!-- Service 02 -->
       <article class="service-card reveal hoverable" style="transition-delay: 0.12s">
+        <canvas class="service-bg-canvas" aria-hidden="true"></canvas>
         <div class="service-number">02</div>
         <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="4" y="8" width="32" height="22" rx="3"/>
@@ -189,17 +193,19 @@
           <path d="M13 18l4 4-4 4M19 26h8"/>
         </svg>
         <h3>Web Design &amp; Development</h3>
-        <p>Fast, clean websites built for real-world use — static or dynamic, HTML/CSS/JS, fully responsive. Built to look great, perform well, and hand over to you ready to go.</p>
+        <p>Fast, clean websites built for real use. Static or dynamic, fully responsive, and handed over ready to go. No loose ends, no unfinished business.</p>
         <div class="service-tags">
           <span class="service-tag">HTML / CSS / JS</span>
           <span class="service-tag">Responsive Design</span>
           <span class="service-tag">Landing Pages</span>
           <span class="service-tag">Web Apps</span>
+          <span class="service-tag">CMS</span>
         </div>
       </article>
 
       <!-- Service 03 -->
       <article class="service-card reveal hoverable" style="transition-delay: 0.24s">
+        <canvas class="service-bg-canvas" aria-hidden="true"></canvas>
         <div class="service-number">03</div>
         <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M8 32l8-12 6 6 6-10 4 6"/>
@@ -207,12 +213,13 @@
           <path d="M4 36h32"/>
         </svg>
         <h3>Online Marketing &amp; SEO</h3>
-        <p>Strategy, content, and search visibility that actually moves numbers. We don't do vague — we focus on what gets your business found by the right people.</p>
+        <p>Strategy, content, and search visibility that moves numbers. We focus on what gets your business found by the right people. No vague reports, no empty metrics, no guesswork.</p>
         <div class="service-tags">
           <span class="service-tag">SEO</span>
           <span class="service-tag">Content Strategy</span>
           <span class="service-tag">Campaigns</span>
           <span class="service-tag">Analytics</span>
+          <span class="service-tag">Ads</span>
         </div>
       </article>
 
@@ -225,7 +232,7 @@
   <section class="quote-section" aria-label="Owner quote">
     <div class="quote-mark" aria-hidden="true">&ldquo;</div>
     <blockquote>
-      <p class="quote-text">Good design doesn't cost more — it earns more. Everything we build is crafted to make your business look as serious as it is.</p>
+      <p class="quote-text" id="rotating-quote">Design is the first thing people notice. Make sure it tells the right story.</p>
       <footer class="quote-attribution">
         — <span>Andreas Stöffel</span>, Stoeffel-Media
       </footer>
@@ -294,7 +301,7 @@
 
       <!-- Row 4 -->
       <div class="bento-item bento-text bento-outline reveal" style="transition-delay:1.1s">
-        <span class="bento-stat">15+</span>
+        <span class="bento-stat">14+</span>
         <span class="bento-stat-label">years of craft</span>
       </div>
 
@@ -328,32 +335,38 @@
       <div class="about-stats reveal">
         <div class="section-label">The Numbers</div>
         <div class="stat-item">
-          <div class="stat-number">15<span>+</span></div>
-          <div class="stat-label">Years of Experience</div>
+          <div class="stat-number">14<span>+</span></div>
+          <div class="stat-label">Years Running</div>
         </div>
         <div class="stat-item">
           <div class="stat-number">3</div>
           <div class="stat-label">Disciplines, One Studio</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">4</div>
-          <div class="stat-label">Countries, One Perspective</div>
+          <div class="stat-number">100<span>+</span></div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">70<span>+</span></div>
+          <div class="stat-label">Clients Served</div>
         </div>
       </div>
 
       <div class="about-content">
         <div class="section-label reveal">About</div>
-        <h2 class="section-title reveal" id="about-title">Small studio.<br>Three skills.<br>No excuses.</h2>
+        <h2 class="section-title reveal" id="about-title">One studio.<br>Three skills.<br>No excuses.</h2>
         <div class="about-bio reveal reveal-delay-1">
-          <p>We're Stoeffel-Media — a design and digital studio based in Sydney, led by Andreas Stöffel. With 15+ years of professional experience working with clients and agencies across Germany, Canada, New Zealand, and Australia, we bring a global perspective to every project.</p>
-          <p>We handle graphic design, web development, and digital marketing in one place. That means you brief once and get results — no account managers, no handoffs, no briefing overhead. The German background shows in the work: structured delivery, clean execution, and an obsessive eye for detail.</p>
-          <p>Available for local projects in Sydney and remote work across Australia. Fast turnaround, reliable communication, and work that holds up under scrutiny.</p>
+          <p>We're Stoeffel-Media. A design and digital studio in Sydney, led by <a href="https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/" target="_blank" rel="noopener noreferrer" class="about-name-link hoverable">Andreas Stöffel</a>. Over 25 years of practice in design and digital, building brands, websites, and marketing campaigns for clients across different industries and budgets.</p>
+          <p>Design, development, and marketing under one roof. You brief once and we handle the rest. No account managers, no handoffs, no overhead between departments. The work is structured, detail-oriented, and delivered on time.</p>
+          <p>Available for projects in Sydney and remotely across Australia and beyond. Direct contact from day one to handover. No surprises.</p>
         </div>
         <div class="about-highlights reveal reveal-delay-2">
           <span class="highlight-tag">Sydney-Based</span>
+          <span class="highlight-tag">International</span>
           <span class="highlight-tag">Remote-Friendly</span>
-          <span class="highlight-tag">15+ Years Pro</span>
-          <span class="highlight-tag">DE → CA → NZ → AU</span>
+          <span class="highlight-tag">14+ Years Pro</span>
+          <span class="highlight-tag">Direct Contact</span>
+          <span class="highlight-tag">Detail-Oriented</span>
           <span class="highlight-tag">Design + Dev + Marketing</span>
         </div>
       </div>
@@ -378,10 +391,11 @@
       <div class="contact-left">
         <div class="section-label reveal">Get in Touch</div>
         <h2 class="section-title reveal" id="contact-title">Let's build<br>something good.</h2>
-        <p class="reveal reveal-delay-1">Got a project in mind? Tell us what you need. We'll get back to you within one business day.</p>
-        <a href="mailto:info@stoeffel-media.com.au" class="contact-detail hoverable">
+        <p class="reveal reveal-delay-1">Got a project in mind? Tell us what you need. We read every message personally and reply as soon as we can. No automated responses, no handoffs. Just a direct conversation about what you're trying to build.</p>
+        <a href="#" class="contact-detail hoverable js-email"
+           data-u="info" data-d="stoeffel-media" data-t="com.au" aria-label="Send us an email">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          info@stoeffel-media.com.au
+          <span class="js-email-text">info&#160;[at]&#160;stoeffel&#8209;media.com.au</span>
         </a>
         <span class="contact-detail">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>

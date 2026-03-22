@@ -122,6 +122,16 @@ document.querySelectorAll('[data-cursor-action]').forEach(el => {
   el.addEventListener('mouseleave', () => cursor && cursor.classList.remove('has-action'));
 });
 
+// Cursor heart morph on logo hover
+document.querySelectorAll('.nav-logo, .nav-logo-center, .footer-logo').forEach(logo => {
+  logo.addEventListener('mouseenter', () => {
+    if (!cursor) return;
+    cursor.classList.add('on-logo');
+    cursor.classList.remove('hovering');
+  });
+  logo.addEventListener('mouseleave', () => cursor && cursor.classList.remove('on-logo'));
+});
+
 // ═══════════════════════════════════════════
 // MENU OVERLAY
 // ═══════════════════════════════════════════
@@ -662,44 +672,6 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   setTimeout(() => show(0), 400);
 })();
 
-// ═══════════════════════════════════════════
-// QUOTE — WORD BY WORD FADE
-// ═══════════════════════════════════════════
-(function() {
-  const quoteEl = document.querySelector('.quote-text');
-  if (!quoteEl) return;
-
-  // Split text into word spans
-  const rawText = quoteEl.textContent.trim();
-  const words = rawText.split(/(\s+)/);
-  quoteEl.innerHTML = '';
-
-  words.forEach((chunk, i) => {
-    if (/^\s+$/.test(chunk)) {
-      quoteEl.appendChild(document.createTextNode(' '));
-    } else {
-      const span = document.createElement('span');
-      span.className = 'word';
-      span.textContent = chunk;
-      // Spread delay across ~3 seconds
-      const wordCount = words.filter(w => !/^\s+$/.test(w)).length;
-      const delay = (i / words.length) * 2800;
-      span.style.transitionDelay = `${delay}ms`;
-      quoteEl.appendChild(span);
-    }
-  });
-
-  const quoteObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        quoteEl.querySelectorAll('.word').forEach(w => w.classList.add('visible'));
-        quoteObserver.disconnect();
-      }
-    });
-  }, { threshold: 0.4 });
-
-  quoteObserver.observe(quoteEl);
-})();
 
 // ═══════════════════════════════════════════
 // PORTFOLIO LIGHTBOX
@@ -1018,3 +990,304 @@ document.querySelectorAll('.statements-video-bg video, .contact-video-bg video')
   }, { threshold: 0.1 });
   observer.observe(video.closest('section') || video.parentElement);
 });
+
+// ═══════════════════════════════════════════
+// ROTATING QUOTE — TYPEWRITER + FADE
+// ═══════════════════════════════════════════
+(function() {
+  const el = document.getElementById('rotating-quote');
+  if (!el || reducedMotion) return;
+
+  const quotes = [
+    "Design is the first thing people notice. Make sure it tells the right story.",
+    "A slow or outdated website costs you more than a new one. We build things that hold up.",
+    "Getting found online isn't luck. It's consistent, deliberate work. We know what it takes."
+  ];
+
+  let index = 0;
+  let typeTimer = null;
+
+  function typeText(text) {
+    clearTimeout(typeTimer);
+    el.textContent = '';
+    el.style.opacity = '1';
+    let i = 0;
+    function tick() {
+      if (i < text.length) {
+        el.textContent += text[i];
+        i++;
+        typeTimer = setTimeout(tick, 38);
+      }
+    }
+    tick();
+  }
+
+  function next() {
+    clearTimeout(typeTimer);
+    el.style.opacity = '0';
+    setTimeout(() => {
+      index = (index + 1) % quotes.length;
+      typeText(quotes[index]);
+    }, 700);
+  }
+
+  // Start when quote section scrolls into view
+  el.style.opacity = '0';
+  const observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      observer.disconnect();
+      setTimeout(() => typeText(quotes[0]), 200);
+      setInterval(next, 6000);
+    }
+  }, { threshold: 0.4 });
+  observer.observe(el.closest('section') || el.parentElement);
+})();
+
+// ═══════════════════════════════════════════
+// STATS — STAGGER FADE + COUNT-UP
+// ═══════════════════════════════════════════
+(function() {
+  const statsEl = document.querySelector('.about-stats');
+  if (!statsEl) return;
+
+  const items = statsEl.querySelectorAll('.stat-item');
+
+  function countUp(numEl, target, duration) {
+    const textNode = numEl.firstChild;
+    if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      textNode.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(tick);
+      else textNode.textContent = target;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if (reducedMotion) {
+    items.forEach(item => item.classList.add('visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    items.forEach((item, i) => {
+      setTimeout(() => {
+        item.classList.add('visible');
+        const numEl = item.querySelector('.stat-number');
+        if (numEl) {
+          const target = parseInt(numEl.firstChild.textContent);
+          if (!isNaN(target)) countUp(numEl, target, 1800);
+        }
+      }, i * 320);
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(statsEl);
+})();
+
+// ═══════════════════════════════════════════
+// SERVICE CARD BACKGROUND ANIMATIONS
+// ═══════════════════════════════════════════
+(function() {
+  if (reducedMotion) return;
+
+  // ── Card 01: Graphic Design — floating geometric shapes ──
+  function initDesign(w, h) {
+    const types = ['circle', 'triangle', 'square'];
+    const shapes = [];
+    for (let i = 0; i < 9; i++) {
+      shapes.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 18 + Math.random() * 52,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        rot: Math.random() * Math.PI * 2,
+        vrot: (Math.random() - 0.5) * 0.007,
+        type: types[Math.floor(Math.random() * 3)],
+        alpha: 0.04 + Math.random() * 0.08
+      });
+    }
+    return shapes;
+  }
+
+  function drawDesign(ctx, w, h, shapes) {
+    shapes.forEach(s => {
+      s.x += s.vx; s.y += s.vy; s.rot += s.vrot;
+      if (s.x < -s.r) s.x = w + s.r;
+      if (s.x > w + s.r) s.x = -s.r;
+      if (s.y < -s.r) s.y = h + s.r;
+      if (s.y > h + s.r) s.y = -s.r;
+      ctx.save();
+      ctx.translate(s.x, s.y);
+      ctx.rotate(s.rot);
+      ctx.globalAlpha = s.alpha;
+      ctx.strokeStyle = '#f08932';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      if (s.type === 'circle') {
+        ctx.arc(0, 0, s.r, 0, Math.PI * 2);
+      } else if (s.type === 'triangle') {
+        ctx.moveTo(0, -s.r);
+        ctx.lineTo(s.r * 0.866, s.r * 0.5);
+        ctx.lineTo(-s.r * 0.866, s.r * 0.5);
+        ctx.closePath();
+      } else {
+        ctx.rect(-s.r * 0.5, -s.r * 0.5, s.r, s.r);
+      }
+      ctx.stroke();
+      ctx.restore();
+    });
+  }
+
+  // ── Card 02: Web Dev — dot grid with scan line ──
+  function initDev(w, h) {
+    const cols = Math.ceil(w / 24);
+    const rows = Math.ceil(h / 24);
+    const dots = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        dots.push({
+          x: (c + 0.5) * (w / cols),
+          y: (r + 0.5) * (h / rows),
+          alpha: 0
+        });
+      }
+    }
+    return { dots, scanX: -20, scanSpeed: w / 160 };
+  }
+
+  function drawDev(ctx, w, h, state) {
+    state.scanX += state.scanSpeed;
+    if (state.scanX > w + 20) state.scanX = -20;
+
+    state.dots.forEach(d => {
+      const dist = Math.abs(d.x - state.scanX);
+      d.alpha = dist < 18 ? Math.min(0.9, d.alpha + 0.18) : Math.max(0, d.alpha - 0.025);
+      if (d.alpha > 0.01) {
+        ctx.globalAlpha = d.alpha * 0.55;
+        ctx.fillStyle = '#f08932';
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+
+    const grad = ctx.createLinearGradient(state.scanX - 12, 0, state.scanX + 12, 0);
+    grad.addColorStop(0, 'rgba(240,137,50,0)');
+    grad.addColorStop(0.5, 'rgba(240,137,50,0.12)');
+    grad.addColorStop(1, 'rgba(240,137,50,0)');
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = grad;
+    ctx.fillRect(state.scanX - 12, 0, 24, h);
+  }
+
+  // ── Card 03: Marketing — radiating rings from multiple origins ──
+  function initMarketing(w, h) {
+    return {
+      sources: [
+        { x: w * 0.25, y: h * 0.38, phase: 0 },
+        { x: w * 0.72, y: h * 0.28, phase: Math.PI * 0.9 },
+        { x: w * 0.5,  y: h * 0.72, phase: Math.PI * 0.45 }
+      ],
+      t: 0
+    };
+  }
+
+  function drawMarketing(ctx, w, h, state) {
+    state.t += 0.016;
+    const maxR = Math.max(w, h) * 0.42;
+    state.sources.forEach(src => {
+      for (let i = 0; i < 5; i++) {
+        const progress = ((state.t + src.phase + i * 1.26) % (Math.PI * 2)) / (Math.PI * 2);
+        const r = progress * maxR;
+        const alpha = (1 - progress) * 0.22;
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = '#f08932';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(src.x, src.y, r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 0.35;
+      ctx.fillStyle = '#f08932';
+      ctx.beginPath();
+      ctx.arc(src.x, src.y, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  // ── Controller ──
+  const cards = document.querySelectorAll('.service-card');
+  const animTypes = ['design', 'dev', 'marketing'];
+  const isTouch = window.matchMedia('(hover: none)').matches;
+
+  cards.forEach((card, i) => {
+    const canvas = card.querySelector('.service-bg-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const type = animTypes[i] || 'design';
+    let raf = null;
+    let running = false;
+    let state = null;
+
+    function resize() {
+      canvas.width  = card.offsetWidth;
+      canvas.height = card.offsetHeight;
+      if (type === 'design')   state = initDesign(canvas.width, canvas.height);
+      else if (type === 'dev') state = initDev(canvas.width, canvas.height);
+      else                     state = initMarketing(canvas.width, canvas.height);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function start() { running = true;  if (!raf) loop(); }
+    function stop()  { running = false; }
+
+    if (isTouch) {
+      // Mobile: animate while card is in viewport
+      const observer = new IntersectionObserver(([entry]) => {
+        entry.isIntersecting ? start() : stop();
+      }, { threshold: 0.3 });
+      observer.observe(card);
+
+      // Also force canvas opacity via inline style on mobile
+      // since :hover won't fire — CSS transition still handles the fade
+      const observer2 = new IntersectionObserver(([entry]) => {
+        canvas.style.opacity = entry.isIntersecting ? '1' : '0';
+      }, { threshold: 0.3 });
+      observer2.observe(card);
+    } else {
+      // Desktop: hover only
+      card.addEventListener('mouseenter', start);
+      card.addEventListener('mouseleave', stop);
+    }
+
+    function loop() {
+      if (!running) { raf = null; return; }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (type === 'design')   drawDesign(ctx, canvas.width, canvas.height, state);
+      else if (type === 'dev') drawDev(ctx, canvas.width, canvas.height, state);
+      else                     drawMarketing(ctx, canvas.width, canvas.height, state);
+      raf = requestAnimationFrame(loop);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════
+// EMAIL OBFUSCATION
+// ═══════════════════════════════════════════
+(function() {
+  document.querySelectorAll('.js-email').forEach(link => {
+    const addr = link.dataset.u + '@' + link.dataset.d + '.' + link.dataset.t;
+    link.href = 'mailto:' + addr;
+    const label = link.querySelector('.js-email-text');
+    if (label) label.textContent = addr;
+    link.removeAttribute('aria-label');
+  });
+})();

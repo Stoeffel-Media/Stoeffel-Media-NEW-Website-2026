@@ -57,6 +57,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+a {
+  text-decoration: none;
+  color: var(--accent);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--text);
+}
+
 /* ═══════════════════════════════════════════
    CUSTOM CURSOR
 ═══════════════════════════════════════════ */
@@ -69,9 +79,11 @@ body {
   pointer-events: none;
   z-index: 99999;
   transform: translate(-50%, -50%);
+  clip-path: path('M 10 0 C 15.52 0 20 4.48 20 10 C 20 15.52 15.52 20 10 20 C 4.48 20 0 15.52 0 10 C 0 4.48 4.48 0 10 0 Z');
   transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
               height 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.3s ease;
+              opacity 0.3s ease,
+              clip-path 0.45s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform;
   opacity: 0.9;
 }
@@ -79,7 +91,15 @@ body {
 .cursor.hovering {
   width: 50px;
   height: 50px;
+  clip-path: path('M 25 0 C 38.81 0 50 11.19 50 25 C 50 38.81 38.81 50 25 50 C 11.19 50 0 38.81 0 25 C 0 11.19 11.19 0 25 0 Z');
   opacity: 0.5;
+}
+
+.cursor.on-logo {
+  width: 36px;
+  height: 36px;
+  clip-path: path('M 18 10 C 28 5, 36 8, 35 17 C 36 28, 18 35, 18 35 C 18 35, 0 28, 1 17 C 0 8, 8 5, 18 10 Z');
+  opacity: 0.9;
 }
 
 .cursor.on-accent {
@@ -127,6 +147,8 @@ a, button, input, textarea, select, label,
   pointer-events: none;
   mask-image: linear-gradient(to bottom, transparent 0%, var(--bg) 45%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, var(--bg) 45%);
+  opacity: 0;
+  animation: fadeIn 2s ease 0s forwards;
 }
 
 #fluid-canvas {
@@ -138,8 +160,13 @@ a, button, input, textarea, select, label,
   mix-blend-mode: lighten;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.8;
-  animation: fadeIn 1.5s ease 0.3s both;
+  opacity: 0;
+  animation: fadeToPartial 2s ease 0s forwards;
+}
+
+@keyframes fadeToPartial {
+  from { opacity: 0; }
+  to   { opacity: 0.8; }
 }
 
 /* ═══════════════════════════════════════════
@@ -189,7 +216,7 @@ a, button, input, textarea, select, label,
   content: '';
   position: absolute;
   inset: -60px -100px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.3) 20%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.05) 60%, transparent 80%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.36) 0%, rgba(0,0,0,0.24) 20%, rgba(0,0,0,0.12) 40%, rgba(0,0,0,0.04) 60%, transparent 80%);
   z-index: -1;
   pointer-events: none;
 }
@@ -347,8 +374,14 @@ a, button, input, textarea, select, label,
   height: 100%;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0;
   mix-blend-mode: screen;
+  animation: fadeToRays 2s ease 3s forwards;
+}
+
+@keyframes fadeToRays {
+  from { opacity: 0; }
+  to   { opacity: 0.35; }
 }
 
 .hero::before {
@@ -694,6 +727,26 @@ a, button, input, textarea, select, label,
   touch-action: none;
 }
 
+.service-bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.service-card:hover .service-bg-canvas {
+  opacity: 1;
+}
+
+.service-card > *:not(.service-bg-canvas) {
+  position: relative;
+  z-index: 1;
+}
+
 .service-card.dragging {
   position: fixed;
   z-index: 9999;
@@ -737,6 +790,7 @@ a, button, input, textarea, select, label,
   font-family: 'Outfit', sans-serif;
   font-size: 28px;
   letter-spacing: 1px;
+  text-wrap: balance;
   margin-bottom: 14px;
   color: var(--text);
 }
@@ -807,8 +861,10 @@ a, button, input, textarea, select, label,
   line-height: 1.15;
   letter-spacing: 0.5px;
   max-width: 900px;
+  min-height: clamp(80px, 13vw, 165px);
   margin: 0 auto 32px;
   color: var(--text);
+  transition: opacity 0.7s ease;
 }
 
 .quote-text .word {
@@ -825,7 +881,7 @@ a, button, input, textarea, select, label,
 }
 
 .quote-attribution {
-  font-size: 16px;
+  font-size: 12px;
   color: var(--text-secondary);
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -998,14 +1054,13 @@ a, button, input, textarea, select, label,
 }
 
 .portfolio-footer a {
-  color: var(--accent);
+  color: #c8c8c8;
   text-decoration: none;
-  border-bottom: 1px solid rgba(240, 137, 50, 0.3);
-  transition: border-color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .portfolio-footer a:hover {
-  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* Lightbox */
@@ -1087,6 +1142,14 @@ a, button, input, textarea, select, label,
 
 .stat-item {
   margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.stat-item.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .stat-number {
@@ -1130,6 +1193,16 @@ a, button, input, textarea, select, label,
 
 .about-bio p:last-child {
   margin-bottom: 0;
+}
+
+.about-name-link {
+  color: #c8c8c8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.about-name-link:hover {
+  color: var(--accent);
 }
 
 .about-highlights {
@@ -1215,7 +1288,7 @@ a, button, input, textarea, select, label,
 
 .contact-left p {
   color: rgba(255,255,255,0.65);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.7;
   font-weight: 300;
   margin-bottom: 36px;
@@ -1447,9 +1520,9 @@ a, button, input, textarea, select, label,
 }
 
 .footer-nav a {
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.3);
   text-decoration: none;
-  font-size: 15px;
+  font-size: 14px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   transition: color 0.3s ease;
@@ -1488,8 +1561,8 @@ a, button, input, textarea, select, label,
 }
 
 .footer-copy {
-  color: var(--text-secondary);
-  font-size: 15px;
+  color: rgba(255,255,255,0.3);
+  font-size: 14px;
   letter-spacing: 0.5px;
 }
 
@@ -1504,13 +1577,13 @@ a, button, input, textarea, select, label,
 
 .footer-bottom p {
   font-size: 14px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.2);
   letter-spacing: 0.5px;
 }
 
 .footer-bottom a {
   font-size: 14px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.25);
   text-decoration: none;
   letter-spacing: 0.5px;
   transition: color 0.3s ease;
@@ -1696,7 +1769,7 @@ a, button, input, textarea, select, label,
 
 .legal-header p {
   color: var(--text-secondary);
-  font-size: 16px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   padding-top: 24px;
@@ -1762,14 +1835,15 @@ a, button, input, textarea, select, label,
 }
 
 .legal-section a {
-  color: var(--accent);
+  color: #c8c8c8;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  font-weight: 300;
+  transition: color 0.3s ease;
 }
 
 .legal-section a:hover {
-  opacity: 0.75;
-  text-decoration: underline;
+  color: var(--accent);
+  text-decoration: none;
 }
 
 .legal-section ul {
@@ -1823,12 +1897,15 @@ a, button, input, textarea, select, label,
 }
 
 .info-card-value a {
-  color: var(--accent);
+  color: #c8c8c8;
   text-decoration: none;
+  font-weight: 400;
+  transition: color 0.3s ease;
 }
 
 .info-card-value a:hover {
-  text-decoration: underline;
+  color: var(--accent);
+  text-decoration: none;
 }
 
 .legal-footer-note {

@@ -1,6 +1,4 @@
-/* ═══════════════════════════════════════════
-   LOCAL FONTS
-═══════════════════════════════════════════ */
+/* Fonts */
 @font-face {
   font-family: 'Outfit';
   font-style: normal;
@@ -19,9 +17,7 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-/* ═══════════════════════════════════════════
-   RESET & ROOT
-═══════════════════════════════════════════ */
+/* --- Reset & base --- */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -67,9 +63,7 @@ a:hover {
   color: var(--text);
 }
 
-/* ═══════════════════════════════════════════
-   CUSTOM CURSOR
-═══════════════════════════════════════════ */
+/* Cursor */
 .cursor {
   position: fixed;
   width: 20px;
@@ -122,29 +116,25 @@ a, button, input, textarea, select, label,
   cursor: none;
 }
 
-/* ═══════════════════════════════════════════
-   TEXT SELECTION
-═══════════════════════════════════════════ */
+/* Selection */
 ::selection {
   background: var(--accent);
   color: var(--bg);
 }
 
-/* ═══════════════════════════════════════════
-   HERO BACKGROUND CANVASES
-═══════════════════════════════════════════ */
+/* --- Hero background canvases --- */
 #dot-pattern {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  background: #202020;
   z-index: 0;
   pointer-events: none;
   mask-image: linear-gradient(to bottom, transparent 0%, var(--bg) 45%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, var(--bg) 45%);
-  opacity: 0;
-  animation: fadeIn 2s ease 0s forwards;
+  opacity: 1;
 }
 
 #fluid-canvas {
@@ -156,8 +146,7 @@ a, button, input, textarea, select, label,
   mix-blend-mode: lighten;
   z-index: 0;
   pointer-events: none;
-  opacity: 0;
-  animation: fadeToPartial 2s ease 0s forwards;
+  opacity: 0.55;
 }
 
 @keyframes fadeToPartial {
@@ -165,9 +154,7 @@ a, button, input, textarea, select, label,
   to   { opacity: 0.55; }
 }
 
-/* ═══════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════ */
+/* Nav */
 .nav {
   position: fixed;
   top: 0;
@@ -261,9 +248,7 @@ a, button, input, textarea, select, label,
   border-radius: 1px;
 }
 
-/* ═══════════════════════════════════════════
-   MENU OVERLAY
-═══════════════════════════════════════════ */
+/* Menu overlay */
 .menu-overlay {
   position: fixed;
   inset: 0;
@@ -349,9 +334,7 @@ a, button, input, textarea, select, label,
   letter-spacing: 1px;
 }
 
-/* ═══════════════════════════════════════════
-   HERO SECTION
-═══════════════════════════════════════════ */
+/* --- Hero --- */
 .hero {
   position: relative;
   z-index: 1;
@@ -397,7 +380,7 @@ a, button, input, textarea, select, label,
   font-family: 'Outfit', sans-serif;
   font-size: clamp(42px, 7vw, 98px);
   font-weight: 400;
-  line-height: 0.95;
+  line-height: 1.08;
   letter-spacing: -2px;
   color: var(--text);
   text-transform: uppercase;
@@ -516,9 +499,7 @@ a, button, input, textarea, select, label,
   stroke-linecap: round;
 }
 
-/* ═══════════════════════════════════════════
-   SHARED SECTION STYLES
-═══════════════════════════════════════════ */
+/* Section defaults */
 .section-label {
   font-size: 14px;
   letter-spacing: 4px;
@@ -532,13 +513,11 @@ a, button, input, textarea, select, label,
   font-family: 'Outfit', sans-serif;
   font-size: clamp(26px, 3.5vw, 48px);
   letter-spacing: 1px;
-  line-height: 1;
+  line-height: 1.3;
   margin-bottom: 20px;
 }
 
-/* ═══════════════════════════════════════════
-   BUSINESS STATEMENTS SECTION
-═══════════════════════════════════════════ */
+/* --- Statements --- */
 .statements {
   position: relative;
   z-index: 2;
@@ -678,9 +657,7 @@ a, button, input, textarea, select, label,
   letter-spacing: 0.5px;
 }
 
-/* ═══════════════════════════════════════════
-   SERVICES SECTION
-═══════════════════════════════════════════ */
+/* --- Services --- */
 .services {
   position: relative;
   z-index: 2;
@@ -695,7 +672,7 @@ a, button, input, textarea, select, label,
 
 .services-header p {
   color: var(--text-secondary);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.7;
   font-weight: 300;
   max-width: 560px;
@@ -816,9 +793,7 @@ a, button, input, textarea, select, label,
   border-radius: 4px;
 }
 
-/* ═══════════════════════════════════════════
-   QUOTE SECTION
-═══════════════════════════════════════════ */
+/* Quote */
 .quote-section {
   position: relative;
   z-index: 2;
@@ -889,9 +864,7 @@ a, button, input, textarea, select, label,
   color: var(--accent);
 }
 
-/* ═══════════════════════════════════════════
-   PORTFOLIO SECTION
-═══════════════════════════════════════════ */
+/* --- Portfolio / bento grid --- */
 .portfolio {
   position: relative;
   z-index: 2;
@@ -906,8 +879,17 @@ a, button, input, textarea, select, label,
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 220px;
-  gap: 16px;
+  grid-auto-rows: 200px;
+  grid-auto-flow: dense;
+  gap: 14px;
+}
+
+/* Ultrawide: more columns, no wide spanning needed */
+@media (min-width: 1800px) {
+  .bento-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  .bento-wide { grid-column: span 1; }
 }
 
 .bento-item {
@@ -931,20 +913,72 @@ a, button, input, textarea, select, label,
   background: var(--bg-deep);
 }
 
+.bento-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 20, 20, 0.45);
+  mix-blend-mode: multiply;
+  z-index: 1;
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.bento-img:hover::after {
+  opacity: 0;
+}
+
 .bento-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.55);
+  filter: brightness(0.78) saturate(0.85);
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1),
+              filter 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .bento-img:hover img {
-  transform: scale(1.05);
+  transform: scale(1.35);
+  filter: brightness(1) saturate(1);
 }
 
 .bento-img:hover {
   box-shadow: 0 12px 40px rgba(240, 137, 50, 0.12);
+}
+
+/* View-full indicator */
+.bento-view {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.bento-view svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+  stroke-width: 2;
+  fill: none;
+}
+
+.bento-img:hover .bento-view {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .bento-label {
@@ -959,6 +993,7 @@ a, button, input, textarea, select, label,
   color: var(--text);
   opacity: 0;
   transform: translateY(6px);
+  z-index: 2;
   transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
@@ -969,12 +1004,16 @@ a, button, input, textarea, select, label,
 
 .bento-label span {
   display: block;
+  width: fit-content;
   font-size: 14px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--accent);
+  color: #666;
   margin-bottom: 4px;
-  font-weight: 400;
+  font-weight: 600;
+  background: rgba(255,255,255,0.85);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 /* Text items */
@@ -1003,12 +1042,37 @@ a, button, input, textarea, select, label,
 }
 
 .bento-accent {
-  background: var(--accent);
+  background: linear-gradient(135deg, rgba(240, 137, 50, 0.12) 0%, rgba(240, 137, 50, 0.04) 100%);
+  border: 1px solid rgba(240, 137, 50, 0.2);
 }
 
 .bento-accent .bento-phrase {
-  color: #fff;
+  color: var(--accent);
   font-weight: 700;
+}
+
+.bento-quote {
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-quote .bento-phrase {
+  font-size: clamp(16px, 1.8vw, 20px);
+  font-weight: 300;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  line-height: 1.45;
+}
+
+.bento-quote-mark {
+  position: absolute;
+  top: -10px;
+  left: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 120px;
+  line-height: 1;
+  color: rgba(240, 137, 50, 0.08);
+  pointer-events: none;
 }
 
 .bento-outline {
@@ -1067,9 +1131,7 @@ a, button, input, textarea, select, label,
   inset: 0;
   z-index: 9000;
   background: rgba(10,10,10,0.95);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -1080,19 +1142,106 @@ a, button, input, textarea, select, label,
   pointer-events: auto;
 }
 
-.lightbox img {
-  max-width: 90vw;
-  max-height: 85vh;
-  object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+.lightbox.open .lightbox-inner {
+  cursor: grab;
 }
 
-.lightbox-close {
+.lightbox-inner {
   position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 60px 24px 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.lightbox img {
+  display: block;
+  max-width: min(90vw, 900px);
+  width: 100%;
+  -webkit-user-drag: none;
+  user-select: none;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* Lightbox navigation arrows */
+.lightbox-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9002;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.2s ease;
+}
+
+.lightbox.open .lightbox-nav {
+  opacity: 1;
+}
+
+.lightbox-nav:hover {
+  background: rgba(240, 137, 50, 0.25);
+  border-color: rgba(240, 137, 50, 0.4);
+}
+
+.lightbox-nav svg {
+  width: 22px;
+  height: 22px;
+}
+
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+
+@media (max-width: 768px) {
+  .lightbox-nav {
+    width: 42px;
+    height: 42px;
+  }
+  .lightbox-prev { left: 12px; }
+  .lightbox-next { right: 12px; }
+  .lightbox-nav svg { width: 20px; height: 20px; }
+}
+
+@media (max-width: 600px) {
+  .lightbox-nav {
+    width: 38px;
+    height: 38px;
+    top: auto;
+    bottom: 24px;
+    transform: none;
+  }
+  .lightbox-prev { left: 24px; }
+  .lightbox-next { right: 24px; }
+  .lightbox-nav svg { width: 18px; height: 18px; }
+}
+
+/* Thin scrollbar styling */
+.lightbox-inner::-webkit-scrollbar { width: 6px; }
+.lightbox-inner::-webkit-scrollbar-track { background: transparent; }
+.lightbox-inner::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+.lightbox-inner::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+.lightbox-close {
+  position: fixed;
   top: 24px;
   right: 32px;
   background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
   border: none;
   color: var(--text);
   width: 44px;
@@ -1103,6 +1252,7 @@ a, button, input, textarea, select, label,
   align-items: center;
   justify-content: center;
   cursor: none;
+  z-index: 9001;
   transition: background 0.3s ease;
 }
 
@@ -1110,9 +1260,53 @@ a, button, input, textarea, select, label,
   background: rgba(255,255,255,0.2);
 }
 
-/* ═══════════════════════════════════════════
-   ABOUT SECTION
-═══════════════════════════════════════════ */
+/* Scroll hint */
+.lightbox-scroll-hint {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(240, 137, 50, 0.85);
+  padding: 14px 20px 10px;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.lightbox-scroll-hint.visible {
+  opacity: 1;
+}
+
+.lightbox-scroll-hint svg {
+  width: 32px;
+  height: 52px;
+  stroke: #fff;
+}
+
+.lightbox-scroll-hint .scroll-dot {
+  animation: scrollDotMove 1.5s ease-in-out infinite;
+}
+
+@keyframes scrollDotMove {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(5px); opacity: 0.3; }
+}
+
+.lightbox-scroll-hint span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* --- About --- */
 .about {
   position: relative;
   z-index: 2;
@@ -1221,9 +1415,7 @@ a, button, input, textarea, select, label,
   text-transform: uppercase;
 }
 
-/* ═══════════════════════════════════════════
-   CONTACT SECTION
-═══════════════════════════════════════════ */
+/* --- Contact --- */
 .contact {
   position: relative;
   z-index: 2;
@@ -1254,15 +1446,6 @@ a, button, input, textarea, select, label,
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, rgba(10,10,10,0.8) 0%, rgba(20,14,8,0.7) 100%);
-}
-
-/* CSS fallback if no video */
-.contact-video-bg .animated-bg {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #0d0d0d 0%, #1a0f06 50%, #0d0d0d 100%);
-  background-size: 200% 200%;
-  animation: bgShift 12s ease-in-out infinite alternate;
 }
 
 .contact-inner {
@@ -1475,9 +1658,7 @@ a, button, input, textarea, select, label,
   display: block;
 }
 
-/* ═══════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════ */
+/* Footer */
 .footer {
   position: relative;
   z-index: 2;
@@ -1591,9 +1772,7 @@ a, button, input, textarea, select, label,
   color: var(--accent);
 }
 
-/* ═══════════════════════════════════════════
-   SCROLL REVEAL
-═══════════════════════════════════════════ */
+/* Reveal animations */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -1615,22 +1794,27 @@ a, button, input, textarea, select, label,
 .services-grid .service-card:nth-child(3) { transition-delay: 0.24s; }
 
 /* Bento grid stagger */
-.bento-grid .bento-item:nth-child(2) { transition-delay: 0.25s; }
-.bento-grid .bento-item:nth-child(3) { transition-delay: 0.45s; }
-.bento-grid .bento-item:nth-child(4) { transition-delay: 0.55s; }
-.bento-grid .bento-item:nth-child(5) { transition-delay: 0.65s; }
-.bento-grid .bento-item:nth-child(6) { transition-delay: 0.85s; }
-.bento-grid .bento-item:nth-child(7) { transition-delay: 0.95s; }
-.bento-grid .bento-item:nth-child(8) { transition-delay: 1.1s; }
-.bento-grid .bento-item:nth-child(9) { transition-delay: 1.25s; }
+.bento-grid .bento-item:nth-child(2) { transition-delay: 0.15s; }
+.bento-grid .bento-item:nth-child(3) { transition-delay: 0.25s; }
+.bento-grid .bento-item:nth-child(4) { transition-delay: 0.35s; }
+.bento-grid .bento-item:nth-child(5) { transition-delay: 0.45s; }
+.bento-grid .bento-item:nth-child(6) { transition-delay: 0.55s; }
+.bento-grid .bento-item:nth-child(7) { transition-delay: 0.65s; }
+.bento-grid .bento-item:nth-child(8) { transition-delay: 0.75s; }
+.bento-grid .bento-item:nth-child(9) { transition-delay: 0.85s; }
+.bento-grid .bento-item:nth-child(10) { transition-delay: 0.95s; }
+.bento-grid .bento-item:nth-child(11) { transition-delay: 1.05s; }
+.bento-grid .bento-item:nth-child(12) { transition-delay: 1.15s; }
+.bento-grid .bento-item:nth-child(13) { transition-delay: 1.25s; }
+.bento-grid .bento-item:nth-child(14) { transition-delay: 1.35s; }
+.bento-grid .bento-item:nth-child(15) { transition-delay: 1.45s; }
+.bento-grid .bento-item:nth-child(16) { transition-delay: 1.55s; }
 
 /* Legal header stagger */
 .legal-header h1.reveal { transition-delay: 0.1s; }
 .legal-header p.reveal  { transition-delay: 0.2s; }
 
-/* ═══════════════════════════════════════════
-   KEYFRAMES
-═══════════════════════════════════════════ */
+/* Keyframes */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1673,14 +1857,7 @@ a, button, input, textarea, select, label,
   to   { opacity: 0; transform: translateY(-80px); }
 }
 
-@keyframes bgShift {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-
-/* ═══════════════════════════════════════════
-   RESPONSIVE — TABLET & MOBILE
-═══════════════════════════════════════════ */
+/* --- Responsive --- */
 
 /* 1280px: subtle bio text reduction */
 @media (max-width: 1280px) {
@@ -1709,8 +1886,7 @@ a, button, input, textarea, select, label,
   .statements-cta { font-size: 13px; padding: 11px 26px; gap: 8px; letter-spacing: 1.5px; }
   .quote-text { font-size: 29px; min-height: 210px; }
   .quote-attribution { font-size: 10px; letter-spacing: 1.5px; }
-  .section-title { line-height: 1.2; }
-  .services-header .section-title { line-height: 1.45; }
+  .section-title { line-height: 1.3; }
   .service-card p { font-size: 16px; }
   .services-header p { font-size: 16px; }
   .contact-left p { font-size: 16px; line-height: 1.7; }
@@ -1752,8 +1928,12 @@ a, button, input, textarea, select, label,
 
   /* Portfolio */
   .portfolio { padding: 80px 24px; }
-  .bento-grid { grid-auto-rows: minmax(160px, auto); }
+  .bento-grid { grid-auto-rows: 160px; }
   .bento-tall { grid-row: span 1; }
+  .bento-wide { grid-column: span 1; }
+  .bento-label { opacity: 1; transform: translateY(0); font-size: 14px; }
+  .bento-label span { font-size: 11px; margin-bottom: 2px; }
+  .bento-view { opacity: 1; transform: scale(1); }
 
   /* About */
   .about { padding: 80px 24px; }
@@ -1779,9 +1959,7 @@ a, button, input, textarea, select, label,
   .info-card { grid-template-columns: 1fr; }
 }
 
-/* ═══════════════════════════════════════════
-   LEGAL / IMPRINT PAGE
-═══════════════════════════════════════════ */
+/* Legal page */
 .legal-header {
   position: relative;
   z-index: 1;
@@ -1798,7 +1976,7 @@ a, button, input, textarea, select, label,
   font-family: 'Outfit', sans-serif;
   font-size: clamp(34px, 4.9vw, 67px);
   letter-spacing: -1px;
-  line-height: 0.95;
+  line-height: 1.05;
   color: var(--text);
   margin-bottom: 24px;
 }
@@ -1962,9 +2140,7 @@ a, button, input, textarea, select, label,
   .info-card-value { font-size: 15px; }
 }
 
-/* ═══════════════════════════════════════════
-   REDUCED MOTION — accessibility & low-power
-═══════════════════════════════════════════ */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -2015,9 +2191,7 @@ a, button, input, textarea, select, label,
   .portfolio-footer p { font-size: 10px; }
 }
 
-/* ═══════════════════════════════════════════
-   404 PAGE
-═══════════════════════════════════════════ */
+/* 404 */
 .e404-page {
   min-height: 100vh;
   display: flex;
@@ -2177,7 +2351,7 @@ a, button, input, textarea, select, label,
 }
 
 .e404-nav-links a {
-  font-size: 13px;
+  font-size: 20px;
   color: var(--text-secondary);
   text-decoration: none;
   letter-spacing: 0.05em;

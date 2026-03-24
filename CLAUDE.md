@@ -22,7 +22,7 @@ Domain: stoeffel-media.com.au | Hosted on Hostinger (cPanel, traditional FTP upl
 ```
 stoeffel-media-au/
 ├── index.html          ← Single page site (all sections)
-├── impressum.html      ← Legal notice (Australian compliance)
+├── legal.html          ← Legal notice (Australian compliance)
 ├── css/style.css       ← All styles
 ├── js/main.js          ← All JS (cursor, fluid sim, animations, form)
 ├── php/

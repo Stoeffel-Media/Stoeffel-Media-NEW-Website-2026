@@ -1,0 +1,10 @@
+# Block all direct browser access to this directory.
+# PHP can still include/require these files server-side.
+<Files "*">
+    Require all denied
+</Files>
+
+# Allow contact.php to receive POST requests from the form
+<Files "contact.php">
+    Require all granted
+</Files>

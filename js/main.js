@@ -1,11 +1,7 @@
-/* ═══════════════════════════════════════════
-   STOEFFEL-MEDIA — main.js
-═══════════════════════════════════════════ */
+/* main.js — Stoeffel-Media */
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ═══════════════════════════════════════════
-// TYPEWRITER EFFECT (hero-sub)
-// ═══════════════════════════════════════════
+// Typewriter
 (function() {
   const el = document.querySelector('[data-typewriter]');
   if (!el) return;
@@ -79,9 +75,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   timer = setTimeout(type, DELAY_START);
 })();
 
-// ═══════════════════════════════════════════
-// CUSTOM CURSOR
-// ═══════════════════════════════════════════
+// --- Cursor ---
 (function() {
   const cursor = document.getElementById('cursor');
   if (!cursor) return;
@@ -139,9 +133,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   });
 })();
 
-// ═══════════════════════════════════════════
-// MENU OVERLAY
-// ═══════════════════════════════════════════
+// Menu
 (function() {
   const menuOverlay = document.getElementById('menu-overlay');
   const menuOpenBtn = document.querySelector('.nav-menu-btn');
@@ -155,9 +147,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   });
 })();
 
-// ═══════════════════════════════════════════
-// LOGO SCROLL FADE
-// ═══════════════════════════════════════════
+// Logo fade on scroll
 (function() {
   const navLogo = document.querySelector('.nav-logo');
   const navLogoCenter = document.getElementById('nav-logo-center');
@@ -190,9 +180,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   }, { passive: true });
 })();
 
-// ═══════════════════════════════════════════
-// SCROLL REVEAL
-// ═══════════════════════════════════════════
+// Scroll reveal
 (function() {
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -205,9 +193,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 })();
 
-// ═══════════════════════════════════════════
-// ANIMATED DOT PATTERN (Hero background)
-// ═══════════════════════════════════════════
+// --- Dot pattern (hero bg) ---
 (function() {
   const dotCanvas = document.getElementById('dot-pattern');
   if (!dotCanvas) return;
@@ -268,10 +254,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   requestAnimationFrame(draw);
 })();
 
-// ═══════════════════════════════════════════
-// WEBGL FLUID SIMULATION
-// Navier-Stokes fluid dynamics (orange, #f08932)
-// ═══════════════════════════════════════════
+// --- WebGL fluid sim ---
 (function() {
   const canvas = document.getElementById('fluid-canvas');
   if (!canvas) return;
@@ -625,9 +608,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   init();
 })();
 
-// ═══════════════════════════════════════════
-// BUSINESS STATEMENTS ROTATOR
-// ═══════════════════════════════════════════
+// Statements rotator
 (function() {
   const items = document.querySelectorAll('.statement-item');
   if (!items.length) return;
@@ -671,38 +652,143 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 })();
 
 
-// ═══════════════════════════════════════════
-// PORTFOLIO LIGHTBOX
-// ═══════════════════════════════════════════
+// --- Lightbox ---
 (function() {
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
   if (!lightbox) return;
 
-  document.querySelectorAll('.bento-img[data-full]').forEach(item => {
-    item.addEventListener('click', () => {
-      lightboxImg.src = item.dataset.full;
-      lightboxImg.alt = item.dataset.alt || '';
-      lightbox.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
+  const lightboxInner = lightbox.querySelector('.lightbox-inner');
+  const scrollHint = document.getElementById('lightbox-scroll-hint');
+  let hintTimeout;
+
+  const galleryItems = Array.from(document.querySelectorAll('.bento-img[data-full]'));
+  let currentIndex = 0;
+
+  function showImage(index) {
+    clearTimeout(hintTimeout);
+    scrollHint.classList.remove('visible');
+
+    currentIndex = index;
+    const item = galleryItems[currentIndex];
+    lightboxImg.src = item.dataset.full;
+    lightboxImg.alt = item.dataset.alt || '';
+    lightbox.classList.add('open');
+    lightboxInner.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    if (typeof lenis !== 'undefined') lenis.stop();
+
+    lightboxImg.onload = () => {
+      if (lightboxInner.scrollHeight > lightboxInner.clientHeight) {
+        scrollHint.classList.add('visible');
+        hintTimeout = setTimeout(() => scrollHint.classList.remove('visible'), 2500);
+      }
+    };
+  }
+
+  function navigateTo(index) {
+    if (index < 0) index = galleryItems.length - 1;
+    if (index >= galleryItems.length) index = 0;
+    showImage(index);
+  }
+
+  galleryItems.forEach((item, i) => {
+    item.addEventListener('click', () => showImage(i));
   });
+
+  lightboxPrev?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateTo(currentIndex - 1);
+  });
+
+  lightboxNext?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateTo(currentIndex + 1);
+  });
+
+  // Hide hint on scroll
+  lightboxInner.addEventListener('scroll', () => {
+    scrollHint.classList.remove('visible');
+    clearTimeout(hintTimeout);
+  }, { passive: true });
 
   function closeLightbox() {
     lightbox.classList.remove('open');
     document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined') lenis.start();
     setTimeout(() => { lightboxImg.src = ''; }, 300);
   }
 
   lightboxClose?.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') navigateTo(currentIndex - 1);
+    if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') navigateTo(currentIndex + 1);
+  });
+
+  // Click-to-close only when clicking the background, not during drag
+  let dragMoved = false;
+  lightboxInner.addEventListener('mousedown', () => { dragMoved = false; });
+  lightboxInner.addEventListener('mousemove', () => { dragMoved = true; });
+  lightboxInner.addEventListener('click', (e) => {
+    if (!dragMoved && e.target === lightboxInner) closeLightbox();
+  });
+
+  // Click-and-drag to scroll
+  let isDragging = false;
+  let startY = 0;
+  let scrollStart = 0;
+
+  lightboxInner.addEventListener('mousedown', (e) => {
+    if (e.target === lightboxClose) return;
+    isDragging = true;
+    startY = e.clientY;
+    scrollStart = lightboxInner.scrollTop;
+    lightboxInner.style.cursor = 'grab';
+    lightboxInner.style.userSelect = 'none';
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    lightboxInner.style.cursor = 'grabbing';
+    lightboxInner.scrollTop = scrollStart - (e.clientY - startY);
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    lightboxInner.style.cursor = '';
+    lightboxInner.style.userSelect = '';
+  });
+
+  // Swipe left/right to navigate (touch devices)
+  let swipeStartX = 0;
+  let swipeStartY = 0;
+  let swiping = false;
+
+  lightboxInner.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+    swiping = true;
+  }, { passive: true });
+
+  lightboxInner.addEventListener('touchend', (e) => {
+    if (!swiping) return;
+    swiping = false;
+    const dx = e.changedTouches[0].clientX - swipeStartX;
+    const dy = e.changedTouches[0].clientY - swipeStartY;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) navigateTo(currentIndex + 1);
+    else navigateTo(currentIndex - 1);
+  }, { passive: true });
 })();
 
-// ═══════════════════════════════════════════
-// CONTACT FORM — FETCH SUBMIT
-// ═══════════════════════════════════════════
+// Contact form
 (function() {
   const form = document.getElementById('contact-form');
   if (!form) return;
@@ -721,7 +807,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 
     try {
       const data = new FormData(form);
-      const res = await fetch('../php/contact.php', {
+      const res = await fetch('php/contact.php', {
         method: 'POST',
         body: data,
       });
@@ -745,9 +831,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   });
 })();
 
-// ═══════════════════════════════════════════
-// SMOOTH HERO PARALLAX ON SCROLL
-// ═══════════════════════════════════════════
+// Hero parallax
 (function() {
   const heroHeading = document.querySelector('.hero-heading');
   const heroSub = document.querySelector('.hero-sub');
@@ -765,9 +849,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   }
 })();
 
-// ═══════════════════════════════════════════
-// LIGHT RAYS — WebGL Shader
-// ═══════════════════════════════════════════
+// --- Light rays ---
 (function() {
   const canvas = document.getElementById('rays-canvas');
   if (!canvas || reducedMotion) { if (canvas) canvas.style.display = 'none'; return; }
@@ -884,9 +966,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   requestAnimationFrame(draw);
 })();
 
-// ═══════════════════════════════════════════
-// DRAGGABLE SERVICE CARDS
-// ═══════════════════════════════════════════
+// Draggable service cards
 (function() {
   if (window.innerWidth <= 768) return;
   const grid = document.querySelector('.services-grid');
@@ -976,9 +1056,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   grid.addEventListener('pointerdown', onPointerDown);
 })();
 
-// ═══════════════════════════════════════════
-// VIDEO PAUSE WHEN OFF-SCREEN
-// ═══════════════════════════════════════════
+// Pause off-screen videos
 (function() {
   document.querySelectorAll('.statements-video-bg video, .contact-video-bg video').forEach(video => {
     function tryPlay() {
@@ -999,9 +1077,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   });
 })();
 
-// ═══════════════════════════════════════════
-// ROTATING QUOTE — TYPEWRITER + FADE
-// ═══════════════════════════════════════════
+// --- Rotating quotes ---
 (function() {
   const el = document.getElementById('rotating-quote');
   if (!el || reducedMotion) return;
@@ -1046,15 +1122,13 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     if (entry.isIntersecting) {
       observer.disconnect();
       setTimeout(() => typeText(quotes[0]), 200);
-      const rotateInterval = setInterval(next, 6000);
+      setInterval(next, 6000);
     }
   }, { threshold: 0.4 });
   observer.observe(el.closest('section') || el.parentElement);
 })();
 
-// ═══════════════════════════════════════════
-// STATS — STAGGER FADE + COUNT-UP
-// ═══════════════════════════════════════════
+// Stats count-up
 (function() {
   const statsEl = document.querySelector('.about-stats');
   if (!statsEl) return;
@@ -1098,26 +1172,24 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   observer.observe(statsEl);
 })();
 
-// ═══════════════════════════════════════════
-// SERVICE CARD BACKGROUND ANIMATIONS
-// ═══════════════════════════════════════════
+// --- Service card canvas animations ---
 (function() {
   if (reducedMotion) return;
 
   // ── Card 01: Graphic Design — floating geometric shapes ──
   function initDesign(w, h) {
-    const types = ['circle', 'triangle', 'square'];
+    const types = ['circle', 'triangle', 'square', 'diamond', 'hexagon'];
     const shapes = [];
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 16; i++) {
       shapes.push({
         x: Math.random() * w,
-        y: Math.random() * h,
-        r: 18 + Math.random() * 52,
+        y: i < 6 ? Math.random() * h * 0.4 : Math.random() * h,
+        r: 14 + Math.random() * 48,
         vx: (Math.random() - 0.5) * 0.35,
         vy: (Math.random() - 0.5) * 0.35,
         rot: Math.random() * Math.PI * 2,
         vrot: (Math.random() - 0.5) * 0.007,
-        type: types[Math.floor(Math.random() * 3)],
+        type: types[Math.floor(Math.random() * types.length)],
         alpha: 0.04 + Math.random() * 0.08
       });
     }
@@ -1145,8 +1217,22 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
         ctx.lineTo(s.r * 0.866, s.r * 0.5);
         ctx.lineTo(-s.r * 0.866, s.r * 0.5);
         ctx.closePath();
-      } else {
+      } else if (s.type === 'square') {
         ctx.rect(-s.r * 0.5, -s.r * 0.5, s.r, s.r);
+      } else if (s.type === 'diamond') {
+        ctx.moveTo(0, -s.r);
+        ctx.lineTo(s.r * 0.6, 0);
+        ctx.lineTo(0, s.r);
+        ctx.lineTo(-s.r * 0.6, 0);
+        ctx.closePath();
+      } else {
+        for (let v = 0; v < 6; v++) {
+          const a = Math.PI / 3 * v - Math.PI / 6;
+          const hx = Math.cos(a) * s.r * 0.7;
+          const hy = Math.sin(a) * s.r * 0.7;
+          v === 0 ? ctx.moveTo(hx, hy) : ctx.lineTo(hx, hy);
+        }
+        ctx.closePath();
       }
       ctx.stroke();
       ctx.restore();
@@ -1284,9 +1370,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   });
 })();
 
-// ═══════════════════════════════════════════
-// EMAIL OBFUSCATION
-// ═══════════════════════════════════════════
+// Email obfuscation
 (function() {
   document.querySelectorAll('.js-email').forEach(link => {
     const addr = link.dataset.u + '@' + link.dataset.d + '.' + link.dataset.t;

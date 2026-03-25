@@ -95,7 +95,7 @@ $company = clean($_POST['company'] ?? '', 120);
 $email   = clean($_POST['email']   ?? '', 200);
 $phone   = clean($_POST['phone']   ?? '', 30);
 $service = clean($_POST['service'] ?? '', 30);
-$message = clean($_POST['message'] ?? '', 3000);
+$message = clean($_POST['message'] ?? '', 10000);
 
 $errors = [];
 
@@ -147,7 +147,7 @@ if (defined('RECAPTCHA_SECRET') && RECAPTCHA_SECRET !== '') {
 
 // ── 6. Send email via PHPMailer ───────────────────
 // Auto-load PHPMailer. Supports Composer autoload OR manual include.
-$autoload = __DIR__ . '/../../vendor/autoload.php';
+$autoload = __DIR__ . '/../vendor/autoload.php';
 $manualSrc = __DIR__ . '/lib/PHPMailer/src/';
 
 if (file_exists($autoload)) {
@@ -192,26 +192,220 @@ try {
         default     => 'Not specified',
     };
 
-    $mail->isHTML(false);
+    $mail->isHTML(true);
     $mail->Subject = MAIL_SUBJECT;
-    $mail->Body    = implode("\n", [
-        "New enquiry from stoeffel-media.com.au",
-        str_repeat("─", 42),
-        "Name:    {$name}",
-        "Email:   {$email}",
-        "Phone:   " . ($phone ?: '—'),
-        "Company: " . ($company ?: '—'),
-        "Service: {$serviceLabel}",
-        str_repeat("─", 42),
-        "Message:",
-        $message,
-        str_repeat("─", 42),
-        "IP: {$ip}",
-        "Time: " . date('Y-m-d H:i:s T'),
-    ]);
+
+    $messageHtml = nl2br(htmlspecialchars($message, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    $time        = date('d M Y, H:i T');
+
+    $mail->Body = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#181818;font-family:Arial,Helvetica,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#181818;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:#202020;padding:36px 40px;border-radius:12px 12px 0 0;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td valign="middle">
+                  <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;">New Enquiry</h1>
+                  <p style="margin:6px 0 0;font-size:14px;"><a href="https://stoeffel-media.com.au" style="color:#f08932;text-decoration:none;">stoeffel-media.com.au</a></p>
+                </td>
+                <td valign="middle" align="right">
+                  <img src="https://stoeffel-media.com.au/img/logo.svg" alt="Stoeffel-Media" height="28" style="display:block;" />
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Contact details -->
+        <tr>
+          <td style="background:#252525;padding:36px 40px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;margin:0 0 8px;">Name</p>
+                  <p style="margin:0;font-size:17px;color:#ffffff;font-weight:600;">{$name}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Email</p>
+                  <p style="margin:0;font-size:17px;color:#ffffff;">{$email}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Phone</p>
+                  <p style="margin:0;font-size:17px;color:#ffffff;">{$phone}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Company</p>
+                  <p style="margin:0;font-size:17px;color:#ffffff;">{$company}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:16px 0;">
+                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Service</p>
+                  <p style="margin:0;font-size:17px;color:#ffffff;">{$serviceLabel}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Message -->
+        <tr>
+          <td style="background:#252525;padding:0 40px 36px;">
+            <div style="background:#2e2e2e;border-left:4px solid #f08932;border-radius:0 8px 8px 0;padding:20px 24px;margin-top:4px;">
+              <p style="margin:0 0 10px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Message</p>
+              <p style="margin:0;font-size:16px;color:#dddddd;line-height:1.7;">{$messageHtml}</p>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#181818;padding:20px 40px;border-radius:0 0 12px 12px;">
+            <p style="margin:0;font-size:12px;color:#444444;">IP: {$ip} &nbsp;&middot;&nbsp; {$time}</p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+
+</body>
+</html>
+HTML;
+
+    $mail->AltBody = "New enquiry from stoeffel-media.com.au\n\nName: {$name}\nEmail: {$email}\nPhone: {$phone}\nCompany: {$company}\nService: {$serviceLabel}\n\nMessage:\n{$message}\n\nIP: {$ip} | {$time}";
 
     $mail->send();
-    respond(true, 'Thank you — message received. We\'ll be in touch within one business day.');
+
+    // ── Confirmation email to the sender ─────────────
+    $confirm = new PHPMailer(true);
+    $confirm->isSMTP();
+    $confirm->Host       = SMTP_HOST;
+    $confirm->SMTPAuth   = true;
+    $confirm->Username   = SMTP_USER;
+    $confirm->Password   = SMTP_PASS;
+    $confirm->SMTPSecure = SMTP_SECURE === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
+    $confirm->Port       = SMTP_PORT;
+    $confirm->CharSet    = 'UTF-8';
+
+    $confirm->setFrom(MAIL_FROM, 'Stoeffel-Media');
+    $confirm->addAddress($email, $name);
+    $confirm->isHTML(true);
+    $confirm->Subject = 'Thanks for your enquiry — Stoeffel-Media';
+
+    $firstName = explode(' ', $name)[0];
+
+    $confirm->Body = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#181818;font-family:Arial,Helvetica,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#181818;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:#202020;padding:36px 40px;border-radius:12px 12px 0 0;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td valign="middle">
+                  <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;">Thanks for reaching out.</h1>
+                  <p style="margin:6px 0 0;font-size:14px;"><a href="https://stoeffel-media.com.au" style="color:#f08932;text-decoration:none;">stoeffel-media.com.au</a></p>
+                </td>
+                <td valign="middle" align="right">
+                  <img src="https://stoeffel-media.com.au/img/logo.svg" alt="Stoeffel-Media" height="28" style="display:block;" />
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Intro -->
+        <tr>
+          <td style="background:#252525;padding:36px 40px 28px;">
+            <p style="margin:0 0 16px;font-size:17px;color:#ffffff;line-height:1.7;">Hi {$firstName},</p>
+            <p style="margin:0 0 16px;font-size:17px;color:#cccccc;line-height:1.7;">We received your message and will get back to you as soon as possible.</p>
+            <p style="margin:0;font-size:17px;color:#cccccc;line-height:1.7;">In the meantime, here's a copy of what you sent.</p>
+          </td>
+        </tr>
+
+        <!-- Summary -->
+        <tr>
+          <td style="background:#252525;padding:0 40px 0;">
+            <div style="border-top:1px solid rgba(255,255,255,0.08);"></div>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#252525;padding:24px 40px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Service</p>
+                  <p style="margin:0;font-size:17px;color:#ffffff;">{$serviceLabel}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#252525;padding:0 40px 36px;">
+            <div style="background:#2e2e2e;border-left:4px solid #f08932;border-radius:0 8px 8px 0;padding:20px 24px;margin-top:24px;">
+              <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Your message</p>
+              <p style="margin:0;font-size:16px;color:#dddddd;line-height:1.7;">{$messageHtml}</p>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Sign-off -->
+        <tr>
+          <td style="background:#202020;padding:28px 40px;">
+            <p style="margin:0 0 4px;font-size:15px;color:#ffffff;font-weight:600;">Andreas Stöffel</p>
+            <p style="margin:0 0 12px;font-size:14px;color:#8e8e8e;">Stoeffel-Media — Web, Design &amp; Marketing</p>
+            <p style="margin:0;font-size:14px;color:#666666;">
+              <a href="mailto:info@stoeffel-media.com.au" style="color:#f08932;text-decoration:none;">info@stoeffel-media.com.au</a>
+              &nbsp;&middot;&nbsp;
+              <a href="https://stoeffel-media.com.au" style="color:#f08932;text-decoration:none;">stoeffel-media.com.au</a>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#181818;padding:20px 40px;border-radius:0 0 12px 12px;">
+            <p style="margin:0;font-size:12px;color:#444444;">You are receiving this email because you submitted a contact form on <a href="https://stoeffel-media.com.au" style="color:#444444;text-decoration:underline;">stoeffel-media.com.au</a>.</p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+
+</body>
+</html>
+HTML;
+
+    $confirm->AltBody = "Hi {$firstName},\n\nThanks for reaching out. I received your message and will get back to you as soon as possible.\n\nHere's a copy of what you sent:\n\nService: {$serviceLabel}\n\nMessage:\n{$message}\n\n---\nAndreas Stöffel\nStoeffel-Media\ninfo@stoeffel-media.com.au\nstoeffel-media.com.au";
+
+    $confirm->send();
+
+    respond(true, 'Thank you — we\'ll be in touch as soon as possible.');
 
 } catch (Exception $e) {
     error_log('[Stoeffel-Media] Mail error: ' . $e->getMessage());

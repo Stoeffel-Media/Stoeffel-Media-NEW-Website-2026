@@ -142,6 +142,12 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 
   menuOpenBtn.addEventListener('click', () => menuOverlay.classList.add('open'));
   menuCloseBtn?.addEventListener('click', () => menuOverlay.classList.remove('open'));
+  menuOverlay.addEventListener('click', (e) => {
+    if (!e.target.closest('.menu-nav, #menu-close')) menuOverlay.classList.remove('open');
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuOverlay.classList.contains('open')) menuOverlay.classList.remove('open');
+  });
   menuOverlay.querySelectorAll('.menu-nav a').forEach(a => {
     a.addEventListener('click', () => menuOverlay.classList.remove('open'));
   });
@@ -793,6 +799,18 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   const form = document.getElementById('contact-form');
   if (!form) return;
 
+  // ── reCAPTCHA v3 ──────────────────────────────────
+  // Replace the value below with your Site Key from https://www.google.com/recaptcha/admin
+  const RECAPTCHA_SITE_KEY = '6LeSi5csAAAAAJbhzWCkeKS1lEIqv7a8QjTGHIns';
+
+  if (RECAPTCHA_SITE_KEY && RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY') {
+    const s = document.createElement('script');
+    s.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -800,13 +818,50 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     const msg = form.querySelector('.form-message');
     const originalText = btn.textContent;
 
+    msg.className = 'form-message';
+
+    // Clear previous field errors
+    form.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+
+    // Client-side validation
+    const nameField    = form.querySelector('[name="name"]');
+    const emailField   = form.querySelector('[name="email"]');
+    const messageField = form.querySelector('[name="message"]');
+    const nameVal      = (nameField?.value    || '').trim();
+    const emailVal     = (emailField?.value   || '').trim();
+    const messageVal   = (messageField?.value || '').trim();
+    const emailOk      = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+
+    const missing = [];
+    if (!nameVal)               { nameField?.classList.add('field-error');    missing.push('your name'); }
+    if (!emailOk)               { emailField?.classList.add('field-error');   missing.push('a valid email address'); }
+    if (messageVal.length < 10) { messageField?.classList.add('field-error'); missing.push('a message'); }
+
+    if (missing.length) {
+      const last = missing.pop();
+      const text = missing.length ? `${missing.join(', ')} and ${last}` : last;
+      msg.textContent = `Please enter ${text}.`;
+      msg.classList.add('error');
+      return;
+    }
+
     btn.disabled = true;
     btn.textContent = 'Sending…';
-    msg.className = 'form-message';
-    msg.style.display = 'none';
 
     try {
       const data = new FormData(form);
+
+      // Append reCAPTCHA token if available
+      if (RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY' && typeof grecaptcha !== 'undefined') {
+        const token = await new Promise(resolve => {
+          grecaptcha.ready(() => {
+            grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact' })
+              .then(resolve).catch(() => resolve(''));
+          });
+        });
+        if (token) data.append('recaptcha_token', token);
+      }
+
       const res = await fetch('php/contact.php', {
         method: 'POST',
         body: data,
@@ -1056,19 +1111,29 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   grid.addEventListener('pointerdown', onPointerDown);
 })();
 
-// Pause off-screen videos
+// Lazy-load and pause off-screen videos
 (function() {
   document.querySelectorAll('.statements-video-bg video, .contact-video-bg video').forEach(video => {
-    function tryPlay() {
-      if (video.readyState >= 2) {
-        video.play().catch(() => {});
-      } else {
+    let loaded = false;
+    function loadAndPlay() {
+      if (!loaded) {
+        loaded = true;
+        video.querySelectorAll('source[data-src]').forEach(source => {
+          source.src = source.dataset.src;
+        });
+        video.load();
         video.addEventListener('canplay', () => video.play().catch(() => {}), { once: true });
+      } else {
+        if (video.readyState >= 2) {
+          video.play().catch(() => {});
+        } else {
+          video.addEventListener('canplay', () => video.play().catch(() => {}), { once: true });
+        }
       }
     }
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        tryPlay();
+        loadAndPlay();
       } else {
         video.pause();
       }

@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>html,body{background:#202020}</style>
 
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-97L1HMC2G7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-97L1HMC2G7');
+  </script>
+
   <!-- SEO -->
   <title>Graphic Design | Web Design & Digital Marketing Sydney — Stoeffel-Media</title>
   <meta name="description" content="Stoeffel-Media is a digital studio in Sydney for web design, graphic design, and digital marketing. Branding, SEO, and online marketing under one roof. Available Australia-wide and beyond." />
@@ -159,8 +168,8 @@
   <!-- Statements -->
   <section class="statements" aria-label="Our philosophy">
     <div class="statements-video-bg" aria-hidden="true">
-      <video autoplay muted loop playsinline preload="auto">
-        <source src="img/video/contact_bg2.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="none">
+        <source data-src="img/video/contact_bg2.mp4" type="video/mp4">
       </video>
     </div>
     <div class="statements-stage" aria-live="polite" aria-atomic="true">
@@ -503,7 +512,7 @@
     <!-- Background video -->
     <div class="contact-video-bg" aria-hidden="true">
       <video autoplay muted loop playsinline preload="none">
-        <source src="img/video/contact_bg3.mp4" type="video/mp4">
+        <source data-src="img/video/contact_bg3.mp4" type="video/mp4">
       </video>
     </div>
 
@@ -576,10 +585,11 @@
             <label for="f-message">Message *</label>
             <textarea id="f-message" name="message" required
                       placeholder="Tell us about your project, your timeline, and any specifics that matter."
-                      maxlength="3000"></textarea>
+                      maxlength="10000"></textarea>
           </div>
 
           <button type="submit" class="form-submit hoverable">Send Message</button>
+          <p class="recaptcha-notice">Protected by reCAPTCHA &mdash; <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy</a> &amp; <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms</a></p>
           <div class="form-message" role="alert" aria-live="polite"></div>
 
         </form>

@@ -1318,7 +1318,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
         });
       }
     }
-    return { dots, scanX: -20, scanSpeed: w / 160 };
+    return { dots, scanX: -20, scanSpeed: w / 320 };
   }
 
   function drawDev(ctx, w, h, state) {
@@ -1359,7 +1359,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   }
 
   function drawMarketing(ctx, w, h, state) {
-    state.t += 0.016;
+    state.t += 0.008;
     const maxR = Math.max(w, h) * 0.42;
     state.sources.forEach(src => {
       for (let i = 0; i < 5; i++) {
@@ -1395,6 +1395,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     let raf = null;
     let running = false;
     let state = null;
+    let lastTs = 0;
 
     function resize() {
       canvas.width  = card.offsetWidth;
@@ -1424,8 +1425,10 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
       card.addEventListener('mouseleave', stop);
     }
 
-    function loop() {
+    function loop(ts) {
       if (!running) { raf = null; return; }
+      if (ts - lastTs < 16.67) { raf = requestAnimationFrame(loop); return; }
+      lastTs = ts;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (type === 'design')   drawDesign(ctx, canvas.width, canvas.height, state);
       else if (type === 'dev') drawDev(ctx, canvas.width, canvas.height, state);

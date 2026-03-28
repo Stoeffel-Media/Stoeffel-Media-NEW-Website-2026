@@ -177,6 +177,7 @@ try {
     $mail->SMTPSecure = SMTP_SECURE === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = SMTP_PORT;
     $mail->CharSet    = 'UTF-8';
+    $mail->XMailer    = ' ';
 
     // From / To
     $mail->setFrom(MAIL_FROM, 'Stoeffel-Media Website');
@@ -253,12 +254,6 @@ try {
                   <p style="margin:0;font-size:17px;color:#ffffff;">{$company}</p>
                 </td>
               </tr>
-              <tr>
-                <td style="padding:16px 0;">
-                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Service</p>
-                  <p style="margin:0;font-size:17px;color:#ffffff;">{$serviceLabel}</p>
-                </td>
-              </tr>
             </table>
           </td>
         </tr>
@@ -267,6 +262,8 @@ try {
         <tr>
           <td style="background:#252525;padding:0 40px 36px;">
             <div style="background:#2e2e2e;border-left:4px solid #f08932;border-radius:0 8px 8px 0;padding:20px 24px;margin-top:4px;">
+              <p style="margin:0 0 4px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Service</p>
+              <p style="margin:0 0 20px;font-size:17px;color:#ffffff;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08);">{$serviceLabel}</p>
               <p style="margin:0 0 10px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Message</p>
               <p style="margin:0;font-size:16px;color:#dddddd;line-height:1.7;">{$messageHtml}</p>
             </div>
@@ -302,11 +299,12 @@ HTML;
     $confirm->SMTPSecure = SMTP_SECURE === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
     $confirm->Port       = SMTP_PORT;
     $confirm->CharSet    = 'UTF-8';
+    $confirm->XMailer    = ' ';
 
     $confirm->setFrom(MAIL_FROM, 'Stoeffel-Media');
     $confirm->addAddress($email, $name);
     $confirm->isHTML(true);
-    $confirm->Subject = 'Thanks for your enquiry — Stoeffel-Media';
+    $confirm->Subject = 'Thanks for your enquiry - Stoeffel-Media';
 
     $firstName = explode(' ', $name)[0];
 
@@ -353,20 +351,10 @@ HTML;
           </td>
         </tr>
         <tr>
-          <td style="background:#252525;padding:24px 40px 0;">
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08);">
-                  <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Service</p>
-                  <p style="margin:0;font-size:17px;color:#ffffff;">{$serviceLabel}</p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td style="background:#252525;padding:0 40px 36px;">
-            <div style="background:#2e2e2e;border-left:4px solid #f08932;border-radius:0 8px 8px 0;padding:20px 24px;margin-top:24px;">
+          <td style="background:#252525;padding:24px 40px 36px;">
+            <div style="background:#2e2e2e;border-left:4px solid #f08932;border-radius:0 8px 8px 0;padding:20px 24px;">
+              <p style="margin:0 0 4px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Service</p>
+              <p style="margin:0 0 20px;font-size:17px;color:#ffffff;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08);">{$serviceLabel}</p>
               <p style="margin:0 0 8px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#666666;font-weight:700;">Your message</p>
               <p style="margin:0;font-size:16px;color:#dddddd;line-height:1.7;">{$messageHtml}</p>
             </div>

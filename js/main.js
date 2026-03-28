@@ -611,7 +611,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     update();
   }
 
-  init();
+  window.addEventListener('load', () => { init(); });
 })();
 
 // Statements rotator
@@ -799,26 +799,24 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  // ── reCAPTCHA v3 ──────────────────────────────────
-  // Replace the value below with your Site Key from https://www.google.com/recaptcha/admin
-  const RECAPTCHA_SITE_KEY = '6LeSi5csAAAAAJbhzWCkeKS1lEIqv7a8QjTGHIns';
+  const toast = document.getElementById('toast');
+  let toastTimer = null;
 
-  if (RECAPTCHA_SITE_KEY && RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY') {
-    const s = document.createElement('script');
-    s.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
-    s.async = true;
-    s.defer = true;
-    document.head.appendChild(s);
+  function showToast(text, type) {
+    if (!toast) return;
+    clearTimeout(toastTimer);
+    toast.textContent = text;
+    toast.className = `toast toast--${type} toast--visible`;
+    toastTimer = setTimeout(() => {
+      toast.classList.remove('toast--visible');
+    }, 5000);
   }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const btn = form.querySelector('.form-submit');
-    const msg = form.querySelector('.form-message');
     const originalText = btn.textContent;
-
-    msg.className = 'form-message';
 
     // Clear previous field errors
     form.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
@@ -840,8 +838,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     if (missing.length) {
       const last = missing.pop();
       const text = missing.length ? `${missing.join(', ')} and ${last}` : last;
-      msg.textContent = `Please enter ${text}.`;
-      msg.classList.add('error');
+      showToast(`Please enter ${text}.`, 'error');
       return;
     }
 
@@ -851,17 +848,6 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     try {
       const data = new FormData(form);
 
-      // Append reCAPTCHA token if available
-      if (RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY' && typeof grecaptcha !== 'undefined') {
-        const token = await new Promise(resolve => {
-          grecaptcha.ready(() => {
-            grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact' })
-              .then(resolve).catch(() => resolve(''));
-          });
-        });
-        if (token) data.append('recaptcha_token', token);
-      }
-
       const res = await fetch('php/contact.php', {
         method: 'POST',
         body: data,
@@ -869,16 +855,13 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
       const json = await res.json();
 
       if (json.success) {
-        msg.textContent = json.message || 'Message sent. We\'ll be in touch soon.';
-        msg.classList.add('success');
+        showToast(json.message || 'Message sent. We\'ll be in touch soon.', 'success');
         form.reset();
       } else {
-        msg.textContent = json.message || 'Something went wrong. Please try again or email us directly.';
-        msg.classList.add('error');
+        showToast(json.message || 'Something went wrong. Please try again or email us directly.', 'error');
       }
     } catch (err) {
-      msg.textContent = 'Connection error. Please email us directly at info@stoeffel-media.com.au';
-      msg.classList.add('error');
+      showToast('Connection error. Please email us directly at info@stoeffel-media.com.au', 'error');
     }
 
     btn.disabled = false;

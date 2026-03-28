@@ -81,7 +81,7 @@
       { "@type": "Country", "name": "Australia" }
     ],
     "sameAs": [
-      "https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/"
+      "https://www.linkedin.com/in/andreas-stoffel1/"
     ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
@@ -127,8 +127,8 @@
 
   <!-- Nav -->
   <nav class="nav" aria-label="Main navigation">
-    <a href="/" class="nav-logo hoverable" aria-label="Stoeffel-Media home"><img src="img/logo.svg" alt="Stoeffel-Media" height="28" /></a>
-    <a href="#" class="nav-logo-center hoverable" id="nav-logo-center" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"><img src="img/logo.svg" alt="Stoeffel-Media" height="18" /></a>
+    <a href="/" class="nav-logo hoverable" aria-label="Stoeffel-Media home"><img src="img/logo.svg" alt="Stoeffel-Media" width="125" height="28" /></a>
+    <a href="#" class="nav-logo-center hoverable" id="nav-logo-center" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"><img src="img/logo.svg" alt="Stoeffel-Media" width="81" height="18" /></a>
     <button class="nav-menu-btn hoverable" aria-label="Open navigation menu" aria-expanded="false">
       Menu
       <div class="hamburger" aria-hidden="true"><span></span><span></span></div>
@@ -147,6 +147,8 @@
     </ul>
   </div>
 
+  <main id="main-content">
+
   <!-- Hero -->
   <section class="hero" aria-labelledby="hero-heading">
     <canvas id="rays-canvas" aria-hidden="true"></canvas>
@@ -161,7 +163,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
     <div class="hero-scroll" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      <span class="hero-scroll-label">Scroll</span>
+      <div class="hero-scroll-ring">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
     </div>
   </section>
 
@@ -195,6 +200,7 @@
 
   <!-- Services -->
   <section class="services" id="services" aria-labelledby="services-title">
+    <div class="services-inner">
     <div class="services-header">
       <div class="section-label reveal">What We Do</div>
       <h2 class="section-title reveal" id="services-title">Design, Web &amp; Marketing.<br>One Studio.</h2>
@@ -266,6 +272,7 @@
       </article>
 
     </div>
+    </div>
   </section>
 
   <!-- Quote -->
@@ -294,8 +301,11 @@
       <div class="bento-item bento-wide bento-img hoverable reveal"
            data-full="img/work-samples/header_wd.jpg"
            data-alt="Jewellery Brand — Website Header">
-        <img src="img/work-samples/thumbs/header_wd.jpg"
-             alt="Jewellery Brand — Website Header" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/header_wd.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/header_wd.jpg"
+               alt="Jewellery Brand — Website Header" loading="lazy" width="1000" height="400" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Web Design</span> Jewellery Brand</div>
       </div>
@@ -312,8 +322,11 @@
       <div class="bento-item bento-img hoverable reveal"
            data-full="img/work-samples/logo_apptainment.jpg"
            data-alt="APPtainment — Logo Design">
-        <img src="img/work-samples/thumbs/logo_apptainment.jpg"
-             alt="APPtainment — Logo Design" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/logo_apptainment.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/logo_apptainment.jpg"
+               alt="APPtainment — Logo Design" loading="lazy" width="1000" height="741" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Branding</span> APPtainment</div>
       </div>
@@ -321,8 +334,11 @@
       <div class="bento-item bento-img bento-tall hoverable reveal"
            data-full="img/work-samples/website-concept.png"
            data-alt="E-Commerce Concept — Web Design">
-        <img src="img/work-samples/thumbs/website-concept.png"
-             alt="E-Commerce Concept — Web Design" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/website-concept.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/website-concept.png"
+               alt="E-Commerce Concept — Web Design" loading="lazy" width="800" height="1167" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Web Design</span> E-Commerce Concept</div>
       </div>
@@ -331,8 +347,11 @@
       <div class="bento-item bento-img hoverable reveal"
            data-full="img/work-samples/log_medical-rock.png"
            data-alt="Medical Rock — Logo Design">
-        <img src="img/work-samples/thumbs/log_medical-rock.png"
-             alt="Medical Rock — Logo Design" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/log_medical-rock.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/log_medical-rock.png"
+               alt="Medical Rock — Logo Design" loading="lazy" width="800" height="800" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Branding</span> Medical Rock</div>
       </div>
@@ -340,8 +359,11 @@
       <div class="bento-item bento-img hoverable reveal"
            data-full="img/work-samples/login-signup_modal.jpg"
            data-alt="Project X — Login Modal">
-        <img src="img/work-samples/thumbs/login-signup_modal.jpg"
-             alt="Project X — Login Modal" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/login-signup_modal.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/login-signup_modal.jpg"
+               alt="Project X — Login Modal" loading="lazy" width="919" height="720" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>UI Design</span> Project X</div>
       </div>
@@ -355,8 +377,11 @@
       <div class="bento-item bento-wide bento-img hoverable reveal"
            data-full="img/work-samples/website_asset.jpg"
            data-alt="Product Guide — Web Design">
-        <img src="img/work-samples/thumbs/website_asset.jpg"
-             alt="Product Guide — Web Design" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/website_asset.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/website_asset.jpg"
+               alt="Product Guide — Web Design" loading="lazy" width="1200" height="653" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Web Design</span> Product Guide</div>
       </div>
@@ -365,8 +390,11 @@
       <div class="bento-item bento-img bento-tall hoverable reveal"
            data-full="img/work-samples/website_ccls.jpg"
            data-alt="Creative Learning Space — Website">
-        <img src="img/work-samples/thumbs/website_ccls.jpg"
-             alt="Creative Learning Space — Website" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/website_ccls.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/website_ccls.jpg"
+               alt="Creative Learning Space — Website" loading="lazy" width="1200" height="2200" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Web Design</span> Creative Learning Space</div>
       </div>
@@ -374,8 +402,11 @@
       <div class="bento-item bento-wide bento-img hoverable reveal"
            data-full="img/work-samples/teaser_sil.jpg"
            data-alt="Social Impact Lab — App Teaser">
-        <img src="img/work-samples/thumbs/teaser_sil.jpg"
-             alt="Social Impact Lab — App Teaser" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/teaser_sil.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/teaser_sil.jpg"
+               alt="Social Impact Lab — App Teaser" loading="lazy" width="1200" height="717" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>App Design</span> Social Impact Lab</div>
       </div>
@@ -384,8 +415,11 @@
       <div class="bento-item bento-img hoverable reveal"
            data-full="img/work-samples/infographic_cd.png"
            data-alt="Codedoor — Infographic">
-        <img src="img/work-samples/thumbs/infographic_cd.png"
-             alt="Codedoor — Infographic" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/infographic_cd.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/infographic_cd.png"
+               alt="Codedoor — Infographic" loading="lazy" width="825" height="806" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Graphic Design</span> Codedoor</div>
       </div>
@@ -398,8 +432,11 @@
       <div class="bento-item bento-img hoverable reveal"
            data-full="img/work-samples/sm_post.jpg"
            data-alt="Trade Fair Campaign — Social Media">
-        <img src="img/work-samples/thumbs/sm_post.jpg"
-             alt="Trade Fair Campaign — Social Media" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/sm_post.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/sm_post.jpg"
+               alt="Trade Fair Campaign — Social Media" loading="lazy" width="600" height="766" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Marketing</span> Trade Fair Campaign</div>
       </div>
@@ -407,8 +444,11 @@
       <div class="bento-item bento-img hoverable reveal"
            data-full="img/work-samples/website_agency.jpg"
            data-alt="Growth Marketing Agency — Website">
-        <img src="img/work-samples/thumbs/website_agency.jpg"
-             alt="Growth Marketing Agency — Website" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/website_agency.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/website_agency.jpg"
+               alt="Growth Marketing Agency — Website" loading="lazy" width="800" height="1215" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Web Design</span> Marketing Agency</div>
       </div>
@@ -416,8 +456,11 @@
       <div class="bento-item bento-img hoverable reveal"
            data-full="img/work-samples/sm_wd.jpg"
            data-alt="Social Media — Product Teaser">
-        <img src="img/work-samples/thumbs/sm_wd.jpg"
-             alt="Social Media — Product Teaser" loading="lazy" />
+        <picture>
+          <source srcset="img/work-samples/thumbs/sm_wd.webp" type="image/webp" />
+          <img src="img/work-samples/thumbs/sm_wd.jpg"
+               alt="Social Media — Product Teaser" loading="lazy" width="492" height="1000" />
+        </picture>
         <div class="bento-view"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
         <div class="bento-label"><span>Social Media</span> Product Teaser</div>
       </div>
@@ -488,7 +531,7 @@
         <div class="section-label reveal">About</div>
         <h2 class="section-title reveal" id="about-title">One studio.<br>Three skills.<br>Done right.</h2>
         <div class="about-bio reveal reveal-delay-1">
-          <p>We're Stoeffel-Media. A digital studio in Sydney, led by <a href="https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/" target="_blank" rel="noopener noreferrer" class="about-name-link hoverable">Andreas Stöffel</a>, a formally trained and certified graphic designer from Germany. Over 25 years of practice in design and digital, building brands, websites, and marketing campaigns for clients and own projects across different industries and budgets.</p>
+          <p>We're Stoeffel-Media. A digital studio in Sydney, led by <a href="https://www.linkedin.com/in/andreas-stoffel1/" target="_blank" rel="noopener noreferrer" class="about-name-link hoverable">Andreas Stöffel</a>, a formally trained and certified graphic designer from Germany. Over 25 years of practice in design and digital, building brands, websites, and marketing campaigns for clients and own projects across different industries and budgets.</p>
           <p>Design, development, and marketing under one roof. You brief once and we handle the rest. No account managers, no handoffs, no overhead between departments. The work is structured, detail-oriented, and delivered on time.</p>
           <p>Available for projects in Sydney and remotely across Australia and beyond. Direct contact from day one to handover. No surprises.</p>
         </div>
@@ -589,8 +632,6 @@
           </div>
 
           <button type="submit" class="form-submit hoverable">Send Message</button>
-          <p class="recaptcha-notice">Protected by reCAPTCHA &mdash; <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy</a> &amp; <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms</a></p>
-          <div class="form-message" role="alert" aria-live="polite"></div>
 
         </form>
       </div>
@@ -598,12 +639,17 @@
     </div>
   </section>
 
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+  </main>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
 
       <a href="#" class="footer-logo hoverable" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
-        <img src="img/logo.svg" alt="Stoeffel-Media" height="20" />
+        <img src="img/logo.svg" alt="Stoeffel-Media" width="90" height="20" />
       </a>
 
       <ul class="footer-nav" aria-label="Footer navigation">
@@ -615,7 +661,7 @@
 
       <div class="footer-right">
         <div class="footer-social">
-          <a href="https://www.linkedin.com/in/andreas-stoeffel-mediengestalter/" target="_blank" rel="noopener noreferrer" class="hoverable" aria-label="LinkedIn profile">
+          <a href="https://www.linkedin.com/in/andreas-stoffel1/" target="_blank" rel="noopener noreferrer" class="hoverable" aria-label="LinkedIn profile">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
           </a>
         </div>

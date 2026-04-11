@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Portfolio | Andreas Stöffel</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Dot Pattern -->
+  <canvas id="dot-pattern" aria-hidden="true"></canvas>
+
+  <!-- WebGL Fluid Canvas -->
+  <canvas id="fluid-canvas" aria-hidden="true"></canvas>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" aria-hidden="true"></div>
+
+  <!-- Password Overlay (solid backdrop — blocks page content) -->
+  <div id="pw-overlay" role="dialog" aria-modal="true" aria-labelledby="pw-title"></div>
+
+  <!-- Hidden smiley revealed when password card is dragged -->
+  <div id="pw-smiley" aria-hidden="true"></div>
+
+  <!-- Password Card (floats above canvases, draggable) -->
+  <div class="pw-card">
+    <div class="pw-logo">
+      <picture>
+        <source srcset="images/logo_hq.png" media="(min-width: 800px)">
+        <source srcset="images/logo_mid.png" media="(min-width: 400px)">
+        <img src="images/logo_mid.png" alt="Andreas Stöffel" width="213" height="25">
+      </picture>
+    </div>
+    <p class="pw-label">Privates Portfolio</p>
+    <h1 class="pw-heading" id="pw-title">Bitte geben Sie das angegebene Passwort ein</h1>
+    <form class="pw-form" novalidate>
+      <div class="pw-input-wrap">
+        <input type="password" class="pw-input" placeholder="Passwort" autocomplete="current-password" aria-label="Passwort">
+        <button type="button" class="pw-toggle" aria-label="Passwort anzeigen" tabindex="-1">
+          <svg class="eye-show" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="eye-hide" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
+      <p class="pw-error" role="alert"></p>
+      <button type="submit" class="pw-submit">Portfolio öffnen</button>
+    </form>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation">
+    <a class="nav-logo" href="index_de.html" aria-label="Startseite">
+      <picture>
+        <source srcset="images/logo_hq.png" media="(min-width: 800px)">
+        <source srcset="images/logo_mid.png" media="(min-width: 400px)">
+        <img src="images/logo_mid.png" alt="Andreas Stöffel" width="213" height="25">
+      </picture>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#photography">Fotografie</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+      <button class="theme-toggle" aria-label="Theme wechseln">
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="nav-lang">
+        <a href="index.html">EN</a>
+        <span>|</span>
+        <a href="index_de.html" class="active">DE</a>
+      </div>
+      <button class="nav-menu-btn" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="menu-overlay" role="dialog" aria-modal="true">
+    <nav class="menu-nav">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#skills">Skills</a>
+      <a href="#photography">Fotografie</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+  </div>
+
+  <main>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="section portfolio-section">
+      <div class="section-inner">
+        <p class="section-label reveal">Arbeiten</p>
+        <h2 class="section-title" data-section-typewriter="Portfolio" data-typewriter-split="4">Port<span class="outline">folio</span></h2>
+
+        <div class="filter-tabs reveal delay-2">
+          <button class="filter-tab active" data-filter="all">Alle</button>
+          <button class="filter-tab" data-filter="graphics">Grafiken</button>
+          <button class="filter-tab" data-filter="web-design">Web Design</button>
+          <button class="filter-tab" data-filter="print">Print</button>
+        </div>
+
+        <div class="portfolio-grid">
+
+          <!-- Grafiken -->
+          <div class="portfolio-cat-section" data-cat="graphics">
+            <div class="portfolio-cat-header">
+              <span class="cat-title">Grafiken</span>
+              <span class="cat-divider"></span>
+              <button class="cat-toggle" aria-expanded="true" aria-label="Grafiken zuklappen"><span class="cat-toggle-icon">−</span></button>
+            </div>
+            <div class="portfolio-cat-body">
+              <div class="portfolio-items-grid">
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/1_features_br-shop.jpg">
+            <img src="images/designs/graphics/1_features_br-shop_thumb.jpg" alt="Produktmerkblatt" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Produktmerkblatt</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/2_features_br-shop2.jpg">
+            <img src="images/designs/graphics/2_features_br-shop2_thumb.jpg" alt="Produktmerkblatt" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Produktmerkblatt</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="graphics" data-full="images/designs/graphics/4_sm-post-wd.jpg">
+            <img src="images/designs/graphics/4_sm-post-wd_thumb.jpg" alt="Social-Media" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/3_sm-post_gtb-event.jpg">
+            <img src="images/designs/graphics/3_sm-post_gtb-event_thumb.jpg" alt="Social-Media" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/5_sm_blackrock-ifa.jpg">
+            <img src="images/designs/graphics/5_sm_blackrock-ifa_thumb.jpg" alt="Social-Media" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="graphics" data-full="images/designs/graphics/6_sm_blackrock2.gif">
+            <img src="images/designs/graphics/6_sm_blackrock2_thumb.jpg" alt="Social-Media" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item is-video reveal" data-category="graphics" data-full="images/designs/graphics/7_sm_blackrock4.mp4">
+            <video autoplay muted loop playsinline>
+              <source src="images/designs/graphics/7_sm_blackrock4.mp4" type="video/mp4">
+            </video>
+            <div class="item-overlay">
+              <p class="item-cat">Grafik</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item is-video reveal delay-1" data-category="graphics" data-full="images/designs/graphics/8_sm_blackrock5.mp4">
+            <video autoplay muted loop playsinline>
+              <source src="images/designs/graphics/8_sm_blackrock5.mp4" type="video/mp4">
+            </video>
+            <div class="item-overlay">
+              <p class="item-cat">Grafik</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item is-video reveal delay-2" data-category="graphics" data-full="images/designs/graphics/9_sm_blackrock3.mp4">
+            <video autoplay muted loop playsinline>
+              <source src="images/designs/graphics/9_sm_blackrock3.mp4" type="video/mp4">
+            </video>
+            <div class="item-overlay">
+              <p class="item-cat">Grafik</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/10_header_wd.jpg">
+            <img src="images/designs/graphics/10_header_wd_thumb.jpg" alt="Header" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Header</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/11_header_emoebe.jpg">
+            <img src="images/designs/graphics/11_header_emoebe_thumb.jpg" alt="Header" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Header</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="graphics" data-full="images/designs/graphics/14_gfx_code-door.jpg">
+            <img src="images/designs/graphics/14_gfx_code-door_thumb.jpg" alt="Historienbaum" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Historienbaum</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/12_infographic_ait.jpg">
+            <img src="images/designs/graphics/12_infographic_ait_thumb.jpg" alt="Infografik" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Infografik</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/13_infographic_cd.png">
+            <img src="images/designs/graphics/13_infographic_cd_thumb.jpg" alt="Infografik" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Infografik</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="graphics" data-full="images/designs/graphics/15_map_wunderhaare.png">
+            <img src="images/designs/graphics/15_map_wunderhaare_thumb.jpg" alt="Standort Karte" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Standort Karte</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/16_teaser_code-door.jpg">
+            <img src="images/designs/graphics/16_teaser_code-door_thumb.jpg" alt="Teaser" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Teaser</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/17_teaser_sil.jpg">
+            <img src="images/designs/graphics/17_teaser_sil_thumb.jpg" alt="Teaser" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Teaser</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="graphics" data-full="images/designs/graphics/18_slider_fit711.jpg">
+            <img src="images/designs/graphics/18_slider_fit711_thumb.jpg" alt="Slider" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Slider</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/19_ad_br-displayschutz.jpg">
+            <img src="images/designs/graphics/19_ad_br-displayschutz_thumb.jpg" alt="Social-Media" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Social-Media</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/20_ad_bund-verlag3.jpg">
+            <img src="images/designs/graphics/20_ad_bund-verlag3_thumb.jpg" alt="Teaser" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Grafiken</p>
+              <p class="item-desc">Teaser</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item is-video reveal delay-2" data-category="graphics" data-full="images/designs/graphics/29_br-header_brand-video.mp4">
+            <video autoplay muted loop playsinline>
+              <source src="images/designs/graphics/29_br-header_brand-video.mp4" type="video/mp4">
+            </video>
+            <div class="item-overlay">
+              <p class="item-cat">Grafik</p>
+              <p class="item-desc">Markenvideo</p>
+            </div>
+          </div>
+
+          <!-- Logos -->
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/22_logo_code-door.jpg">
+            <img src="images/designs/graphics/22_logo_code-door_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/21_log_medical-rock.png">
+            <img src="images/designs/graphics/21_log_medical-rock_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="graphics" data-full="images/designs/graphics/23_logo_mudhar-consulting.jpg">
+            <img src="images/designs/graphics/23_logo_mudhar-consulting_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/24_logo_campaign-plus.png">
+            <img src="images/designs/graphics/24_logo_campaign-plus_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/25_logo_digital-rocket.jpg">
+            <img src="images/designs/graphics/25_logo_digital-rocket_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="graphics" data-full="images/designs/graphics/26_logo_apptainment.jpg">
+            <img src="images/designs/graphics/26_logo_apptainment_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="graphics" data-full="images/designs/graphics/27_logo_dermapila.png">
+            <img src="images/designs/graphics/27_logo_dermapila_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="graphics" data-full="images/designs/graphics/28_logo_libau.png">
+            <img src="images/designs/graphics/28_logo_libau_thumb.jpg" alt="Logo" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Logos</p>
+              <p class="item-desc">Logo Design</p>
+            </div>
+          </div>
+
+              </div><!-- /portfolio-items-grid -->
+            </div><!-- /portfolio-cat-body -->
+          </div><!-- /graphics section -->
+
+          <!-- Web Design -->
+          <div class="portfolio-cat-section" data-cat="web-design">
+            <div class="portfolio-cat-header">
+              <span class="cat-title">Web Design</span>
+              <span class="cat-divider"></span>
+              <button class="cat-toggle" aria-expanded="true" aria-label="Web Design zuklappen"><span class="cat-toggle-icon">−</span></button>
+            </div>
+            <div class="portfolio-cat-body">
+              <div class="portfolio-items-grid">
+
+          <div class="portfolio-item reveal" data-category="web-design" data-full="images/designs/web-design/1_website_blackrock-mobile.jpg">
+            <img src="images/designs/web-design/1_website_blackrock-mobile_thumb.jpg" alt="Homepage + mobile" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Homepage + mobile Version</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="web-design" data-full="images/designs/web-design/2_website_blackrock-mobile-concept.png">
+            <img src="images/designs/web-design/2_website_blackrock-mobile-concept_thumb.jpg" alt="Homepage Konzept" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Homepage Konzept</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="web-design" data-full="images/designs/web-design/3_website_white-diamonds.jpg">
+            <img src="images/designs/web-design/3_website_white-diamonds_thumb.jpg" alt="Webshop" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Webshop</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="web-design" data-full="images/designs/web-design/4_website_creative-learning-space.jpg">
+            <img src="images/designs/web-design/4_website_creative-learning-space_thumb.jpg" alt="Homepage & Dashboard" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Homepage &amp; Dashboard</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="web-design" data-full="images/designs/web-design/5_website_blackrock-product-guide.jpg">
+            <img src="images/designs/web-design/5_website_blackrock-product-guide_thumb.jpg" alt="Produktguide" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Produktguide</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="web-design" data-full="images/designs/web-design/6_website_dermapila.jpg">
+            <img src="images/designs/web-design/6_website_dermapila_thumb.jpg" alt="Homepage" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Homepage</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="web-design" data-full="images/designs/web-design/7_website_digital-rocket.jpg">
+            <img src="images/designs/web-design/7_website_digital-rocket_thumb.jpg" alt="Homepage" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Homepage</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="web-design" data-full="images/designs/web-design/8_website_code-door.jpg">
+            <img src="images/designs/web-design/8_website_code-door_thumb.jpg" alt="Homepage" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Homepage</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="web-design" data-full="images/designs/web-design/9_landingpage_code-door.jpg">
+            <img src="images/designs/web-design/9_landingpage_code-door_thumb.jpg" alt="Landingpage" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Landingpage</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="web-design" data-full="images/designs/web-design/10_website_carpe-medic.jpg">
+            <img src="images/designs/web-design/10_website_carpe-medic_thumb.jpg" alt="Homepage" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Homepage</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="web-design" data-full="images/designs/web-design/11_website_dual-bottle.jpg">
+            <img src="images/designs/web-design/11_website_dual-bottle_thumb.jpg" alt="Webshop" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Webshop</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="web-design" data-full="images/designs/web-design/12_login-signup_modal.jpg">
+            <img src="images/designs/web-design/12_login-signup_modal_thumb.jpg" alt="Modal" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Modal (PopUp)</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="web-design" data-full="images/designs/web-design/13_newsletter_br.jpg">
+            <img src="images/designs/web-design/13_newsletter_br_thumb.jpg" alt="Newsletter" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Web Design</p>
+              <p class="item-desc">Newsletter</p>
+            </div>
+          </div>
+
+              </div><!-- /portfolio-items-grid -->
+            </div><!-- /portfolio-cat-body -->
+          </div><!-- /web-design section -->
+
+          <!-- Print -->
+          <div class="portfolio-cat-section" data-cat="print">
+            <div class="portfolio-cat-header">
+              <span class="cat-title">Print</span>
+              <span class="cat-divider"></span>
+              <button class="cat-toggle" aria-expanded="true" aria-label="Print zuklappen"><span class="cat-toggle-icon">−</span></button>
+            </div>
+            <div class="portfolio-cat-body">
+              <div class="portfolio-items-grid">
+
+          <div class="portfolio-item reveal" data-category="print" data-full="images/designs/print/1_product_wd-sparkle.jpg">
+            <img src="images/designs/print/1_product_wd-sparkle_thumb.jpg" alt="Produkt Teaser" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Produkt Teaser</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="print" data-full="images/designs/print/2_praesentation_gtb.jpg">
+            <img src="images/designs/print/2_praesentation_gtb_thumb.jpg" alt="Event Präsentation" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Event Präsentation</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="print" data-full="images/designs/print/3_flyer_ifa-gtb.jpg">
+            <img src="images/designs/print/3_flyer_ifa-gtb_thumb.jpg" alt="Event Flyer" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Event Flyer</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="print" data-full="images/designs/print/4_flyer_everwatch.png">
+            <img src="images/designs/print/4_flyer_everwatch_thumb.jpg" alt="Service Flyer" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Service Flyer</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="print" data-full="images/designs/print/5_flyer_greco-group.jpg">
+            <img src="images/designs/print/5_flyer_greco-group_thumb.jpg" alt="Restaurant Flyer" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Restaurant Flyer</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="print" data-full="images/designs/print/6_teaser_code-door.jpg">
+            <img src="images/designs/print/6_teaser_code-door_thumb.jpg" alt="App Teaser" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">App Teaser</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="print" data-full="images/designs/print/7_flyer_addservice-media.jpg">
+            <img src="images/designs/print/7_flyer_addservice-media_thumb.jpg" alt="Firmenpräsentation" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Firmenpräsentation</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="print" data-full="images/designs/print/8_epaper_digital-rocket.jpg">
+            <img src="images/designs/print/8_epaper_digital-rocket_thumb.jpg" alt="E-Paper" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">E-Paper</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="print" data-full="images/designs/print/9_plakat_fit711_zeil.jpg">
+            <img src="images/designs/print/9_plakat_fit711_zeil_thumb.jpg" alt="Poster" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Poster</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="print" data-full="images/designs/print/11_cover_vegan-abnehmen.jpg">
+            <img src="images/designs/print/11_cover_vegan-abnehmen_thumb.jpg" alt="Buchdeckel" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Buchdeckel</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="print" data-full="images/designs/print/10_banner_bund-verlag.jpg">
+            <img src="images/designs/print/10_banner_bund-verlag_thumb.jpg" alt="Werbebanner" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Werbebanner</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-2" data-category="print" data-full="images/designs/print/12_formular_impact2go.jpg">
+            <img src="images/designs/print/12_formular_impact2go_thumb.jpg" alt="Formular" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Formular</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal" data-category="print" data-full="images/designs/print/13_bc_GTB.png">
+            <img src="images/designs/print/13_bc_GTB_thumb.jpg" alt="Visitenkarte" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Visitenkarte</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item reveal delay-1" data-category="print" data-full="images/designs/print/14_bc_digital-rocket.jpg">
+            <img src="images/designs/print/14_bc_digital-rocket_thumb.jpg" alt="Visitenkarte" loading="lazy">
+            <div class="item-overlay">
+              <p class="item-cat">Print</p>
+              <p class="item-desc">Visitenkarte</p>
+            </div>
+          </div>
+
+              </div><!-- /portfolio-items-grid -->
+            </div><!-- /portfolio-cat-body -->
+          </div><!-- /print section -->
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section skills-section">
+      <div class="section-inner">
+        <p class="section-label reveal">Kenntnisse</p>
+        <h2 class="section-title" data-section-typewriter="Meine Skills" data-typewriter-split="6">Meine <span class="outline">Skills</span></h2>
+
+        <div class="skills-block">
+
+          <div class="skills-cat reveal">
+            <span class="skills-cat-label">Design</span>
+            <div class="skills-cat-items">
+              <span data-skill-popover="graphics">Grafikdesign</span>
+              <span data-skill-popover="logos">Markenidentität</span>
+              <span data-skill-popover="logos">Logo-Design</span>
+              <span data-skill-popover="graphics">Typografie</span>
+              <span data-skill-popover="print">Printdesign</span>
+              <span data-skill-text="Eingesetzt in Social Media, Infografiken und redaktionellen Projekten. Beispiele finden sich im Grafik-Portfolio.">Illustration</span>
+              <span data-skill-popover="web-design">UI-Design</span>
+              <span data-skill-text="Von der Idee bis zur finalen Richtung. Kreative Strukturierung bevor ein Pixel gesetzt wird.">Konzeptentwicklung</span>
+            </div>
+          </div>
+
+          <div class="skills-cat reveal delay-1">
+            <span class="skills-cat-label">Marketing</span>
+            <div class="skills-cat-items">
+              <span data-skill-text="Google- und Meta-Ads, Kampagnenplanung und Performance-Tracking. Ergebnisorientiert, nicht nur Klicks.">Online Marketing</span>
+              <span data-skill-text="Technische und inhaltliche Optimierung. Keyword-Recherche, Site-Audits und Ranking-Analyse.">SEO</span>
+              <span data-skill-text="Bezahlte Suchanzeigen via Google Ads. Budgetplanung, Anzeigentexte und Conversion-Tracking.">SEM</span>
+              <span data-skill-text="Redaktionsplanung, Tonalitätsvorgaben und Content-Audits für konsistente Markenkommunikation.">Content-Strategie</span>
+              <span data-skill-text="Google Analytics 4, Search Console und individuelle Reporting-Dashboards.">Analytics</span>
+              <span data-skill-text="Kampagnengestaltung, Listenpflege und Automatisierungsflows.">E-Mail-Marketing</span>
+            </div>
+          </div>
+
+          <div class="skills-cat reveal delay-2">
+            <span class="skills-cat-label">Web &amp; Tech</span>
+            <div class="skills-cat-items">
+              <span data-skill-popover="web-design">HTML &amp; CSS</span>
+              <span data-skill-popover="web-design">JavaScript</span>
+              <span data-skill-popover="web-design">WordPress</span>
+              <span data-skill-popover="web-design">WooCommerce</span>
+              <span data-skill-text="Serverseitiges Scripting für WordPress-Themes, Plugins und individuelle Kontaktformulare.">PHP</span>
+              <span data-skill-text="cPanel, DNS, SSL-Zertifikate und FTP — für stabile und zuverlässige Websites.">Serveradministration</span>
+              <span data-skill-text="Domain-Registrierung, DNS-Verwaltung und Hosting-Konfiguration von Anfang an.">Domain &amp; Hosting</span>
+            </div>
+          </div>
+
+          <div class="skills-cat reveal delay-1">
+            <span class="skills-cat-label">Tools &amp; Sprachen</span>
+            <div class="skills-cat-items">
+              <span data-skill-text="Photoshop, Illustrator, InDesign, Premiere Pro — täglich im Einsatz seit über 14 Jahren.">Adobe Creative Cloud</span>
+              <span data-skill-text="Docs, Sheets, Drive, Meet — Standardwerkzeug für die Zusammenarbeit mit Kunden.">Google Workspace</span>
+              <span data-skill-text="Midjourney, ChatGPT, Claude — zur Beschleunigung von Workflows, nicht als Ersatz für Handwerk.">KI-Tools</span>
+              <span data-skill-text="Sicher in beiden Umgebungen. Keine Einrichtungsprobleme mit Kunden.">Mac &amp; Windows</span>
+              <span class="skills-lang" data-skill-text="Muttersprache. Alle Texte, Briefings und Kundenkommunikation auf Deutsch — ohne Umwege.">Deutsch <em>Muttersprache</em></span>
+              <span class="skills-lang" data-skill-text="Volle professionelle Kompetenz — Kundenkommunikation, Texte und Briefings sicher auf Englisch.">Englisch <em>Professionell</em></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Milestones -->
+    <section class="section milestones-section">
+      <div class="section-inner">
+        <div class="milestones-grid">
+          <div class="milestone reveal">
+            <p class="milestone-num">14+</p>
+            <p class="milestone-text">Jahre berufliche<br>Erfahrung</p>
+          </div>
+          <div class="milestone reveal delay-1">
+            <p class="milestone-num">15+</p>
+            <p class="milestone-text">Branchen<br>betreut</p>
+          </div>
+          <div class="milestone reveal delay-2">
+            <p class="milestone-num">50+</p>
+            <p class="milestone-text">Websites<br>realisiert</p>
+          </div>
+          <div class="milestone reveal delay-1">
+            <p class="milestone-num">30+</p>
+            <p class="milestone-text">SEO-Projekte<br>durchgeführt</p>
+          </div>
+          <div class="milestone reveal delay-2">
+            <p class="milestone-num">70+</p>
+            <p class="milestone-text">Zufriedene<br>Kunden</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fotografie -->
+    <section id="photography" class="section photography-section">
+      <div class="section-inner">
+        <p class="section-label reveal">Privates Projekt</p>
+        <h2 class="section-title" data-section-typewriter="Fotografie" data-typewriter-split="4">Foto<span class="outline">grafie</span></h2>
+
+        <div class="photo-grid">
+          <div class="photo-item reveal" data-full="images/designs/photos/1_photo.jpg">
+            <img src="images/designs/photos/1_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/2_photo.jpg">
+            <img src="images/designs/photos/2_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-2" data-full="images/designs/photos/3_photo.jpg">
+            <img src="images/designs/photos/3_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal" data-full="images/designs/photos/4_photo.jpg">
+            <img src="images/designs/photos/4_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/5_photo.jpg">
+            <img src="images/designs/photos/5_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-2" data-full="images/designs/photos/6_photo.jpg">
+            <img src="images/designs/photos/6_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal" data-full="images/designs/photos/7_photo.jpg">
+            <img src="images/designs/photos/7_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/8_photo.jpg">
+            <img src="images/designs/photos/8_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-2" data-full="images/designs/photos/9_photo.jpg">
+            <img src="images/designs/photos/9_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal" data-full="images/designs/photos/10_photo.jpg">
+            <img src="images/designs/photos/10_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/11_photo.jpg">
+            <img src="images/designs/photos/11_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-2" data-full="images/designs/photos/12_photo.jpg">
+            <img src="images/designs/photos/12_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal" data-full="images/designs/photos/13_photo.jpg">
+            <img src="images/designs/photos/13_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/14_photo.jpg">
+            <img src="images/designs/photos/14_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-2" data-full="images/designs/photos/15_photo.jpg">
+            <img src="images/designs/photos/15_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal" data-full="images/designs/photos/16_photo.jpg">
+            <img src="images/designs/photos/16_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/17_photo.jpg">
+            <img src="images/designs/photos/17_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-2" data-full="images/designs/photos/18_photo.jpg">
+            <img src="images/designs/photos/18_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal" data-full="images/designs/photos/19_photo.jpg">
+            <img src="images/designs/photos/19_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/20_photo.jpg">
+            <img src="images/designs/photos/20_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-2" data-full="images/designs/photos/21_photo.jpg">
+            <img src="images/designs/photos/21_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal" data-full="images/designs/photos/22_photo.jpg">
+            <img src="images/designs/photos/22_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+          <div class="photo-item reveal delay-1" data-full="images/designs/photos/23_photo.jpg">
+            <img src="images/designs/photos/23_photo_thumb.jpg" alt="Foto" loading="lazy">
+            <div class="photo-overlay"><span class="photo-overlay-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="contact" class="section contact-section">
+      <div class="section-inner">
+        <div class="contact-inner">
+          <div class="contact-left">
+            <p class="section-label reveal">Kontakt</p>
+            <h2 class="contact-heading reveal delay-1">Lass uns<br>zusammen<br><span style="color:var(--accent)">arbeiten.</span></h2>
+            <p class="contact-note reveal delay-2">Ich bin offen für neue Projekte. Meld dich direkt.</p>
+            <div class="contact-links reveal delay-3">
+              <a class="contact-link" href="#" data-email-user="andreas" data-email-domain="stoeffel-media" data-email-tld="com.au" data-email-subject="Let's work together" aria-label="E-Mail an Andreas">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                andreas@stoeffel-media.com.au
+              </a>
+              <a class="contact-link" href="https://www.linkedin.com/in/andreas-stoffel1/" target="_blank" rel="noopener" aria-label="LinkedIn Profil">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-right reveal delay-2">
+            <a href="https://www.stoeffel-media.com.au" target="_blank" rel="noopener" class="contact-studio-link">
+              <img src="images/stoeffel-media-logo.svg" alt="Stoeffel-Media" class="contact-studio-logo">
+              <p class="contact-studio-tagline">Design, Web &amp; Digital Marketing<br>Sydney, Australia</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <a class="footer-logo" href="#" aria-label="Nach oben">
+      <picture>
+        <source srcset="images/logo_hq.png" media="(min-width: 800px)">
+        <source srcset="images/logo_mid.png" media="(min-width: 400px)">
+        <img src="images/logo_mid.png" alt="Andreas Stöffel" width="170" height="20">
+      </picture>
+    </a>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Bildanzeige">
+    <div class="lightbox-inner" data-lenis-prevent>
+      <img class="lightbox-img" src="" alt="Portfolio Bild">
+      <video class="lightbox-video" controls playsinline></video>
+    </div>
+    <button class="lightbox-close" aria-label="Schließen">&times;</button>
+    <button class="lightbox-nav prev" aria-label="Vorheriges">&#8592;</button>
+    <button class="lightbox-nav next" aria-label="Nächstes">&#8594;</button>
+    <p class="lightbox-counter"></p>
+    <div class="lightbox-scroll-hint" id="lightbox-scroll-hint">
+      <svg viewBox="0 0 24 40" fill="none" stroke="#fff" stroke-width="1.5">
+        <rect x="6" y="1" width="12" height="20" rx="6"/>
+        <line x1="12" y1="6" x2="12" y2="10" stroke-linecap="round" class="scroll-dot"/>
+      </svg>
+      <span>Scroll</span>
+    </div>
+  </div>
+
+  <script src="js/lenis.min.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

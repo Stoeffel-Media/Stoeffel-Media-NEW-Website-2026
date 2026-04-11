@@ -1,0 +1,4 @@
+Options -Indexes
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^images/designs/(.+\.(jpe?g|png|gif|webp|mp4|svg))$ php/img.php?f=designs/$1 [L,QSA,NC]

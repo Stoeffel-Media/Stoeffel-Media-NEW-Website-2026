@@ -1,6 +1,8 @@
 # PHP config — contains credentials, never commit
 php/config.php
 php/rate_limits/
+portfolio/php/config.php
+portfolio/php/rate_limits/
 
 # macOS
 .DS_Store

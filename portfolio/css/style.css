@@ -1314,8 +1314,8 @@ footer {
 
   .skills-cat { grid-template-columns: 120px 1fr; gap: 24px 32px; padding: 36px 0; }
 
-  .contact-inner { flex-direction: column; gap: 40px; }
-  .contact-right { justify-content: flex-start; }
+  .contact-inner { flex-direction: column; gap: 40px; align-items: stretch; }
+  .contact-right { justify-content: flex-start; align-items: flex-start; }
   .contact-studio-link { align-items: flex-start; }
   .contact-studio-tagline { text-align: left; }
 
@@ -1323,6 +1323,14 @@ footer {
   .project-link { align-self: flex-start; }
 
   footer { padding: 28px 32px; }
+}
+
+/* Contact column layout — wider breakpoint to catch large phones in landscape */
+@media (max-width: 1280px) {
+  .contact-inner { flex-direction: column; gap: 40px; align-items: stretch; }
+  .contact-right { justify-content: flex-start; align-items: flex-start; }
+  .contact-studio-link { align-items: flex-start; }
+  .contact-studio-tagline { text-align: left; }
 }
 
 @media (max-width: 768px) {
@@ -1340,6 +1348,17 @@ footer {
   .milestones-grid { gap: 16px; }
 
   .lightbox-nav { display: none; }
+  .lightbox-inner img,
+  .lightbox-inner video { max-width: 94vw; }
+
+  .contact-inner { align-items: stretch; }
+  .contact-right {
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 16px;
+  }
+  .contact-studio-link { align-items: flex-start; }
+  .contact-studio-tagline { text-align: left; }
 
   footer {
     padding: 24px 20px;

@@ -1,8 +1,9 @@
 <?php
 /**
  * Session-gated image/video server.
- * Requests are rewritten here by images/designs/.htaccess.
+ * Requests are rewritten here by .htaccess.
  * Returns 403 if no valid portfolio session exists.
+ * Supports byte-range requests (required for iOS Safari video playback).
  */
 session_start();
 
@@ -37,8 +38,52 @@ $mime = [
     'svg'  => 'image/svg+xml',
 ][$ext] ?? 'application/octet-stream';
 
+$size = filesize($full);
+
 header('Content-Type: ' . $mime);
-header('Content-Length: ' . filesize($full));
 header('Cache-Control: private, no-store');
 header('X-Content-Type-Options: nosniff');
-readfile($full);
+header('Accept-Ranges: bytes');
+
+// Handle byte-range requests — required for iOS Safari to play videos
+if (isset($_SERVER['HTTP_RANGE'])) {
+    $range = $_SERVER['HTTP_RANGE'];
+    list(, $range) = explode('=', $range, 2);
+
+    // Reject multi-range requests
+    if (strpos($range, ',') !== false) {
+        http_response_code(416);
+        header('Content-Range: bytes */' . $size);
+        exit;
+    }
+
+    list($start, $end) = explode('-', $range);
+    $start = ($start === '') ? 0 : intval($start);
+    $end   = ($end   === '') ? $size - 1 : intval($end);
+
+    if ($start > $end || $start >= $size) {
+        http_response_code(416);
+        header('Content-Range: bytes */' . $size);
+        exit;
+    }
+
+    $end    = min($end, $size - 1);
+    $length = $end - $start + 1;
+
+    http_response_code(206);
+    header('Content-Range: bytes ' . $start . '-' . $end . '/' . $size);
+    header('Content-Length: ' . $length);
+
+    $fp = fopen($full, 'rb');
+    fseek($fp, $start);
+    $remaining = $length;
+    while ($remaining > 0 && !feof($fp)) {
+        $chunk = min(8192, $remaining);
+        echo fread($fp, $chunk);
+        $remaining -= $chunk;
+    }
+    fclose($fp);
+} else {
+    header('Content-Length: ' . $size);
+    readfile($full);
+}

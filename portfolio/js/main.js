@@ -18,15 +18,9 @@ let lenisInstance = null;
 
   document.querySelectorAll('.theme-toggle').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
+      applyTheme(root.dataset.theme === 'light');
       if (isTouch) {
-        if (btn.classList.contains('tooltip-active')) {
-          btn.classList.remove('tooltip-active');
-          applyTheme(root.dataset.theme === 'light');
-        } else {
-          btn.classList.add('tooltip-active');
-        }
-      } else {
-        applyTheme(root.dataset.theme === 'light');
+        btn.classList.add('tooltip-active');
       }
     });
   });
@@ -723,14 +717,35 @@ if (menuBtn && menuOverlay) {
   els.forEach(el => obs.observe(el));
 
   // Portfolio items — staggered per visible batch
+  var staggerCounter = 0;
+  var staggerResetTimer = null;
+
   const itemObs = new IntersectionObserver((entries) => {
     const appearing = entries.filter(e => e.isIntersecting);
-    appearing.forEach((entry, idx) => {
+    appearing.forEach((entry) => {
       const el = entry.target;
       itemObs.unobserve(el);
-      el.style.animationDelay = (idx * 60) + 'ms';
-      el.classList.add('entering');
-      el.style.opacity = '1';
+      const delay = staggerCounter * 80;
+      staggerCounter++;
+      // Reset the counter shortly after each batch so the next scroll wave starts fresh
+      clearTimeout(staggerResetTimer);
+      staggerResetTimer = setTimeout(function () { staggerCounter = 0; }, 400);
+      // rAF ensures the browser has painted opacity:0 before the animation starts
+      requestAnimationFrame(function () {
+        el.style.animationDelay = delay + 'ms';
+        el.classList.add('entering');
+        el.style.opacity = '1';
+        // Kick off autoplay for video items — mobile won't autoplay hidden elements
+        var vid = el.querySelector('video');
+        if (vid) {
+          // load() resets the element and triggers a fresh network request,
+          // which is necessary on mobile where hidden videos are never preloaded
+          vid.load();
+          vid.addEventListener('canplay', function () {
+            vid.play().catch(function () {});
+          }, { once: true });
+        }
+      });
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
@@ -993,6 +1008,20 @@ function updateCursorTargets() {
     if (dx < 0) navigate(currentIndex + 1);
     else navigate(currentIndex - 1);
   }, { passive: true });
+
+  // Trackpad horizontal swipe to navigate (desktop)
+  let wheelCooldown = false;
+  lightbox.addEventListener('wheel', function (e) {
+    if (!lightbox.classList.contains('open')) return;
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return; // vertical scroll — ignore
+    if (Math.abs(e.deltaX) < 20) return; // too small — ignore
+    if (wheelCooldown) return;
+    e.preventDefault();
+    wheelCooldown = true;
+    if (e.deltaX > 0) navigate(currentIndex + 1);
+    else navigate(currentIndex - 1);
+    setTimeout(function () { wheelCooldown = false; }, 600);
+  }, { passive: false });
 })();
 
 /* === Projects Accordion === */
@@ -1112,9 +1141,15 @@ function updateCursorTargets() {
   var activeEl = null;
 
   function position(triggerEl) {
-    var rect = triggerEl.getBoundingClientRect();
+    var rect  = triggerEl.getBoundingClientRect();
+    var popW  = popover.offsetWidth || 220;
+    var pad   = 12;
+    var viewW = window.innerWidth;
+    // Center on the trigger, then clamp so the popover never overflows the screen
+    var ideal = rect.left + rect.width / 2;
+    var left  = Math.min(Math.max(ideal, pad + popW / 2), viewW - pad - popW / 2);
     popover.style.top  = (rect.bottom + 10) + 'px';
-    popover.style.left = (rect.left + rect.width / 2) + 'px';
+    popover.style.left = left + 'px';
   }
 
   function openThumbPopover(triggerEl) {
@@ -1184,10 +1219,14 @@ function updateCursorTargets() {
     }
   }
 
-  // Wire up all interactive skill spans — hover and click
+  var isTouch = window.matchMedia('(hover: none)').matches;
+
+  // Wire up all interactive skill spans — hover on desktop, click on touch
   document.querySelectorAll('[data-skill-popover], [data-skill-text]').forEach(function (span) {
-    span.addEventListener('mouseenter', function () { openFor(span); });
-    span.addEventListener('mouseleave', scheduleClose);
+    if (!isTouch) {
+      span.addEventListener('mouseenter', function () { openFor(span); });
+      span.addEventListener('mouseleave', scheduleClose);
+    }
     span.addEventListener('click', function (e) {
       e.stopPropagation();
       if (activeEl === span && popover.classList.contains('visible')) {

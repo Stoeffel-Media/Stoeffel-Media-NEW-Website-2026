@@ -1,4 +1,3 @@
-// Shared Lenis reference accessible by other modules
 let lenisInstance = null;
 
 /* === Theme Toggle === */
@@ -7,8 +6,7 @@ let lenisInstance = null;
   const THEME_KEY = 'portfolio_theme';
   const isTouch = window.matchMedia('(hover: none)').matches;
 
-  // Restore saved theme on page load
-  var saved = localStorage.getItem(THEME_KEY);
+  const saved = localStorage.getItem(THEME_KEY);
   if (saved === 'light') root.dataset.theme = 'light';
 
   function applyTheme(isLight) {
@@ -25,7 +23,6 @@ let lenisInstance = null;
     });
   });
 
-  // Dismiss tooltip when tapping outside the button
   document.addEventListener('click', function (e) {
     if (!isTouch || e.target.closest('.theme-toggle')) return;
     document.querySelectorAll('.theme-toggle').forEach(function (btn) {
@@ -33,7 +30,6 @@ let lenisInstance = null;
     });
   });
 
-  // Hint pulse: fires 3 s after the nav becomes visible
   document.addEventListener('portfolio:unlocked', function () {
     setTimeout(function () {
       document.querySelectorAll('.theme-toggle').forEach(function (btn) {
@@ -48,33 +44,31 @@ let lenisInstance = null;
 
 /* === Password Modal === */
 (function () {
-  var AUTH_KEY = 'portfolio_auth';
+  const AUTH_KEY = 'portfolio_auth';
 
-  var overlay = document.getElementById('pw-overlay');
-  var card    = document.querySelector('.pw-card');
+  const overlay = document.getElementById('pw-overlay');
+  const card    = document.querySelector('.pw-card');
   if (!overlay) return;
 
   function triggerNav() {
     setTimeout(function () {
-      var nav = document.querySelector('.nav');
+      const nav = document.querySelector('.nav');
       if (nav) nav.classList.add('nav-visible');
       document.dispatchEvent(new CustomEvent('portfolio:unlocked'));
-    }, 1000);
+    }, 700);
   }
 
-  // Instantly clear gate (pre-authenticated path)
   function removeGate() {
     overlay.remove();
     if (card) card.remove();
-    var s = document.getElementById('pw-smiley');
+    const s = document.getElementById('pw-smiley');
     if (s) s.remove();
     triggerNav();
   }
 
-  // Animated unlock (just-entered-password path)
   function unlock() {
     sessionStorage.setItem(AUTH_KEY, '1');
-    var smiley = document.getElementById('pw-smiley');
+    const smiley = document.getElementById('pw-smiley');
     if (card)  card.classList.add('fade-out');
     if (smiley) smiley.classList.add('fade-out');
     setTimeout(function () {
@@ -85,9 +79,8 @@ let lenisInstance = null;
         overlay.remove();
         if (card) card.remove();
         if (smiley) smiley.remove();
-        // Reload any images/videos that got a 403 before auth was established
         document.querySelectorAll('img').forEach(function (img) {
-          var s = img.getAttribute('src') || '';
+          const s = img.getAttribute('src') || '';
           if (s.indexOf('images/designs/') !== -1) { img.src = ''; img.src = s; }
         });
         document.querySelectorAll('video').forEach(function (v) { v.load(); });
@@ -95,12 +88,10 @@ let lenisInstance = null;
     }, 650);
   }
 
-  // sessionStorage is a fast hint — verify the PHP session is still alive
   if (sessionStorage.getItem(AUTH_KEY) === '1') {
-    // Hide immediately so there's no flash while the fetch is in-flight
     overlay.style.visibility = 'hidden';
     if (card) card.style.visibility = 'hidden';
-    var smileyEl = document.getElementById('pw-smiley');
+    const smileyEl = document.getElementById('pw-smiley');
     if (smileyEl) smileyEl.style.visibility = 'hidden';
     fetch('php/auth.php')
       .then(function (r) { return r.json(); })
@@ -108,7 +99,6 @@ let lenisInstance = null;
         if (d.ok) {
           removeGate();
         } else {
-          // PHP session expired — restore visibility and re-show the gate
           overlay.style.visibility = '';
           if (card) card.style.visibility = '';
           if (smileyEl) smileyEl.style.visibility = '';
@@ -117,7 +107,6 @@ let lenisInstance = null;
         }
       })
       .catch(function () {
-        // PHP unavailable — trust sessionStorage
         removeGate();
       });
     return;
@@ -127,16 +116,16 @@ let lenisInstance = null;
 
   function initGate() {
     document.body.classList.add('modal-open', 'pw-active');
-    var input   = document.querySelector('.pw-input');
-    var errorEl = document.querySelector('.pw-error');
-    var form    = document.querySelector('.pw-form');
-    var submit  = form && form.querySelector('.pw-submit');
+    const input   = document.querySelector('.pw-input');
+    const errorEl = document.querySelector('.pw-error');
+    const form    = document.querySelector('.pw-form');
+    const submit  = form && form.querySelector('.pw-submit');
 
     function fail(msg) {
       input.classList.remove('shake');
       void input.offsetWidth;
       input.classList.add('shake');
-      var isDE = document.documentElement.lang === 'de';
+      const isDE = document.documentElement.lang === 'de';
       errorEl.innerHTML = msg || (isDE
         ? 'Zugang verweigert. Bitte geben Sie das erhaltene Passwort ein. Bei Problemen wenden Sie sich an <a href="mailto:andreas@stoeffel-media.com.au">andreas@stoeffel-media.com.au</a>'
         : 'Access denied. Please enter the password you were given. If you need assistance, contact <a href="mailto:andreas@stoeffel-media.com.au">andreas@stoeffel-media.com.au</a>');
@@ -175,11 +164,10 @@ let lenisInstance = null;
 
     input.addEventListener('input', function () { errorEl.classList.remove('visible'); });
 
-    // Password visibility toggle
-    var toggle = document.querySelector('.pw-toggle');
+    const toggle = document.querySelector('.pw-toggle');
     if (toggle) {
       toggle.addEventListener('click', function () {
-        var visible = input.type === 'text';
+        const visible = input.type === 'text';
         input.type = visible ? 'password' : 'text';
         toggle.classList.toggle('visible', !visible);
         toggle.setAttribute('aria-label', visible
@@ -463,7 +451,6 @@ let lenisInstance = null;
 
   let isDragging = false, startX = 0, startY = 0, cardX = 0, cardY = 0;
 
-  // Center card on screen (card is position:fixed top:0 left:0, JS drives transform)
   function centerCard() {
     if (isDragging) return;
     cardX = Math.round((window.innerWidth - card.offsetWidth) / 2);
@@ -502,7 +489,6 @@ let lenisInstance = null;
     cursor && cursor.classList.add('has-action');
   });
 
-  // Repeat the glow pulse every 20 s (first pulse at 3 s handled by CSS animation)
   setTimeout(function () {
     setInterval(function () {
       card.animate([
@@ -573,7 +559,6 @@ let lenisInstance = null;
   function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
 
-  // Anchor click handling
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function (e) {
       const target = document.querySelector(this.getAttribute('href'));
@@ -607,7 +592,6 @@ if (menuBtn && menuOverlay) {
     a.addEventListener('click', closeMenu);
   });
 
-  // Close when tapping the overlay background (outside the nav links)
   menuOverlay.addEventListener('click', function (e) {
     if (!e.target.closest('.menu-nav')) closeMenu();
   });
@@ -622,12 +606,10 @@ if (menuBtn && menuOverlay) {
   const nav = document.querySelector('.nav');
   if (!nav) return;
 
-  // Shrink + shadow on scroll
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 
-  // Logo click — smooth scroll to top via Lenis
   const logo = nav.querySelector('.nav-logo');
   const footerLogo = document.querySelector('.footer-logo');
   [logo, footerLogo].forEach(el => {
@@ -649,8 +631,6 @@ if (menuBtn && menuOverlay) {
   if (!els.length) return;
 
   els.forEach(el => {
-    // data-section-typewriter="Portfolio" and data-typewriter-split="4"
-    // means first 4 chars are bold, rest get the outline class
     const text = el.dataset.sectionTypewriter;
     const splitAt = parseInt(el.dataset.typewriterSplit, 10) || text.length;
     el.style.opacity = '0';
@@ -674,7 +654,6 @@ if (menuBtn && menuOverlay) {
             if (i < splitAt) {
               cursor.before(document.createTextNode(char));
             } else {
-              // First outline char — wrap all remaining in a span
               if (i === splitAt) {
                 const outlineSpan = document.createElement('span');
                 outlineSpan.className = 'outline';
@@ -701,7 +680,6 @@ if (menuBtn && menuOverlay) {
 
 /* === Scroll Reveal === */
 (function () {
-  // Standard reveal elements (non-portfolio-item)
   const els = document.querySelectorAll('.reveal:not(.portfolio-item)');
   if (!els.length) return;
 
@@ -716,9 +694,8 @@ if (menuBtn && menuOverlay) {
 
   els.forEach(el => obs.observe(el));
 
-  // Portfolio items — staggered per visible batch
-  var staggerCounter = 0;
-  var staggerResetTimer = null;
+  let staggerCounter = 0;
+  let staggerResetTimer = null;
 
   const itemObs = new IntersectionObserver((entries) => {
     const appearing = entries.filter(e => e.isIntersecting);
@@ -727,7 +704,6 @@ if (menuBtn && menuOverlay) {
       itemObs.unobserve(el);
       const delay = staggerCounter * 80;
       staggerCounter++;
-      // Reset the counter shortly after each batch so the next scroll wave starts fresh
       clearTimeout(staggerResetTimer);
       staggerResetTimer = setTimeout(function () { staggerCounter = 0; }, 400);
       // rAF ensures the browser has painted opacity:0 before the animation starts
@@ -735,11 +711,8 @@ if (menuBtn && menuOverlay) {
         el.style.animationDelay = delay + 'ms';
         el.classList.add('entering');
         el.style.opacity = '1';
-        // Kick off autoplay for video items — mobile won't autoplay hidden elements
-        var vid = el.querySelector('video');
+        const vid = el.querySelector('video');
         if (vid) {
-          // load() resets the element and triggers a fresh network request,
-          // which is necessary on mobile where hidden videos are never preloaded
           vid.load();
           vid.addEventListener('canplay', function () {
             vid.play().catch(function () {});
@@ -750,7 +723,6 @@ if (menuBtn && menuOverlay) {
   }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.portfolio-item').forEach(el => {
-    // Remove static reveal classes so itemObs controls them
     el.classList.remove('reveal', 'delay-1', 'delay-2', 'delay-3');
     el.style.opacity = '0';
     itemObs.observe(el);
@@ -772,7 +744,6 @@ if (menuBtn && menuOverlay) {
       sections.forEach(section => {
         const show = cat === 'all' || section.dataset.cat === cat;
         section.classList.toggle('hidden', !show);
-        // Auto-expand when filtering to a specific category
         if (show && cat !== 'all') {
           const body = section.querySelector('.portfolio-cat-body');
           const icon = section.querySelector('.cat-toggle-icon');
@@ -786,7 +757,6 @@ if (menuBtn && menuOverlay) {
         }
       });
 
-      // Stagger-enter visible items
       let idx = 0;
       document.querySelectorAll('.portfolio-cat-section:not(.hidden) .portfolio-item').forEach(item => {
         item.style.opacity = '0';
@@ -837,7 +807,6 @@ if (menuBtn && menuOverlay) {
       }
     });
 
-    // Also allow clicking the header row (not just the button)
     header.addEventListener('click', e => {
       if (!e.target.closest('.cat-toggle')) btn.click();
     });
@@ -933,7 +902,6 @@ function updateCursorTargets() {
     }, 300);
   }
 
-  // Open on click — scope to the clicked item's category
   document.addEventListener('click', function (e) {
     const trigger = e.target.closest('[data-full]');
     if (!trigger) return;
@@ -946,13 +914,11 @@ function updateCursorTargets() {
   btnPrev && btnPrev.addEventListener('click', (e) => { e.stopPropagation(); navigate(currentIndex - 1); });
   btnNext && btnNext.addEventListener('click', (e) => { e.stopPropagation(); navigate(currentIndex + 1); });
 
-  // Hide scroll hint on scroll
   inner.addEventListener('scroll', () => {
     if (scrollHint) scrollHint.classList.remove('visible');
     clearTimeout(hintTimeout);
   }, { passive: true });
 
-  // Click-drag to scroll
   let isDragging = false;
   let dragStartY = 0;
   let scrollStart = 0;
@@ -980,12 +946,10 @@ function updateCursorTargets() {
     inner.style.userSelect = '';
   });
 
-  // Click background to close (only if not dragging)
   inner.addEventListener('click', (e) => {
     if (!dragMoved && e.target === inner) close();
   });
 
-  // Keyboard
   document.addEventListener('keydown', function (e) {
     if (!lightbox.classList.contains('open')) return;
     if (e.key === 'ArrowLeft' || e.key === 'a') navigate(currentIndex - 1);
@@ -993,7 +957,6 @@ function updateCursorTargets() {
     if (e.key === 'Escape') close();
   });
 
-  // Touch swipe left/right to navigate
   let swipeStartX = 0;
   let swipeStartY = 0;
   inner.addEventListener('touchstart', (e) => {
@@ -1009,12 +972,11 @@ function updateCursorTargets() {
     else navigate(currentIndex - 1);
   }, { passive: true });
 
-  // Trackpad horizontal swipe to navigate (desktop)
   let wheelCooldown = false;
   lightbox.addEventListener('wheel', function (e) {
     if (!lightbox.classList.contains('open')) return;
-    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return; // vertical scroll — ignore
-    if (Math.abs(e.deltaX) < 20) return; // too small — ignore
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+    if (Math.abs(e.deltaX) < 20) return;
     if (wheelCooldown) return;
     e.preventDefault();
     wheelCooldown = true;
@@ -1031,9 +993,7 @@ function updateCursorTargets() {
     const header = item.querySelector('.project-header');
     header && header.addEventListener('click', function () {
       const isOpen = item.classList.contains('open');
-      // Close all
       items.forEach(i => i.classList.remove('open'));
-      // Open clicked if it was closed
       if (!isOpen) item.classList.add('open');
     });
   });
@@ -1051,10 +1011,8 @@ function updateCursorTargets() {
       ? 'mailto:' + address + '?subject=' + encodeURIComponent(subject)
       : 'mailto:' + address;
     el.setAttribute('href', href);
-    // Update the text node after the SVG, or full textContent if no SVG
     const svg = el.querySelector('svg');
     if (svg) {
-      // Remove any existing text nodes, keep the SVG
       Array.from(el.childNodes).forEach(n => { if (n.nodeType === 3) n.remove(); });
       el.appendChild(document.createTextNode(' ' + address));
     } else {
@@ -1104,10 +1062,9 @@ function updateCursorTargets() {
 (function () {
   if (!document.getElementById('skills')) return;
 
-  var isDE = document.documentElement.lang === 'de';
+  const isDE = document.documentElement.lang === 'de';
 
-  // Build popover element (thumbs + link for portfolio skills; text for others)
-  var popover = document.createElement('div');
+  const popover = document.createElement('div');
   popover.id = 'skill-popover';
   popover.className = 'skill-popover';
   popover.innerHTML =
@@ -1116,48 +1073,49 @@ function updateCursorTargets() {
     '<p class="skill-popover-text"></p>';
   document.body.appendChild(popover);
 
-  var thumbsEl = popover.querySelector('.skill-popover-thumbs');
-  var linkEl   = popover.querySelector('.skill-popover-link');
-  var textEl   = popover.querySelector('.skill-popover-text');
+  const thumbsEl = popover.querySelector('.skill-popover-thumbs');
+  const linkEl   = popover.querySelector('.skill-popover-link');
+  const textEl   = popover.querySelector('.skill-popover-text');
 
-  var filterMap = { graphics: 'graphics', logos: 'graphics', print: 'print', 'web-design': 'web-design' };
+  const filterMap = { graphics: 'graphics', logos: 'graphics', print: 'print', 'web-design': 'web-design' };
 
   function getThumbs(key) {
-    var items;
+    let items;
     if (key === 'logos') {
       items = Array.from(document.querySelectorAll('[data-category="graphics"]')).filter(function (el) {
-        var cat = el.querySelector('.item-cat');
+        const cat = el.querySelector('.item-cat');
         return cat && cat.textContent.trim() === 'Logos';
       });
     } else {
       items = Array.from(document.querySelectorAll('[data-category="' + key + '"]:not(.is-video)'));
     }
     return items.slice(0, 3).map(function (el) {
-      var img = el.querySelector('img');
+      const img = el.querySelector('img');
       return img ? img.src : null;
     }).filter(Boolean);
   }
 
-  var activeEl = null;
+  let activeEl = null;
 
   function position(triggerEl) {
-    var rect  = triggerEl.getBoundingClientRect();
-    var popW  = popover.offsetWidth || 220;
-    var pad   = 12;
-    var viewW = window.innerWidth;
-    // Center on the trigger, then clamp so the popover never overflows the screen
-    var ideal = rect.left + rect.width / 2;
-    var left  = Math.min(Math.max(ideal, pad + popW / 2), viewW - pad - popW / 2);
+    const rect = triggerEl.getBoundingClientRect();
+    const pad  = 12;
     popover.style.top  = (rect.bottom + 10) + 'px';
-    popover.style.left = left + 'px';
+    popover.style.left = (rect.left + rect.width / 2) + 'px';
+    const pop = popover.getBoundingClientRect();
+    if (pop.left < pad) {
+      popover.style.left = (parseFloat(popover.style.left) - pop.left + pad) + 'px';
+    } else if (pop.right > window.innerWidth - pad) {
+      popover.style.left = (parseFloat(popover.style.left) - (pop.right - window.innerWidth + pad)) + 'px';
+    }
   }
 
   function openThumbPopover(triggerEl) {
-    var key    = triggerEl.dataset.skillPopover;
-    var thumbs = getThumbs(key);
+    const key    = triggerEl.dataset.skillPopover;
+    const thumbs = getThumbs(key);
     if (!thumbs.length) return;
 
-    thumbsEl.innerHTML = thumbs.map(function (src) { return '<img src="' + src + '" alt="">'; }).join('');
+    thumbsEl.innerHTML = thumbs.map(function (src) { return '<img src="' + (thumbCache[src] || src) + '" alt="">'; }).join('');
     thumbsEl.style.display = '';
     linkEl.style.display = '';
     textEl.style.display  = 'none';
@@ -1166,15 +1124,15 @@ function updateCursorTargets() {
     linkEl.onclick = function (e) {
       e.preventDefault();
       closePopover();
-      var cat       = filterMap[key] || key;
-      var portfolio = document.getElementById('portfolio');
+      const cat       = filterMap[key] || key;
+      const portfolio = document.getElementById('portfolio');
       if (portfolio && lenisInstance) {
         lenisInstance.scrollTo(portfolio, { offset: -80, duration: 0.8 });
       } else if (portfolio) {
         portfolio.scrollIntoView({ behavior: 'smooth' });
       }
       setTimeout(function () {
-        var btn = document.querySelector('.filter-tab[data-filter="' + cat + '"]');
+        const btn = document.querySelector('.filter-tab[data-filter="' + cat + '"]');
         if (btn) btn.click();
       }, 750);
     };
@@ -1200,7 +1158,7 @@ function updateCursorTargets() {
     activeEl = null;
   }
 
-  var hideTimer = null;
+  let hideTimer = null;
 
   function scheduleClose() {
     hideTimer = setTimeout(closePopover, 150);
@@ -1219,9 +1177,8 @@ function updateCursorTargets() {
     }
   }
 
-  var isTouch = window.matchMedia('(hover: none)').matches;
+  const isTouch = window.matchMedia('(hover: none)').matches;
 
-  // Wire up all interactive skill spans — hover on desktop, click on touch
   document.querySelectorAll('[data-skill-popover], [data-skill-text]').forEach(function (span) {
     if (!isTouch) {
       span.addEventListener('mouseenter', function () { openFor(span); });
@@ -1238,7 +1195,6 @@ function updateCursorTargets() {
     });
   });
 
-  // Keep popover open when mouse moves into it
   popover.addEventListener('mouseenter', cancelClose);
   popover.addEventListener('mouseleave', scheduleClose);
 
@@ -1248,11 +1204,25 @@ function updateCursorTargets() {
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopover(); });
   window.addEventListener('scroll', closePopover, { passive: true });
+
+  const thumbCache = {};
+
+  document.addEventListener('portfolio:unlocked', function () {
+    document.querySelectorAll('[data-skill-popover]').forEach(function (span) {
+      getThumbs(span.dataset.skillPopover).forEach(function (src) {
+        if (src in thumbCache) return;
+        thumbCache[src] = src;
+        fetch(src, { credentials: 'include' })
+          .then(function (r) { return r.blob(); })
+          .then(function (blob) { thumbCache[src] = URL.createObjectURL(blob); })
+          .catch(function () {});
+      });
+    });
+  }, { once: true });
 })();
 
 /* === Copy Protection === */
 (function () {
-  // Block right-click on all images, videos, and portfolio/lightbox areas
   document.addEventListener('contextmenu', function (e) {
     if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' ||
         e.target.closest('.portfolio-items-grid, .photo-grid, #lightbox')) {
@@ -1260,7 +1230,6 @@ function updateCursorTargets() {
     }
   });
 
-  // Block drag-and-drop on images and videos
   document.addEventListener('dragstart', function (e) {
     if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
       e.preventDefault();
@@ -1270,12 +1239,12 @@ function updateCursorTargets() {
 
 /* === Password Smiley Typewriter === */
 (function () {
-  var el = document.getElementById('pw-smiley');
+  const el = document.getElementById('pw-smiley');
   if (!el) return;
 
-  var text = ';-)';
-  var charIndex = 0;
-  var timer;
+  const text = ';-)';
+  let charIndex = 0;
+  let timer;
 
   function typeNext() {
     el.textContent = text.slice(0, charIndex);
@@ -1291,7 +1260,6 @@ function updateCursorTargets() {
     typeNext();
   }
 
-  // Fade in after 5 s, then start typing and repeat every 10 s
   setTimeout(function () {
     el.classList.add('smiley-visible');
     reset();

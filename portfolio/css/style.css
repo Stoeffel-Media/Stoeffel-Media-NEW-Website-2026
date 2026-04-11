@@ -105,7 +105,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   opacity: 0.55;
 }
 
-/* During password gate: bump canvases above the solid overlay, show full dot grid */
 body.pw-active #dot-pattern {
   z-index: 10001;
   -webkit-mask-image: none;
@@ -113,14 +112,10 @@ body.pw-active #dot-pattern {
 }
 body.pw-active #fluid-canvas { z-index: 10002; }
 
-/* Light mode: switch blend mode so the fluid sim is visible on a light background */
 [data-theme="light"] #fluid-canvas { mix-blend-mode: multiply; opacity: 0.6; }
-
-/* Light mode: contact studio logo */
 [data-theme="light"] .contact-studio-logo { filter: brightness(0.18); }
 [data-theme="light"] .pw-logo img { filter: var(--logo-filter); }
 
-/* Light mode: replace black in hover overlays with dark grey */
 [data-theme="light"] .portfolio-item .item-overlay {
   background: linear-gradient(to top, rgba(44,42,38,0.70) 0%, transparent 50%);
 }
@@ -174,7 +169,6 @@ body.pw-active #fluid-canvas { z-index: 10002; }
 .theme-toggle.tooltip-active::after { opacity: 1; }
 [data-theme="light"] .theme-toggle::after { content: "Switch to dark"; }
 
-/* Hint pulse — fires once after 3 s on page load */
 @keyframes themeHint {
   0%   { transform: scale(1);    box-shadow: 0 0 0 0px  rgba(240,137,50,0);    background: var(--border);    color: var(--text-secondary); }
   25%  { transform: scale(1.18); box-shadow: 0 0 0 8px  rgba(240,137,50,0.30); background: var(--accent-dim); color: var(--accent); }
@@ -224,7 +218,6 @@ body.pw-active #fluid-canvas { z-index: 10002; }
 }
 #pw-overlay.fade-out { opacity: 0; pointer-events: none; }
 
-/* Hidden smiley — centered behind the draggable card */
 #pw-smiley {
   position: fixed;
   top: 50%;
@@ -257,8 +250,6 @@ body.pw-active #fluid-canvas { z-index: 10002; }
   100% { box-shadow: 0 0 60px rgba(240,137,50,0.28), 0 20px 60px rgba(0,0,0,0.5); }
 }
 
-/* Card is a separate element — sits above canvases (10003 > 10002) */
-/* JS centers it via transform on load */
 .pw-card {
   position: fixed;
   left: 0;
@@ -402,7 +393,7 @@ body.pw-active #fluid-canvas { z-index: 10002; }
   opacity: 0;
 }
 .nav.nav-visible {
-  animation: navSlideIn 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: navSlideIn 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 .nav.scrolled {
   height: 72px;
@@ -1301,6 +1292,13 @@ footer {
 }
 
 /* === Responsive === */
+@media (max-width: 1280px) {
+  .contact-inner { flex-direction: column; gap: 40px; align-items: stretch; }
+  .contact-right { justify-content: flex-start; align-items: flex-start; }
+  .contact-studio-link { align-items: flex-start; }
+  .contact-studio-tagline { text-align: left; }
+}
+
 @media (max-width: 1024px) {
   .nav { padding: 0 32px; }
   .section-inner { padding: 0 32px; }
@@ -1314,23 +1312,10 @@ footer {
 
   .skills-cat { grid-template-columns: 120px 1fr; gap: 24px 32px; padding: 36px 0; }
 
-  .contact-inner { flex-direction: column; gap: 40px; align-items: stretch; }
-  .contact-right { justify-content: flex-start; align-items: flex-start; }
-  .contact-studio-link { align-items: flex-start; }
-  .contact-studio-tagline { text-align: left; }
-
   .project-content { grid-template-columns: 1fr; }
   .project-link { align-self: flex-start; }
 
   footer { padding: 28px 32px; }
-}
-
-/* Contact column layout — wider breakpoint to catch large phones in landscape */
-@media (max-width: 1280px) {
-  .contact-inner { flex-direction: column; gap: 40px; align-items: stretch; }
-  .contact-right { justify-content: flex-start; align-items: flex-start; }
-  .contact-studio-link { align-items: flex-start; }
-  .contact-studio-tagline { text-align: left; }
 }
 
 @media (max-width: 768px) {
@@ -1351,14 +1336,7 @@ footer {
   .lightbox-inner img,
   .lightbox-inner video { max-width: 94vw; }
 
-  .contact-inner { align-items: stretch; }
-  .contact-right {
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-top: 16px;
-  }
-  .contact-studio-link { align-items: flex-start; }
-  .contact-studio-tagline { text-align: left; }
+  .contact-right { margin-top: 16px; }
 
   footer {
     padding: 24px 20px;

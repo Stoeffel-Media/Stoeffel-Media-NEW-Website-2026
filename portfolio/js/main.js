@@ -74,6 +74,7 @@ let lenisInstance = null;
     setTimeout(function () {
       overlay.classList.add('fade-out');
       document.body.classList.remove('modal-open', 'pw-active');
+      window.scrollTo(0, 0);
       triggerNav();
       setTimeout(function () {
         overlay.remove();
@@ -1265,4 +1266,25 @@ function updateCursorTargets() {
     reset();
     setInterval(reset, 10000);
   }, 5000);
+})();
+
+/* === Milestones Background Video === */
+(function () {
+  const vid = document.querySelector('.milestones-video');
+  if (!vid) return;
+
+  const section = vid.closest('.milestones-section');
+
+  const obs = new IntersectionObserver(function (entries) {
+    if (!entries[0].isIntersecting) return;
+    obs.unobserve(section);
+    vid.src = vid.dataset.src;
+    vid.load();
+    vid.addEventListener('canplay', function () {
+      vid.play().catch(function () {});
+      vid.classList.add('is-playing');
+    }, { once: true });
+  }, { threshold: 0.15 });
+
+  obs.observe(section);
 })();

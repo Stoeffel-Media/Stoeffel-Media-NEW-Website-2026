@@ -1107,7 +1107,20 @@ main { padding-top: 72px; }
 }
 
 /* === Milestones === */
-.milestones-section { background: var(--bg-deeper); position: relative; z-index: 1; }
+.milestones-section { background: #121212; position: relative; z-index: 1; }
+
+.milestones-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  pointer-events: none;
+}
+.milestones-video.is-playing { opacity: 0.08; }
+
 
 .milestones-grid {
   display: flex;
@@ -1128,7 +1141,7 @@ main { padding-top: 72px; }
   line-height: 1;
 }
 .milestone-text {
-  font-size: 13px;
+  font-size: 16px;
   color: var(--text-secondary);
   line-height: 1.5;
   margin-top: 8px;

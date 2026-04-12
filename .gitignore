@@ -2,7 +2,8 @@
 php/config.php
 php/rate_limits/
 portfolio/php/config.php
-portfolio/php/rate_limits/
+portfolio/php/rate_limits/*
+!portfolio/php/rate_limits/.htaccess
 
 # macOS
 .DS_Store

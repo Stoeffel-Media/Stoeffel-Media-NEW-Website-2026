@@ -518,11 +518,11 @@
           <div class="stat-label">Disciplines, One Studio</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">100<span>+</span></div>
+          <div class="stat-number">70<span>+</span></div>
           <div class="stat-label">Projects Delivered</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">70<span>+</span></div>
+          <div class="stat-number">50<span>+</span></div>
           <div class="stat-label">Clients Served</div>
         </div>
       </div>
@@ -614,15 +614,19 @@
 
           <div class="form-group">
             <label for="f-service">I'm interested in…</label>
-            <div class="select-wrap">
-              <select id="f-service" name="service">
-                <option value="">— Select a service —</option>
-                <option value="design">Graphic Design &amp; Branding</option>
-                <option value="web">Web Design &amp; Development</option>
-                <option value="marketing">Online Marketing &amp; SEO</option>
-                <option value="multiple">Multiple services</option>
-                <option value="other">Not sure yet</option>
-              </select>
+            <div class="select-wrap" id="service-select-wrap">
+              <input type="hidden" id="f-service" name="service" value="">
+              <div class="custom-select hoverable" role="combobox" aria-expanded="false" aria-haspopup="listbox" tabindex="0" aria-labelledby="service-label">
+                <span class="custom-select-value">— Select a service —</span>
+              </div>
+              <ul class="custom-select-dropdown" role="listbox" aria-label="Service options">
+                <li class="custom-select-option" role="option" data-value="" aria-selected="false">— Select a service —</li>
+                <li class="custom-select-option" role="option" data-value="design" aria-selected="false">Graphic Design &amp; Branding</li>
+                <li class="custom-select-option" role="option" data-value="web" aria-selected="false">Web Design &amp; Development</li>
+                <li class="custom-select-option" role="option" data-value="marketing" aria-selected="false">Online Marketing &amp; SEO</li>
+                <li class="custom-select-option" role="option" data-value="multiple" aria-selected="false">Multiple services</li>
+                <li class="custom-select-option" role="option" data-value="other" aria-selected="false">Not sure yet</li>
+              </ul>
             </div>
           </div>
 
@@ -674,7 +678,11 @@
 
     <div class="footer-bottom">
       <p>Design, Web &amp; Digital Marketing &mdash; Sydney, Australia</p>
-      <a href="/legal" class="hoverable">Legal</a>
+      <div class="footer-bottom-links">
+        <a href="/stoeffel-media_brand-guidelines.pdf" target="_blank" rel="noopener" class="hoverable brand-guidelines-link">Brand Guidelines</a>
+        <span class="footer-divider" aria-hidden="true">|</span>
+        <a href="/legal" class="hoverable">Legal</a>
+      </div>
     </div>
   </footer>
 

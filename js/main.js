@@ -171,12 +171,17 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     // Fade in
     const ctrIn = Math.min(Math.max((y - CTR_FADE_START) / (CTR_FADE_END - CTR_FADE_START), 0), 1);
 
-    // Fade out near contact section
+    // Fade out near contact section (or page bottom on pages without one)
     let ctrOut = 1;
     if (contactSection) {
       const contactTop = contactSection.offsetTop;
       const fadeOutStart = contactTop - window.innerHeight * 0.8;
       const fadeOutEnd = contactTop - window.innerHeight * 0.3;
+      ctrOut = 1 - Math.min(Math.max((y - fadeOutStart) / (fadeOutEnd - fadeOutStart), 0), 1);
+    } else {
+      const docBottom = document.documentElement.scrollHeight - window.innerHeight;
+      const fadeOutStart = docBottom - window.innerHeight * 0.5;
+      const fadeOutEnd = docBottom - window.innerHeight * 0.1;
       ctrOut = 1 - Math.min(Math.max((y - fadeOutStart) / (fadeOutEnd - fadeOutStart), 0), 1);
     }
 
@@ -261,6 +266,9 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 })();
 
 // --- WebGL fluid sim ---
+// Adapted from WebGL Fluid Simulation by Pavel Dobryakov
+// https://github.com/PavelDoGreat/WebGL-Fluid-Simulation
+// MIT License — Copyright (c) 2017 Pavel Dobryakov
 (function() {
   const canvas = document.getElementById('fluid-canvas');
   if (!canvas) return;
@@ -792,6 +800,113 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     if (dx < 0) navigateTo(currentIndex + 1);
     else navigateTo(currentIndex - 1);
   }, { passive: true });
+})();
+
+// Custom select dropdowns (Chromium-safe — replaces native <select>)
+(function() {
+  document.querySelectorAll('.select-wrap').forEach(function(wrap) {
+    const trigger   = wrap.querySelector('.custom-select');
+    const dropdown  = wrap.querySelector('.custom-select-dropdown');
+    const hidden    = wrap.querySelector('input[type="hidden"]');
+    const valueEl   = wrap.querySelector('.custom-select-value');
+    const options   = wrap.querySelectorAll('.custom-select-option');
+    if (!trigger || !dropdown || !hidden) return;
+
+    var highlightIndex = -1;
+
+    function open() {
+      wrap.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      trigger.classList.add('is-open');
+    }
+
+    function close() {
+      wrap.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.classList.remove('is-open');
+      highlightIndex = -1;
+      options.forEach(function(o) { o.classList.remove('is-highlighted'); });
+    }
+
+    function select(opt) {
+      var val   = opt.getAttribute('data-value');
+      var label = opt.textContent;
+      hidden.value = val;
+      valueEl.textContent = label;
+      if (val) {
+        trigger.classList.add('has-value');
+      } else {
+        trigger.classList.remove('has-value');
+      }
+      options.forEach(function(o) {
+        o.classList.toggle('is-selected', o === opt);
+        o.setAttribute('aria-selected', o === opt ? 'true' : 'false');
+      });
+      close();
+    }
+
+    function highlight(index) {
+      options.forEach(function(o) { o.classList.remove('is-highlighted'); });
+      if (index >= 0 && index < options.length) {
+        options[index].classList.add('is-highlighted');
+        options[index].scrollIntoView({ block: 'nearest' });
+        highlightIndex = index;
+      }
+    }
+
+    trigger.addEventListener('click', function() {
+      wrap.classList.contains('is-open') ? close() : open();
+    });
+
+    trigger.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        wrap.classList.contains('is-open') ? close() : open();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!wrap.classList.contains('is-open')) open();
+        highlight(Math.min(highlightIndex + 1, options.length - 1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        highlight(Math.max(highlightIndex - 1, 0));
+      } else if (e.key === 'Enter' && highlightIndex >= 0) {
+        select(options[highlightIndex]);
+      } else if (e.key === 'Escape') {
+        close();
+        trigger.focus();
+      }
+    });
+
+    options.forEach(function(opt, i) {
+      opt.addEventListener('click', function() { select(opt); });
+      opt.addEventListener('mouseenter', function() { highlight(i); });
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!wrap.contains(e.target)) close();
+    });
+  });
+
+  // Reset custom selects when form resets
+  var form = document.getElementById('contact-form');
+  if (form) {
+    form.addEventListener('reset', function() {
+      document.querySelectorAll('.select-wrap').forEach(function(wrap) {
+        var trigger  = wrap.querySelector('.custom-select');
+        var valueEl  = wrap.querySelector('.custom-select-value');
+        var options  = wrap.querySelectorAll('.custom-select-option');
+        var firstOpt = options[0];
+        if (!trigger || !valueEl || !firstOpt) return;
+        valueEl.textContent = firstOpt.textContent;
+        trigger.classList.remove('has-value', 'is-open');
+        wrap.classList.remove('is-open');
+        options.forEach(function(o) {
+          o.classList.remove('is-selected', 'is-highlighted');
+          o.setAttribute('aria-selected', 'false');
+        });
+      });
+    });
+  }
 })();
 
 // Contact form
@@ -1430,4 +1545,24 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
     if (label) label.textContent = addr;
     link.removeAttribute('aria-label');
   });
+})();
+
+// Brand Guidelines link — flash orange once, 3s after footer becomes visible
+(function() {
+  const link = document.querySelector('.brand-guidelines-link');
+  if (!link || localStorage.getItem('bgFlashed')) return;
+  const footer = document.querySelector('.footer');
+  if (!footer) return;
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        observer.disconnect();
+        setTimeout(function() {
+          link.classList.add('flashed');
+          localStorage.setItem('bgFlashed', '1');
+        }, 3000);
+      }
+    });
+  }, { threshold: 0.1 });
+  observer.observe(footer);
 })();

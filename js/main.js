@@ -91,7 +91,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   function updateCursor() {
     cursorX += (targetX - cursorX) * 0.15;
     cursorY += (targetY - cursorY) * 0.15;
-    cursor.style.transform = `translate(-50%, -50%) translate(${cursorX}px, ${cursorY}px)`;
+    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
     requestAnimationFrame(updateCursor);
   }
   updateCursor();
@@ -1141,6 +1141,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   function onPointerDown(e) {
     const card = e.target.closest('.service-card');
     if (!card || e.button !== 0) return;
+    if (e.target.closest('a, button')) return; // let links/buttons inside a card work normally
 
     dragged = card;
     startRect = card.getBoundingClientRect();

@@ -64,53 +64,66 @@ a:hover {
 }
 
 /* Cursor */
+/* #cursor only tracks position (JS sets transform: translate() every frame).
+   .cursor-shape owns size/shape/color, scaled via transform so it never
+   resizes its own box mid-transition — avoids clip-path coordinates being
+   reinterpreted against a simultaneously-changing box size, which could
+   render as a distorted, angular shape for a frame instead of a circle. */
 .cursor {
   position: fixed;
-  width: 20px;
-  height: 20px;
-  background: var(--accent);
-  border-radius: 50%;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
   pointer-events: none;
   z-index: 99999;
-  transform: translate(-50%, -50%);
-  clip-path: path('M 10 0 C 15.52 0 20 4.48 20 10 C 20 15.52 15.52 20 10 20 C 4.48 20 0 15.52 0 10 C 0 4.48 4.48 0 10 0 Z');
-  transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-              height 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.3s ease,
-              clip-path 0.45s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform;
+}
+
+.cursor-shape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  margin: -25px 0 0 -25px;
+  background: var(--accent);
+  clip-path: path('M 25 0 C 38.81 0 50 11.19 50 25 C 50 38.81 38.81 50 25 50 C 11.19 50 0 38.81 0 25 C 0 11.19 11.19 0 25 0 Z');
+  transform: scale(0.4);
+  transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.3s ease,
+              background 0.3s ease,
+              clip-path 0.45s cubic-bezier(0.25, 1, 0.5, 1);
   opacity: 0.9;
 }
 
-.cursor.hovering {
-  width: 50px;
-  height: 50px;
-  clip-path: path('M 25 0 C 38.81 0 50 11.19 50 25 C 50 38.81 38.81 50 25 50 C 11.19 50 0 38.81 0 25 C 0 11.19 11.19 0 25 0 Z');
+.cursor.hovering .cursor-shape {
+  transform: scale(1);
   opacity: 0.5;
 }
 
-.cursor.on-logo {
-  width: 36px;
-  height: 36px;
-  clip-path: path('M 18 10 C 28 5, 36 8, 35 17 C 36 28, 18 35, 18 35 C 18 35, 0 28, 1 17 C 0 8, 8 5, 18 10 Z');
+.cursor.on-logo .cursor-shape {
+  clip-path: path('M 25 15 C 35 10, 43 13, 42 22 C 43 33, 25 40, 25 40 C 25 40, 7 33, 8 22 C 7 13, 15 10, 25 15 Z');
+  transform: scale(0.72);
   opacity: 0.72;
 }
 
-.cursor.on-logo.hovering {
+.cursor.on-logo.hovering .cursor-shape {
   opacity: 0.58;
 }
 
-.cursor.on-accent {
+.cursor.on-accent .cursor-shape {
   background: #ffffff;
   opacity: 0.85;
 }
 
-.cursor.on-accent.hovering {
+.cursor.on-accent.hovering .cursor-shape {
   background: #ffffff;
   opacity: 0.5;
 }
 
-.cursor.has-action {
+.cursor.has-action .cursor-shape {
   background: radial-gradient(circle, #ffffff 4px, var(--accent) 4px);
 }
 
@@ -1400,6 +1413,30 @@ a, button, input, textarea, select, label,
   margin-bottom: 28px;
 }
 
+.about-photo {
+  float: left;
+  width: 173px;
+  height: 173px;
+  border-radius: 50%;
+  overflow: hidden;
+  shape-outside: circle(50%);
+  margin: 4px 28px 12px 0;
+  flex-shrink: 0;
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.about-photo:hover img {
+  transform: scale(1.15);
+}
+
 .about-bio {
   color: var(--text-secondary);
   font-size: 17px;
@@ -1413,6 +1450,12 @@ a, button, input, textarea, select, label,
 
 .about-bio p:last-child {
   margin-bottom: 0;
+}
+
+.about-bio::after {
+  content: '';
+  display: block;
+  clear: both;
 }
 
 .about-name-link {
@@ -1441,6 +1484,93 @@ a, button, input, textarea, select, label,
   padding: 7px 14px;
   border-radius: 6px;
   text-transform: uppercase;
+}
+
+/* --- Our Software --- */
+.software {
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+  padding: 100px 48px;
+}
+
+.software-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.software-header p {
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 440px;
+}
+
+.software-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.software-card {
+  display: block;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-decoration: none;
+  transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.software-card:hover {
+  border-color: rgba(240, 137, 50, 0.3);
+  transform: translateY(-4px);
+}
+
+.software-card-logo {
+  height: 26px;
+  width: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.software-card p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.software-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.software-card-link svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.software-card:hover .software-card-link svg {
+  transform: translateX(3px);
 }
 
 /* --- Contact --- */
@@ -2053,6 +2183,15 @@ a, button, input, textarea, select, label,
   .about-bio { font-size: 15px; line-height: 1.6; }
 }
 
+@media (max-width: 600px) {
+  .about-photo {
+    float: none;
+    shape-outside: none;
+    display: block;
+    margin: 0 auto 24px;
+  }
+}
+
 /* 1024px: tablet + phone landscape */
 @media (max-width: 1024px) {
   /* Layout */
@@ -2062,6 +2201,8 @@ a, button, input, textarea, select, label,
   .about-stats { position: static; display: flex; gap: 40px; flex-wrap: wrap; }
   .about-stats .section-label { width: 100%; margin-bottom: 0; }
   .stat-item { margin-bottom: 0; }
+  .software-inner { grid-template-columns: 1fr; gap: 32px; }
+  .software-header p { max-width: 100%; }
   .contact-inner { grid-template-columns: 1fr; gap: 48px; }
   .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
 
@@ -2151,6 +2292,9 @@ a, button, input, textarea, select, label,
   .about-inner { gap: 40px; }
   .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   .about-stats .section-label { grid-column: 1 / -1; margin-bottom: 8px; }
+
+  /* Our Software */
+  .software { padding: 70px 24px; }
 
   /* Contact */
   .contact { padding: 80px 24px; }

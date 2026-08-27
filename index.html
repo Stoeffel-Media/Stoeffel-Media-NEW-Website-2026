@@ -16,7 +16,8 @@
 
   <!-- SEO -->
   <title>Graphic Design | Web Design & Digital Marketing Sydney — Stoeffel-Media</title>
-  <meta name="description" content="Stoeffel-Media is a digital studio in Sydney for web design, graphic design, and digital marketing. Branding, SEO, and online marketing under one roof. Available Australia-wide and beyond." />
+  <meta name="description" content="Stoeffel-Media is a digital studio in Sydney for web design, graphic design, digital marketing, and software development. Branding, SEO, and online marketing under one roof. Available Australia-wide and beyond." />
+  <meta name="keywords" content="web design Sydney, graphic design, digital marketing, SEO Sydney, software development, time tracking software" />
   <link rel="canonical" href="https://stoeffel-media.com.au/" />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Andreas Stöffel, Stoeffel-Media" />
@@ -27,7 +28,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://stoeffel-media.com.au/" />
   <meta property="og:title" content="Graphic Design | Web Design & Digital Marketing Sydney — Stoeffel-Media" />
-  <meta property="og:description" content="A digital studio in Sydney for web design, graphic design, and digital marketing. Branding, SEO, and online marketing under one roof. No agency overhead." />
+  <meta property="og:description" content="A digital studio in Sydney for web design, graphic design, digital marketing, and software development. Branding, SEO, and online marketing under one roof. No agency overhead." />
   <meta property="og:image" content="https://stoeffel-media.com.au/img/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -110,6 +111,14 @@
             "name": "Online Marketing & SEO",
             "description": "Search engine optimisation (SEO), digital marketing strategy, content, and paid advertising for Australian businesses."
           }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Software Development",
+            "description": "Software development and desktop tools for professionals, including SpanTime, our own time tracking app for Mac and Windows."
+          }
         }
       ]
     }
@@ -119,7 +128,7 @@
 <body>
 
   <!-- ── Custom Cursor ── -->
-  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor-shape"></span></div>
 
   <!-- ── Background canvases (hero only) ── -->
   <canvas id="dot-pattern" aria-hidden="true"></canvas>
@@ -221,13 +230,14 @@
           <circle cx="30" cy="21" r="2.5" fill="currentColor" stroke="none"/>
         </svg>
         <h3>Graphic Design &amp; Branding</h3>
-        <p>Logos, brand identities, visual systems, print design, and digital assets. We build assets that make your business look credible: consistent, professional, and built to last.</p>
+        <p>Logos, brand identities, visual systems, print design, and digital assets. We build assets that make your business look credible: consistent, professional, and built to last. We also put together brand guidelines, so everything stays consistent long after the project ends.</p>
         <div class="service-tags">
           <span class="service-tag">Logo Design</span>
           <span class="service-tag">Branding</span>
           <span class="service-tag">Print</span>
           <span class="service-tag">Visual Assets</span>
           <span class="service-tag">Typography</span>
+          <span class="service-tag">Brand Guidelines</span>
         </div>
       </article>
 
@@ -241,13 +251,14 @@
           <path d="M13 18l4 4-4 4M19 26h8"/>
         </svg>
         <h3>Web Design &amp; Development</h3>
-        <p>Well-built websites that work hard for your business. Static or dynamic, fully responsive, clean under the hood, and handed over with every detail sorted.</p>
+        <p>Well-built websites that work hard for your business. Static or dynamic, fully responsive, clean under the hood, and handed over with every detail sorted. We also develop our own software, including <a href="#software" class="hoverable">SpanTime</a>, a time tracking app for professionals.</p>
         <div class="service-tags">
           <span class="service-tag">HTML / CSS / JS</span>
           <span class="service-tag">Responsive Design</span>
           <span class="service-tag">Landing Pages</span>
           <span class="service-tag">Web Apps</span>
           <span class="service-tag">CMS</span>
+          <span class="service-tag">Software Development</span>
         </div>
       </article>
 
@@ -261,13 +272,14 @@
           <path d="M4 36h32"/>
         </svg>
         <h3>Online Marketing &amp; SEO</h3>
-        <p>Strategy, content, and search visibility that moves numbers. We focus on what gets your business found by the right people. No vague reports, no empty metrics, no guesswork.</p>
+        <p>Strategy, content, and search visibility that moves numbers. We focus on what gets your business found by the right people. No vague reports, no empty metrics, no guesswork. Every report is written in plain language, so you always know what's working and why.</p>
         <div class="service-tags">
           <span class="service-tag">SEO</span>
           <span class="service-tag">Content Strategy</span>
           <span class="service-tag">Campaigns</span>
           <span class="service-tag">Analytics</span>
           <span class="service-tag">Ads</span>
+          <span class="service-tag">Social Media</span>
         </div>
       </article>
 
@@ -531,6 +543,10 @@
         <div class="section-label reveal">About</div>
         <h2 class="section-title reveal" id="about-title">One studio.<br>Three skills.<br>Done right.</h2>
         <div class="about-bio reveal reveal-delay-1">
+          <picture class="about-photo">
+            <source srcset="img/andreas-stoeffel_stoeffel-media.webp" type="image/webp">
+            <img src="img/andreas-stoeffel_stoeffel-media.jpg" alt="Andreas Stöffel — Stoeffel-Media" width="150" height="150" loading="lazy">
+          </picture>
           <p>We're Stoeffel-Media. A digital studio in Sydney, led by <a href="https://www.linkedin.com/in/andreas-stoffel1/" target="_blank" rel="noopener noreferrer" class="about-name-link hoverable">Andreas Stöffel</a>, a formally trained and certified graphic designer from Germany. Over 25 years of practice in design and digital, building brands, websites, and marketing campaigns for clients and own projects across different industries and budgets.</p>
           <p>Design, development, and marketing under one roof. You brief once and we handle the rest. No account managers, no handoffs, no overhead between departments. The work is structured, detail-oriented, and delivered on time.</p>
           <p>Available for projects in Sydney and remotely across Australia and beyond. Direct contact from day one to handover. No surprises.</p>
@@ -539,13 +555,33 @@
           <span class="highlight-tag">Sydney-Based</span>
           <span class="highlight-tag">International</span>
           <span class="highlight-tag">Remote-Friendly</span>
-          <span class="highlight-tag">14+ Years Pro</span>
+          <span class="highlight-tag">22+ Years Pro</span>
           <span class="highlight-tag">Direct Contact</span>
           <span class="highlight-tag">Detail-Oriented</span>
           <span class="highlight-tag">Design + Dev + Marketing</span>
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- Our Software -->
+  <section class="software" id="software" aria-labelledby="software-title">
+    <div class="software-inner">
+      <div class="software-header">
+        <div class="section-label reveal">Beyond the Studio</div>
+        <h2 class="section-title reveal" id="software-title">We also build software.</h2>
+        <p class="reveal reveal-delay-1">Alongside client work, we develop our own tools for people who bill by the hour. Straightforward apps, built the way we'd want to use them ourselves.</p>
+      </div>
+      <div class="software-grid">
+        <a href="https://stoeffel-media.com.au/spantime/" target="_blank" rel="noopener noreferrer" class="software-card hoverable reveal reveal-delay-2" aria-label="Visit SpanTime, our time tracking app for Mac and Windows">
+          <img src="img/spantime-logo-horizontal-dark.svg" alt="SpanTime" class="software-card-logo" width="204" height="50" loading="lazy" />
+          <p>A desktop time tracker for Mac and Windows. Track billable hours, bill clients accurately, and keep every entry on your own machine. One purchase, no subscription. Also available as a custom-branded version with your own logo and colors.</p>
+          <span class="software-card-link">Visit SpanTime
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -662,6 +698,7 @@
         <li><a href="#services" class="hoverable">Services</a></li>
         <li><a href="#portfolio" class="hoverable">Work</a></li>
         <li><a href="#about" class="hoverable">About</a></li>
+        <li><a href="#software" class="hoverable">SpanTime</a></li>
         <li><a href="#contact" class="hoverable">Contact</a></li>
       </ul>
 

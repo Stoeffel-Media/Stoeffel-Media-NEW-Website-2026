@@ -1,118 +1,122 @@
-# CLAUDE.md — Stoeffel-Media AU (stoeffel-media-au/)
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project
 
-Stoeffel-Media Australian market website. Solo operator: Andreas Stöffel. Design, Web & Digital Marketing.
-Domain: stoeffel-media.com.au | Hosted on Hostinger (cPanel, traditional FTP upload).
+Stoeffel-Media Australian market website — solo operator Andreas Stöffel (Design, Web & Digital Marketing).
+Domain: `stoeffel-media.com.au` | Hosted on Hostinger (cPanel/FTP, Apache + PHP, no build step).
 
-## Design System
+Static HTML/CSS/vanilla-JS front end with a small PHP backend for the contact form and a
+password-gated private portfolio. There is no bundler, package manager, or JS framework —
+files are edited directly and uploaded via FTP (or the Hostinger MCP, see the global
+CLAUDE.md's Hostinger Deployment section). `composer.json`/`vendor/` exist only for PHPMailer.
 
-| Token | Value |
-|---|---|
-| Background | `#202020` |
-| Background deep | `#181818` |
-| Accent | `#f08932` (orange) |
-| Text primary | `#ffffff` |
-| Text secondary | `#8e8e8e` |
-| Headline font | Bebas Neue (Google Fonts) |
-| Body font | DM Sans (Google Fonts) |
+## Commands
 
-## File Structure
+There is no build/lint/test tooling in this repo — it's edited and previewed directly.
 
-```
-stoeffel-media-au/
-├── index.html          ← Single page site (all sections)
-├── legal.html          ← Legal notice (Australian compliance)
-├── css/style.css       ← All styles
-├── js/main.js          ← All JS (cursor, fluid sim, animations, form)
-├── php/
-│   ├── config.php      ← Private config — DO NOT COMMIT
-│   └── contact.php     ← Secure form handler (PHPMailer)
-├── robots.txt
-└── sitemap.xml
-```
-
-Assets live at `../ASSETS/` (one level up, shared folder).
-
-## Sections (index.html, top to bottom)
-
-1. **Hero** — WebGL fluid sim (orange), dot pattern, custom cursor, animated heading
-2. **Business Statements** — Rotating statements: slide up from bottom, hold 5s, exit top
-3. **Services** — 3 equal cards: Graphic Design, Web Dev, Online Marketing
-4. **Quote** — Word-by-word fade animation (~3s) on scroll into view
-5. **Portfolio** — 9-item 3×3 grid, lightbox on click
-6. **About** — Stats left (15+yr / 3 / 4), bio text right
-7. **Contact** — Video bg (see instructions in HTML), white form card
-8. **Footer** — Minimal: logo, nav, LinkedIn, copyright
-
-## Key JavaScript Modules (js/main.js)
-
-- `updateCursor()` — smooth orange cursor tracking
-- Dot pattern canvas animation (fixed, behind hero)
-- WebGL fluid simulation (Navier-Stokes, orange #f08932)
-- Statements rotator — JS-driven animation cycle
-- Quote word reveal — IntersectionObserver + staggered delays
-- Lightbox — portfolio image viewer
-- Contact form — fetch POST to php/contact.php, inline success/error
-- Hero parallax — scroll-driven translateY on heading/sub/cta
-
-## Contact Form Security
-
-1. Honeypot field (`#website`) — bot trap, must stay empty
-2. Origin/Referer check in PHP
-3. IP-based rate limiting (3 req/hr, file cache in `php/rate_limits/`)
-4. Server-side input sanitisation (`htmlspecialchars`, `filter_var`)
-5. PHPMailer via SMTP (no native `mail()`)
-6. reCAPTCHA v3 (optional — set RECAPTCHA_SECRET in config.php)
-
-## Adding a Video Background (Contact Section)
-
-1. Download a dark abstract ambient video from Pexels or Pixabay (royalty-free)
-2. Save as `../ASSETS/contact-bg.mp4`
-3. In `index.html`, find the contact section comment and add:
-   ```html
-   <video autoplay muted loop playsinline>
-     <source src="../ASSETS/contact-bg.mp4" type="video/mp4">
-   </video>
-   ```
-4. Remove the `<div class="animated-bg"></div>` fallback
-
-## PHPMailer Setup
-
-Option A — Composer (recommended):
 ```bash
-cd stoeffel-media-au
-composer require phpmailer/phpmailer
+# Install/update PHPMailer (the only dependency)
+composer install
+
+# Local preview (any static server works; PHP forms need php -S)
+php -S localhost:8000
 ```
 
-Option B — Manual:
-1. Download from https://github.com/PHPMailer/PHPMailer
-2. Place the `src/` folder at `php/lib/PHPMailer/src/`
+To verify a change, open the relevant `.html` file through a local PHP server (so `php/contact.php`
+and `portfolio/php/auth.php` work) and check in a real browser — there are no automated tests.
 
-Then fill in `php/config.php` with your Hostinger SMTP credentials.
+## Repo layout
 
-## SEO Checklist
+This repo actually contains **three separate things**, not one site:
 
-- [x] Unique title + meta description
-- [x] Canonical tag
-- [x] Open Graph + Twitter cards
-- [x] JSON-LD LocalBusiness structured data
-- [x] Semantic HTML5 (header, nav, main, section, footer, article)
-- [x] Image alt texts + lazy loading
-- [x] robots.txt + sitemap.xml
-- [ ] Add `og:image` (1200×630px) at `/img/og-image.jpg`
-- [ ] Verify sitemap URL after deployment
+1. **Main site** (`index.html`, `legal.html`, `404.html`, `css/style.css`, `js/main.js`, `php/`) —
+   the public marketing site at the domain root.
+2. **`portfolio/`** — a separate, password-gated micro-site with its own HTML/CSS/JS/PHP, own
+   `.htaccess`, and its own EN/DE pages (`index.html` / `index_de.html`). Treated as its own repo
+   in spirit — see the DO NOT section.
+3. **`brand-guidellines/`** — a single self-contained `index.html` (fonts inlined as base64 data
+   URIs, `noindex,nofollow`) plus a static PDF (`stoeffel-media_brand-guidelines.pdf`). Not linked
+   from the main nav; used as a private reference page.
+4. **`software/time-tracker/`** — unrelated to the marketing site: license-key infrastructure
+   (`revoked-keys.json` + README) for separate desktop apps (SM/SpanTime/TSM time trackers) that
+   fetch this JSON from the live domain to check revocation. Edit only per `revoked-keys-README.md`.
+
+## Main site architecture (`index.html` / `css/style.css` / `js/main.js`)
+
+Single-page site. Section order in `index.html`: Hero → Business Statements → Services →
+Quote → Portfolio (bento grid + lightbox) → About (stats + bio) → Contact (video bg + form) → Footer.
+`css/style.css` is organized with `/* --- Section --- */` comment headers that match this order —
+grep for e.g. `/* --- Contact --- */` to jump to a section's styles.
+
+Design tokens: background `#202020` (deep `#181818`), accent `#f08932` (orange), text `#ffffff` /
+`#8e8e8e`. Fonts are self-hosted **Outfit** only (`fonts/outfit-latin.woff2` + `-latin-ext.woff2`) —
+not Bebas Neue/DM Sans (an older draft used those; the shipped site uses Outfit for everything).
+
+`js/main.js` has no framework, no modules — it's one file of IIFE-style sections marked with
+`// section name` comments (typewriter, cursor, menu, scroll reveal, dot pattern, WebGL fluid sim,
+statements rotator, lightbox, custom `<select>` replacement, contact form, hero parallax, light
+rays, draggable service cards, lazy video loading, rotating quotes, stats count-up, per-card canvas
+animations, email obfuscation). Grep the `// ---` / `// ===` comments to jump to a section.
+
+**Lenis** (`js/lenis.min.js`) is vendored locally for smooth scrolling on both the main site and
+the portfolio — this is the one approved external script; do not add others (see DO NOT).
+
+The WebGL fluid simulation is adapted from Pavel Dobryakov's MIT-licensed
+[WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) — attribution
+comment is in `js/main.js` above the fluid sim code; keep it if you touch that section.
+
+## Portfolio subsite (`portfolio/`)
+
+Password-gated (client posts to `portfolio/php/auth.php`, session-based, `hash_equals` compare,
+10 attempts/hour rate limit hashed by IP). Structurally similar to the main site (same cursor/dot
+pattern/fluid-sim/Lenis patterns in its own `js/main.js`) but has its own nav gate, thumbnail
+popovers, and draggable password card with a hidden smiley easter egg.
+
+**Media is served through a PHP gate, not directly**: `portfolio/.htaccess` rewrites requests under
+`images/designs/**` to `portfolio/php/img.php`, which checks `$_SESSION['portfolio_auth']`, blocks
+path traversal, and streams the file with byte-range support (required for iOS Safari video). Any
+new protected image/video must live under `portfolio/images/designs/` to get this treatment —
+anything outside that path bypasses the gate.
+
+`portfolio/php/config.php` defines `PORTFOLIO_PASSWORD` — do not commit a real password to it (see
+global memory: never commit credential files). EN and DE pages (`index.html` / `index_de.html`) are
+kept in sync manually — a content change to one must be mirrored in the other.
+
+## Contact form security (`php/contact.php`, main site)
+
+Layered defenses, in order: honeypot field (`#website`, must stay empty) → Origin/Referer check →
+IP-based rate limiting (3 req/hr, file cache in `php/rate_limits/`, IPs stored only as SHA-256
+hashes) → server-side sanitisation (`htmlspecialchars`, `filter_var`) → optional reCAPTCHA v3 score
+check → PHPMailer over SMTP (`declare(strict_types=1)`, never PHP's native `mail()`).
+Config (`SMTP_*`, `MAIL_*`, `RECAPTCHA_SECRET`, rate-limit tunables) lives in `php/config.php`,
+which is `.htaccess`-blocked from direct web access and must never be committed.
+
+`portfolio/php/auth.php` follows the same Origin/Referer + hashed-IP rate-limit pattern independently.
+
+## Deployment / infra notes
+
+- `.htaccess` (root) strips `.html` extensions, redirects `www` → apex, sets a custom 404, and
+  blocks direct access to `.json` files under `portfolio/php/`.
+- `php/.htaccess` denies all direct browser access to `php/` except `contact.php` (POST only).
+- Caching/gzip rules live in the root `.htaccess` — new static asset types should get an
+  `ExpiresByType` entry there if they're cache-worthy.
+- No CI/CD — deployment is a manual FTP (or Hostinger MCP) push per the global CLAUDE.md workflow.
 
 ## DO NOT
 
-- Do not change the hero section's WebGL or dot pattern — it's the approved template
-- Do not use Inter, Roboto, or any system font — Bebas Neue + DM Sans only
-- Do not add external JS libraries (jQuery, Bootstrap, etc.)
-- Do not expose config.php credentials in any public file
-- Do not use PHP's native `mail()` — PHPMailer only
-- Do not modify the existing animation timing on hero entrance (baked into CSS)
+- Do not change the hero section's WebGL fluid sim or dot pattern — approved template, don't touch animation timing baked into the CSS.
+- Do not use fonts other than Outfit (self-hosted `fonts/outfit-latin*.woff2`) — no Google Fonts, no system fonts.
+- Do not add external JS libraries beyond the already-vendored Lenis (no jQuery, no CDN scripts).
+- Do not expose `php/config.php` or `portfolio/php/config.php` credentials in any public file or commit.
+- Do not use PHP's native `mail()` — PHPMailer via SMTP only.
+- Do not let protected portfolio media bypass `portfolio/php/img.php` — it must stay under `portfolio/images/designs/`.
+- Do not touch `software/time-tracker/revoked-keys.json` except by editing the `revoked` array per its README — it's live infrastructure for shipped desktop apps, not sample data.
+- Do not run `git push` without explicit instruction (local commits are fine).
 
-## Copy Tone
+## Copy tone
 
-Direct. Confident. No fluff. Short sentences. Active voice. English only.
-Use "we" / "our" — never "I" or "me".
+Direct. Confident. No fluff. Short sentences. Active voice. English only. Use "we"/"our" on the
+public site copy, never "I"/"me" (matches the studio framing, distinct from the global CLAUDE.md's
+first-person voice sample, which is for standalone marketing copy/bios).
